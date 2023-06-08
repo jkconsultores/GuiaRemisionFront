@@ -1,0 +1,43 @@
+<div style="margin-top: 100px;">
+  <div class="row justify-content-center">
+    <div class="card shadow  mb-5 bg-body rounded" style="width: 400px;">
+
+     <div class="card-body">
+      <div class="text-center">
+        <h1><b>Jk Gre</b></h1>
+        <hr>
+      </div>
+       <form class="justify-content-center" (ngSubmit)="login(f)" #f="ngForm">
+        <div class="form-outline mb-4">
+          <label>Empresa:</label>
+           <input type="text" name="empresa" [(ngModel)]="usuario.empresa" class="form-control" placeholder="Ingrese la empresa" [ngClass]="{'is-invalid':f.submitted&&f.controls['empresa'].errors}" required minlength="4"/>
+           <span *ngIf="f.submitted&&f.controls['empresa'].errors" class="help-inline" style="color: red;">Ingrese 4 letras como minimo</span>
+          </div>
+         <div class="form-outline mb-4">
+          <label>Usuario:</label>
+           <input type="text" name="nombreUsuario" [(ngModel)]="usuario.nombreUsuario" class="form-control" placeholder="Ingrese el usuario" [ngClass]="{'is-invalid':f.submitted&&f.controls['nombreUsuario'].errors}" required minlength="4"/>
+           <span *ngIf="f.submitted&&f.controls['nombreUsuario'].errors" class="help-inline" style="color: red;">Ingrese 4 letras como minimo</span>
+          </div>
+         <label>Password:</label>
+         <div class="form-outline mb-4">
+           <input type="password" name="contrasena" [(ngModel)]="usuario.contrasena" class="form-control" placeholder="Ingrese la contraseña" [ngClass]="{'is-invalid':f.submitted&&f.controls['contrasena'].errors}" required minlength="4"/>
+           <span *ngIf="f.submitted&&f.controls['contrasena'].errors" class="help-inline" style="color: red;">Ingrese 4 letras como minimo</span>
+         </div>
+         <!-- 2 column grid layout for inline styling -->
+         <div class="row mb-4">
+           <div class="col d-flex justify-content-center">
+             <!-- Checkbox -->
+             <div class="form-check">
+               <input class="form-check-input" name="recordarme" [(ngModel)]="recordarme" type="checkbox" value="" id="form2Example31" checked />
+               <label class="form-check-label" for="form2Example31"> Recordar </label>
+             </div>
+           </div>
+         </div>
+         <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-block mb-4">Iniciar sesión</button>
+         </div>
+       </form>
+     </div>
+    </div>
+   </div>
+</div>

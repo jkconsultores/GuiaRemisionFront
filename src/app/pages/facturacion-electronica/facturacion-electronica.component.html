@@ -1,0 +1,375 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+  <div class="card m-2">
+    <div class="card-header">
+      <h4>facturación Electronica</h4>
+    </div>
+    <div class="card-body">
+      <div class="row mb-1">
+        <div class="col-2">
+          <label>Empresa:</label>
+        </div>
+        <div class="col-3">
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+        <div class="col-1">
+          <label>Fecha Emision</label>
+        </div>
+        <div class="col-2">
+          <input type="date">
+        </div>
+        <div class="col-2">
+          <label>Fecha Vencimiento</label>
+        </div>
+        <div class="col-2">
+          <input type="date">
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-2">
+          <label>Tipo Documento:</label>
+        </div>
+        <div class="col-3">
+          <select class="form-select">
+            <option value="">Example 1</option>
+          </select>
+        </div>
+        <div class="col-1">
+          <label>Cliente</label>
+        </div>
+        <div class="col-6">
+          <div class="input-group">
+            <input type="text" class="form-control">
+            <span class="input-group-text">...</span>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-2">
+          <label>
+            Serie Y Numero
+          </label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control">
+        </div>
+        <div class="col-1">
+          Moneda
+        </div>
+        <div class="col-2">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <label class="form-check-label" for="inlineRadio1">Soles</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            <label class="form-check-label" for="inlineRadio2">Usd Dolares</label>
+          </div>
+        </div>
+        <div class="col-1">
+          <label style="text-align: right;">Tc :</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control">
+        </div>
+
+      </div>
+      <div class="row mb-1">
+        <div class="col-2">
+          <label>Forma pago</label>
+        </div>
+        <div class="col-3">
+          <select class="form-select">
+            <option value="">Ejemplo1</option>
+          </select>
+        </div>
+        <div class="col-1">
+          OC:
+        </div>
+        <div class="col-2">
+          <input type="text" class="form-control">
+        </div>
+        <div class="col-1">
+          <label>Detracción:</label>
+        </div>
+        <div class="col-3">
+          <select class="form-select">
+            <option value="">Ejemplo1</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-2">
+          <label>
+            Observaciones
+          </label>
+        </div>
+        <div class="col-6">
+          <input type="text" class="form-control">
+        </div>
+        <div class="col-1">
+          <label>Estado</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-6 mb-1">
+          <div class="row mb-1">
+            <div class="col-4">
+              <label>Referencia</label>
+            </div>
+            <div class="col-8">
+              <div class="input-group">
+                <input type="text" class="form-control">
+                <span class="input-group-text">...</span>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col-4">
+              <label>Tipo Nc/Nd</label>
+            </div>
+            <div class="col-8">
+              <select class="form-select">
+                <option value="">Ejemplo1</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col-4">
+              <label>Motivo</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mb-1">
+          <div class="row mb-1">
+            <div class="col-4">
+              <label>Importar Datos</label>
+            </div>
+            <div class="col-8">
+              <div class="input-group">
+                <input type="text" class="form-control">
+                <span class="input-group-text" (click)="abrirModal(administrarFactura)">...</span>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <div class="col-4">
+              <label>Faltan Cuotas</label>
+            </div>
+            <div class="col-8">
+              <div class="table table-responsive" style="height: 80px;">
+                <table class="table table-bordered">
+                  <thead>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> 1</td>
+                      <td>cuota 1</td>
+                    </tr>
+                    <tr>
+                      <td> 2</td>
+                      <td>cuota 2</td>
+                    </tr>
+                    <tr>
+                      <td> 2</td>
+                      <td>cuota 2</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-8 mb-1">
+          <div class="table table-responsive" style="height: 240px;">
+            <table class="table table-bordered" style="min-height: 220px;">
+              <thead>
+                <th>Id</th>
+                <th>Nombre</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button type="button" class="btn btn-outline-primary btn-lg">Agregar Detalle </button>
+          &nbsp;<button type="button" class="btn btn-outline-primary btn-lg">Modificar Detalle </button>
+          &nbsp;<button type="button" class="btn btn-outline-primary btn-lg">Quitar Detalle </button>
+          &nbsp;<button type="button" class="btn btn-outline-primary btn-lg">Letras de Cambio </button>
+          &nbsp;<button type="button" class="btn btn-outline-success btn-lg">Declarar Documento </button>
+
+        </div>
+        <div class="col-4 mb-1">
+          <div class="row">
+            <div class="col-4">
+              <label>Gravada</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Inafecta</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Exonerada</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Gratuita</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Exportación</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Total Igv</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Total Venta</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+            <div class="col-4">
+              <label>Detracción</label>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #administrarFactura>
+  <div class="card">
+    <div class="card-header">
+      <h5>Administrar Facturación</h5>
+    </div>
+    <div class="card-body">
+      <div class="row mb-1">
+        <div class="col-1">
+          <label>Desde:</label>
+        </div>
+        <div class="col-2">
+          <input type="date" style="width: 120px;">
+        </div>
+        <div class="col-1">
+          <label>Hasta:</label>
+        </div>
+        <div class="col-2">
+          <input type="date" style="width: 120px;">
+        </div>
+        <div class="col-1">
+          <label>Filtrar</label>
+        </div>
+        <div class="col-3">
+          <input type="text" class="form-control">
+        </div>
+        <div class="col-1">
+          <button class="btn btn-primary">Filtrar</button>
+        </div>
+        <br>
+      </div>
+      <div class="row">
+        <div class="table table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <th>Id</th>
+              <th>Nombre</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>ejemplo 1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>ejemplo 1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>ejemplo 1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>ejemplo 1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>ejemplo 1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>ejemplo 1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div style="text-align: right;">
+          <button type="button" class="btn btn-outline-primary btn-lg">Exportar a Excel </button>
+          &nbsp; &nbsp;<button type="button" class="btn btn-outline-primary btn-lg">Editar </button>
+          &nbsp; &nbsp;<button type="button" class="btn btn-outline-primary btn-lg">Nuevo </button>
+          &nbsp; &nbsp;<button type="button" class="btn btn-outline-primary btn-lg">Nuevo </button>
+          &nbsp;  &nbsp;<button class="btn btn-danger btn-lg" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

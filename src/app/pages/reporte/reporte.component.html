@@ -1,0 +1,139 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+  <div class="card m-2">
+    <div class="card-header">
+      <h4>Listado de Guias</h4>
+    </div>
+    <div class="card-body">
+
+      <div class="row mb-2">
+        <div class="col-2">
+          <label>Desde:</label>
+          <input type="date" [(ngModel)]="desde" class="form-control">
+        </div>
+        <div class="col-2">
+          <label>Hasta:</label>
+          <input type="date" [(ngModel)]="hasta" class="form-control">
+        </div>
+
+        <div class="col-2" style="margin-bottom: 5px;">
+          <label for="">Filtrar por serie:</label><br>
+          <input type="text" class="form-control" maxlength="13" style="width: 250px" placeholder="Buscar.." [(ngModel)]="filterSerie"
+            name="filterpost" />
+        </div>
+
+        <div style="width: 240px;">
+          <label for="" style="width: 70px;">Estado:</label>
+          <select [value]="filtroEstado" id="filtroSelect" class="form-select" style="width: 210px;"
+            (change)="llenarFiltro('filtroSelect')">
+            <option value="">Todos</option>
+            <option value="N">Generado</option>
+            <option value="A">En proceso</option>
+            <option value="E">Error</option>
+            <option value="L">Enviado</option>
+          </select>
+        </div>
+        <div class="col-1">
+          <label for="">&nbsp;&nbsp;&nbsp;</label><br>
+          <button class="btn btn-success" (click)="exportToExcel()">Exportar <i class="fa fa-file-excel"></i></button>
+        </div>
+        <div class="col-1">
+          <div>
+            <label>Buscar:</label><br>
+            <i class="fa-solid fa-magnifying-glass" style="color: rgb(42, 103, 214);font-size: 28px;margin-top: 1px;cursor: pointer;" (click)="buscarReporteRango()"></i>
+          </div>
+        </div>
+      </div>
+      <div class="table table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <th style="min-width: 100px;">Serie</th>
+            <th>Estado</th>
+            <th>fecha de Emision</th>
+            <th>Correo</th>
+            <th>N° Doc Adquiriente</th>
+            <th>Tipo Doc Adquiriente</th>
+            <th>Adquiriente</th>
+            <th>Motivo Traslado</th>
+            <th>Descripción</th>
+            <th>Peso Total</th>
+            <th>Fecha inicio</th>
+            <th>Estado Bl</th>
+            <th>Opt</th>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of spe_despatch | filter:filtroEstado:['bl_estadoRegistro']| filter:filterSerie:['serieNumeroGuia'] |paginate: { id:'pageReport',itemsPerPage: 10, currentPage: page}">
+              <td>{{item.serieNumeroGuia}}</td>
+              <td>
+                <span class="badge text-bg-primary" *ngIf="item.bl_estadoRegistro=='N'">Generado</span>
+                <span class="badge text-bg-warning" *ngIf="item.bl_estadoRegistro=='A'">En proceso</span>
+                <span class="badge text-bg-danger" *ngIf="item.bl_estadoRegistro=='E'">Error</span>
+                <span class="badge text-bg-success" *ngIf="item.bl_estadoRegistro=='L'">Enviado</span>
+              <td>{{item.fechaEmisionGuia}}</td>
+              <td>{{item.correoDestinatario}}</td>
+              <td>{{item.numeroDocumentoDestinatario}}</td>
+              <td>{{item.tipoDocumentoDestinatario}}</td>
+              <td>{{item.razonSocialDestinatario}}</td>
+              <td>{{item.motivoTraslado}}</td>
+              <td>{{item.descripcionMotivoTraslado}}</td>
+              <td>{{item.pesoBrutoTotalBienes}}</td>
+              <td>{{item.fechaInicioTraslado}}</td>
+              <td>
+                <span class="badge text-bg-primary" *ngIf="item.bl_estadoProceso=='SIGNED/AC_03'">ACEPTADO</span>
+                <span class="badge text-bg-warning" *ngIf="item.bl_estadoProceso=='SIGNED/PE_02'">EN PROCESO</span>
+                <span class="badge text-bg-warning" *ngIf="item.bl_estadoProceso=='SIGNED/PE_09'">EN PROCESO</span>
+                <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED'">ERROR LOCAL</span>
+                <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED/AN_04'">ANULADO</span>
+                <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED/RC_05'">RECHAZADO</span>
+                <span class="badge text-bg-success" *ngIf="item.bl_estadoProceso=='L'">Enviado</span>
+             </td>
+              <td><i (click)="abrirModal(DetallesSpe,item.serieNumeroGuia)" class="fa-sharp fa-solid fa-circle-info"
+                  style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align: center;"><pagination-controls id="pageReport"
+          (pageChange)="page = $event"></pagination-controls></div>
+
+    </div>
+  </div>
+</div>
+<ng-template #DetallesSpe>
+  <div class="card">
+    <div class="card-header text-center">
+      <h5>Detalles</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive" style="max-height: 800px;">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">N° Orden</th>
+              <th scope="col">Serie</th>
+              <!--               <th scope="col">Tipo Documento Guia</th> -->
+              <th scope="col">Cantidad</th>
+              <th scope="col">UnidadMedida</th>
+              <th scope="col">Descripcion</th>
+              <th scope="col">Codigo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of spe_despatch_item" style="cursor: pointer;">
+              <th scope="row">{{item.numeroOrdenItem}}</th>
+              <!--               <td>{{item.tipoDocumentoRemitente}}</td>
+              <td>{{item.numeroDocumentoRemitente}}</td> -->
+              <td>{{item.serieNumeroGuia}}</td>
+              <!--         <td>{{item.tipoDocumentoGuia}}</td> -->
+              <td>{{item.cantidad}}</td>
+              <td>{{item.unidadMedida}}</td>
+              <td>{{item.descripcion}}</td>
+              <td>{{item.codigo}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>

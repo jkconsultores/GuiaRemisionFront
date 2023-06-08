@@ -1,0 +1,113 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+  <div class="card m-2">
+    <div class="card-header">
+      <h4>Reporte de transportistas</h4>
+    </div>
+    <div class="card-body">
+
+      <div class="row mb-2">
+        <div class="col-2" style="margin-bottom: 5px;">
+          <label for="">Filtrar por serie:</label><br>
+          <input type="text" class="form-control" maxlength="13" style="width: 250px" placeholder="Buscar.." [(ngModel)]="filterSerie"
+            name="filterpost" />
+        </div>
+        <div class="col-2" style="margin-bottom: 5px;">
+          <label for="">Cargar Datos:</label><br>
+          <input type="file" class="form-control" accept=".xls, .xlsx" (change)="onFileChange($event)">
+
+        </div>
+
+      </div>
+      <div class="table table-responsive">
+        <table>
+          <thead>
+            <th scope="col">NRO GUIA</th>
+            <th scope="col">FECHA EMISIÓN</th>
+            <th scope="col">FEC. INIC. TRASLADO</th>
+            <th scope="col">ORDEN VIAJE</th>
+            <th scope="col">DIRECC. PARTIDA</th>
+            <th scope="col">DESTINO FINAL</th>
+            <th scope="col">DIRECCIÓN PUNTO FINAL</th>
+            <th scope="col">RUC</th>
+            <th scope="col">RAZÓN SOCIAL REMITENTE</th>
+            <th scope="col">RUC2</th>
+            <th scope="col">RAZÓN SOCIAL DESTINATARIO</th>
+            <th scope="col">MOVIL (COD CHOFER)</th>
+            <th scope="col">MARCA</th>
+            <th scope="col">PLACA 1(MOVIL)</th>
+            <th scope="col">REEFER / REMOLQUE</th>
+            <th scope="col">PLACA 2(REEFER)</th>
+            <th scope="col">CONDUCTOR 1</th>
+            <th scope="col">AYUDANTE / COPILOTO</th>
+            <th scope="col">GUIA 1</th>
+            <th scope="col">GUIA 2</th>
+            <th scope="col">GUIA 3</th>
+            <th scope="col">GUIA 4</th>
+            <th scope="col">GUIA 5</th>
+            <th scope="col">GUIA 6</th>
+            <th scope="col">PTO.PARTIDA</th>
+            <th scope="col">1</th>
+            <th scope="col">2</th>
+            <th scope="col">3</th>
+            <th scope="col">4</th>
+            <th scope="col">5</th>
+            <th scope="col">6</th>
+            <th scope="col">7</th>
+            <th scope="col">8</th>
+            <th scope="col">9</th>
+            <th scope="col">10</th>
+            <th scope="col">11</th>
+            <th scope="col">NUMERO DE TRANSPORTE (CENCOSUD)</th>
+            <th scope="col">OBSERVACION</th>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of data | filter:filterSerie:['A']|paginate: { id:'pageReport',itemsPerPage: 10, currentPage: page}">
+              <td style="min-width:110px;">{{item.A}}</td>
+              <td style="min-width:110px;">{{item.B}}</td>
+              <td style="min-width:110px;">{{item.C}}</td>
+              <td style="min-width:110px;">{{item.D}}</td>
+              <td style="min-width:220px;">{{item.E}}</td>
+              <td >{{item.F}}</td>
+              <td style="min-width:110px;">{{item.G}}</td>
+              <td style="min-width:110px;">{{item.H}}</td>
+              <td style="min-width:110px;">{{item.I}}</td>
+              <td style="min-width:110px;">{{item.J}}</td>
+              <td style="min-width:110px;">{{item.K}}</td>
+              <td style="min-width:110px;">{{item.L}}</td>
+              <td style="min-width:110px;">{{item.M}}</td>
+              <td style="min-width:110px;">{{item.N}}</td>
+              <td style="min-width:110px;">{{item.O}}</td>
+              <td style="min-width:110px;">{{item.P}}</td>
+              <td style="min-width:110px;">{{item.Q}}</td>
+              <td style="min-width:110px;">{{item.R}}</td>
+              <td style="min-width:110px;">{{item.S}}</td>
+              <td style="min-width:110px;">{{item.T}}</td>
+              <td style="min-width:110px;">{{item.U}}</td>
+              <td style="min-width:110px;">{{item.V}}</td>
+              <td style="min-width:110px;">{{item.W}}</td>
+              <td style="min-width:110px;">{{item.X}}</td>
+              <td style="min-width:110px;">{{item.Y}}</td>
+              <td style="min-width:110px;">{{item.Z}}</td>
+              <td style="min-width:110px;">{{item.AA}}</td>
+              <td style="min-width:110px;">{{item.AB}}</td>
+              <td style="min-width:110px;">{{item.AC}}</td>
+              <td style="min-width:110px;">{{item.AD}}</td>
+              <td style="min-width:110px;">{{item.AE}}</td>
+              <td style="min-width:110px;">{{item.AF}}</td>
+              <td style="min-width:110px;">{{item.AG}}</td>
+              <td style="min-width:110px;">{{item.AH}}</td>
+              <td style="min-width:110px;">{{item.AI}}</td>
+              <td style="min-width:110px;">{{item.AJ}}</td>
+              <td style="min-width:110px;">{{item.AK}}</td>
+              <td style="min-width:110px;">{{item.AL}}</td>
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align: center;"><pagination-controls id="pageReport"
+          (pageChange)="page = $event"></pagination-controls></div>
+
+    </div>
+  </div>
+</div>

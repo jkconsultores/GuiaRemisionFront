@@ -1,0 +1,22 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+a:hover{
+  color: white;
+}
+a{
+  color: black;
+  font-size: 18px;
+  font-style: bold;
+}
+.row label{
+  width: 100px;
+}
+.selected-row {
+  background-color: lightblue;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
