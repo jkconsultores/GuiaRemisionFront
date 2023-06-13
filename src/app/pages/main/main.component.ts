@@ -6,13 +6,14 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AAA_DESTINO } from '../../interface/destino';
+import { T_Vehiculo } from 'src/app/interface/Vehiculos';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent {
+export class MainComponent  {
   tipoDocumentoDocRel='01';
   documentosReferenciados=[];
   tipoDocumentoEmisorDocRel='6';
@@ -116,6 +117,7 @@ export class MainComponent {
       this.transportistas = res['transportista'];
       this.destinatarios = res['adquiriente'];
     });
+    this.obtenerVehiculos();
   }
   fechaActual() {
     const now = new Date();
@@ -794,5 +796,10 @@ export class MainComponent {
       // Aquí puedes agregar el código que desees si el elemento no existe
       console.log('El elemento no existe');
     }
+  }
+  obtenerVehiculos(){
+    this.api.getVehiculos().subscribe(resp=>{
+      console.log(resp)
+    })
   }
 }

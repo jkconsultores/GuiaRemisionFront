@@ -66,7 +66,7 @@
           <label style="width: 150px;">MODALIDAD <b style="color: red;">(*)</b></label>
         </div>
         <div class="col-2">
-          <select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vmodalidad">
+          <select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vmodalidad" >
             <option value="{{item.id}}" *ngFor="let item of modalidad">{{item.text}}</option>
           </select>
         </div>

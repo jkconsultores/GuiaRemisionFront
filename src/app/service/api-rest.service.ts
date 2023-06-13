@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AAA_EMPRESA } from '../interface/Empresa';
 import { AuthServiceService } from './auth-service.service';
+import { T_Vehiculo } from '../interface/Vehiculos';
 @Injectable({
   providedIn: 'root'
 })
@@ -94,5 +95,14 @@ export class ApiRestService implements OnInit{
   }
   public BorrarChofer(ndoc){
     return this.http.get(this.url+'AAA/BorrarChofer/'+ndoc,this.auth.obtenerDatos());
+  }
+  public getVehiculos(){
+    return this.http.get<T_Vehiculo[]>(this.url+'Vehiculo',this.auth.obtenerDatos());
+  }
+  public BorrarVehiculos(idVehiculo:number){
+    return this.http.post(this.url+'Vehiculo/delete/'+idVehiculo,null,this.auth.obtenerDatos());
+  }
+  public ActualizarVehiculos(vehiculo:T_Vehiculo){
+    return this.http.post(this.url+"Vehiculo/update",vehiculo,this.auth.obtenerDatos());
   }
 }

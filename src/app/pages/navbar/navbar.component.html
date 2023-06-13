@@ -41,13 +41,17 @@
           aria-labelledby="dropdownMenuButton1"
         >
           <li>
-            <a class="dropdown-item">{{empresa}}</a>
+            <a class="dropdown-item"><div class="avatar bg-warning avatar-sm me-3">
+              <span class="avatar-content">{{empresa | slice : 0 : 2}}</span>
+            </div>
+
+              {{empresa}}</a>
           </li>
           <li>
-            <a class="dropdown-item" href="/#/registro/usuarios">Añadir usuarios</a>
+            <a class="dropdown-item" href="/#/registro/usuarios"><i class="bi bi-person-add"></i> Añadir usuarios</a>
           </li>
           <li>
-            <a class="dropdown-item" (click)="CerrarSesion()"> <i class="bi bi-power"></i> Cerrar sesion</a>
+            <a class="dropdown-item" (click)="CerrarSesion()"> <i class="bi bi-power text-danger"></i> Cerrar sesion</a>
           </li>
         </ul>
       </div>
