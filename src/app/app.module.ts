@@ -14,6 +14,7 @@ import { ReporteComponent } from './pages/reporte/reporte.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { FilterPipe } from './pipes/filter.pipe';
 import { ReporteTransportistaComponent } from './pages/reporte-transportista/reporte-transportista.component';
+import { RegistroDeUsuariosComponentComponent } from './pages/usuarios/registro-de-usuarios-component/registro-de-usuarios-component.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,8 @@ import { ReporteTransportistaComponent } from './pages/reporte-transportista/rep
     NavbarComponent,
     ReporteComponent,
     FilterPipe,
-    ReporteTransportistaComponent
+    ReporteTransportistaComponent,
+    RegistroDeUsuariosComponentComponent
   ],
   imports: [
     BrowserModule,

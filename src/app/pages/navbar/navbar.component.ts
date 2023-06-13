@@ -7,8 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  constructor(public rout:Router){
+  public empresa:string|undefined;
 
+
+  constructor(public rout:Router){
+    this.empresa = localStorage.getItem("emp");
+    console.log(this.empresa);
   }
   CerrarSesion(){
     localStorage.removeItem('token');

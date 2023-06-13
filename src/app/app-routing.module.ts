@@ -6,6 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { MainComponent } from './pages/main/main.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RegistroDeUsuariosComponentComponent } from './pages/usuarios/registro-de-usuarios-component/registro-de-usuarios-component.component';
 
 const routes: Routes = [
   {path:'main',component:MainComponent,canActivate:[AuthGuard]},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'facturacion',component:FacturacionElectronicaComponent,canActivate:[AuthGuard]},
   {path:'reporte',component:ReporteComponent,canActivate:[AuthGuard]},
   {path:'reporte-transportistas',component:ReporteTransportistaComponent,canActivate:[AuthGuard]},
+  {path:'registro/usuarios',component:RegistroDeUsuariosComponentComponent,canActivate:[AuthGuard]},
 ];
 
 @NgModule({
