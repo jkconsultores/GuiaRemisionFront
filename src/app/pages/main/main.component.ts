@@ -6,7 +6,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AAA_DESTINO } from '../../interface/destino';
-import { T_Vehiculo } from 'src/app/interface/Vehiculos';
+import { T_Vehiculo, VehiculoDTO } from 'src/app/interface/Vehiculos';
 
 @Component({
   selector: 'app-main',
@@ -57,6 +57,10 @@ export class MainComponent  {
   destino = [];
   origen = [];
   modalRef: NgbModalRef;
+  colorVehiculo ='';
+  marcaVehiculo='';
+  modeloVehiculo='';
+  placaVehiculoVehiculo='';
   //producto modal -----------------------------------------
   selectedRow: number;
   objetoProducto: any = {};
@@ -98,9 +102,10 @@ export class MainComponent  {
   nombreConductor: '';
   apellidoConductor: '';
   Nrobultos = '';
+  public VehiculosActivos:T_Vehiculo[]=[];
   public DestinoSeelct:AAA_DESTINO | undefined;
   public DestinoAUSar:AAA_DESTINO[] =[];
-  constructor(public api: ApiRestService, private modalService: NgbModal, public rout: Router) {
+  constructor(public api: ApiRestService, private modalService: NgbModal, public rout: Router,private Serviceapi:ApiRestService) {
     this.obtenerInfo();
   }
   EditarDestinatario(modal, contenido) {
@@ -798,8 +803,43 @@ export class MainComponent  {
     }
   }
   obtenerVehiculos(){
-    this.api.getVehiculos().subscribe(resp=>{
+    this.Serviceapi.getVehiculos().subscribe((resp:any)=>{
       console.log(resp)
+      this.VehiculosActivos=resp;
     })
+  }
+  eliminarUnVehiculo(idVehiculo:number, placa:string){
+    Swal.fire({
+      text:"Estas seguro de eliminar el vehiculo",
+      icon:"warning",
+      title:"Eliminar el vehiculo con placa: "+placa,
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar vehiculo',
+      cancelButtonText:"cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.Serviceapi.BorrarVehiculos(idVehiculo).subscribe(resp=>{
+          Swal.fire('Eliminado!', '', 'success')
+        },error=>{
+          Swal.fire('No se pudo eliminar el vehiculo', '', 'error')
+        })
+      }
+    })
+  }
+  agregarVehiculo(ref: NgForm){
+    let vehiculo:VehiculoDTO={
+      color:ref.value.colorVehiculo,
+      marca:ref.value.marcaVehiculo,
+      modelo:ref.value.modeloVehiculo,
+      placaVehiculo:ref.value.placaVehiculoVehiculo,
+    };
+    this.Serviceapi.AgregarVehiculo(vehiculo).subscribe((resp:any)=>{
+      this.VehiculosActivos.push(resp);
+      Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+        this.modalRef.close();
+    })
+  }
+  EditarUnVehiculo(vehiculo:T_Vehiculo){
+
   }
 }

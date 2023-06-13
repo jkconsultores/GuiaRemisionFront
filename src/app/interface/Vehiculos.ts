@@ -7,3 +7,9 @@ export interface T_Vehiculo {
   color: string;
   marca: string;
 }
+export interface VehiculoDTO {
+  placaVehiculo: string;
+  modelo: string;
+  color: string;
+  marca: string;
+}

@@ -174,7 +174,13 @@
           <label style="width: 150px;">PLACA</label>
         </div>
         <div class="col-2 " *ngIf="vmodalidad!='01'">
-          <input type="text" [(ngModel)]="placaChofer" class="form-control">
+
+          <div class="input-group mb-1">
+            <input type="text" [(ngModel)]="placaChofer" readonly class="form-control">
+            <div class="input-group-append">
+              <button class="input-group-text" (click)="abrirModal(Vehiculos)">...</button>
+            </div>
+          </div>
         </div>
       </div>
       <hr>
@@ -1382,3 +1388,81 @@
     </div>
   </div>
 </ng-template>
+
+
+<ng-template #Vehiculos let-modal>
+	<div class="modal-header">
+    <div class="container">
+    <h5>Vehiculos &nbsp; &nbsp;</h5>
+    <button class="btn btn-secondary" (click)="abrirModal(CrudVehiculos)">+</button>
+  </div>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Placa</th>
+              <th>Modelo</th>
+              <th>Marca</th>
+              <th>Color</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of VehiculosActivos; let i = index">
+              <th>{{i+1}}</th>
+              <th>{{item.placaVehiculo}}</th>
+              <th>{{item.modelo}}</th>
+              <th>{{item.marca}}</th>
+              <th>{{item.color}}</th>
+              <th>
+                <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                <button class="btn btn-danger ms-2" (click)="eliminarUnVehiculo(item.id,item.placaVehiculo)"><i class="bi bi-trash3 text-white"></i></button>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+			</div>
+		</form>
+	</div>
+</ng-template>
+
+
+<ng-template #CrudVehiculos let-modal>
+	<div class="modal-header">
+    <h5>Agregar nuevo vehiculo</h5>
+	</div>
+	<div class="modal-body">
+		<form class="margen-modal" (ngSubmit)="agregarVehiculo(vehicuref)" #vehicuref="ngForm" id="vehicuref">
+			<div class="mb-3">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Placa de vehiculo <span style="color: red;">(*)</span></label>
+          <input type="text" ngModel name="placaVehiculoVehiculo" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Modelo</label>
+          <input type="text" ngModel name="modeloVehiculo" class="form-control" placeholder="Ingrese un modelo (opcional)">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Color</label>
+          <input type="text" ngModel name="colorVehiculo" class="form-control"  placeholder="Ingrese el color del vehiculo (opcional)">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Marca</label>
+          <input type="text" ngModel name="marcaVehiculo" class="form-control" placeholder="Ingrese la marca del vehiculo (opcional)">
+        </div>
+
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+            (click)='salir()'>Salir</button>
+          <button class="btn btn-success" style="width: 90px;" form="vehicuref"
+            type="submit">Aceptar</button>
+	</div>
+</ng-template>
+
