@@ -42,3 +42,5 @@ testem.log
 Thumbs.db
 *.lock
 *.vsidx
+/.vs/slnx.sqlite
+/.vs/GuiaRemisionFront/v17/.wsuo
