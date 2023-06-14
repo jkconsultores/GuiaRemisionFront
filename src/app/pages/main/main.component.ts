@@ -1,19 +1,27 @@
 import { adquiriente } from './../../interface/adquiriente';
 import { NgForm } from '@angular/forms';
 import { ApiRestService } from './../../service/api-rest.service';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AAA_DESTINO } from '../../interface/destino';
 import { T_Vehiculo, VehiculoDTO } from 'src/app/interface/Vehiculos';
-
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent  {
+  //carga excel
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  //detalles guia pag
+  pageProductGuia=1;
+  //carga excel
+  dataProductosExcel: any[];
+  pageProductExcel=1;
+  //doc relacionado
   tipoDocumentoDocRel='01';
   documentosReferenciados=[];
   tipoDocumentoEmisorDocRel='6';
@@ -40,7 +48,7 @@ export class MainComponent  {
   //-------------------------------------------------------------
   pageProduct = 0;
   vmotivo = '';
-  vmodalidad = '01';
+  vmodalidad = '02';
   fecha_emision = this.fechaActual();
   horaEmision = new Date(this.fecha_emision).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   fecha_traslado = this.fechaActual().substring(0, 10);
@@ -322,8 +330,10 @@ export class MainComponent  {
     if (id) {
       Swal.showLoading();
       var num = id.split('-');
+      const partes = id.split("-");
+      const ruc = partes.shift();
       this.empresaid = id
-      this.api.getOrigenes(num[0], num[3]).subscribe((res: any) => {
+      this.api.getOrigenes(ruc, num[3]).subscribe((res: any) => {
         Swal.close();
         this.origen = res['ORIGEN'];
         this.arraySerie = res['SERIE'];
@@ -437,10 +447,13 @@ export class MainComponent  {
     }else{
       this.limpiarTransportista();
     }
-    var arrayRem = this.empresaid.split('-');
-    var tipoDocRem = arrayRem[1];
-    var numeroDocRem = arrayRem[0];
-    var razonsocialemisorRem = arrayRem[2];
+    const partes = this.empresaid.split("-");
+    const ndocEmisor = partes.shift();
+    const tipoDoc = partes.shift();
+    const razonsocialEmisor = partes.join("-");
+    var tipoDocRem = tipoDoc;
+    var numeroDocRem = ndocEmisor;
+    var razonsocialemisorRem = razonsocialEmisor;
     var motivo = this.vmotivo.split('-');
     var destino = this.vdestino.split('-');
     var destino0 = destino.shift();
@@ -804,7 +817,6 @@ export class MainComponent  {
   }
   obtenerVehiculos(){
     this.Serviceapi.getVehiculos().subscribe((resp:any)=>{
-      console.log(resp)
       this.VehiculosActivos=resp;
     })
   }
@@ -820,6 +832,7 @@ export class MainComponent  {
       if (result.isConfirmed) {
         this.Serviceapi.BorrarVehiculos(idVehiculo).subscribe(resp=>{
           Swal.fire('Eliminado!', '', 'success')
+          this.obtenerVehiculos();
         },error=>{
           Swal.fire('No se pudo eliminar el vehiculo', '', 'error')
         })
@@ -835,6 +848,7 @@ export class MainComponent  {
     };
     this.Serviceapi.AgregarVehiculo(vehiculo).subscribe((resp:any)=>{
       this.VehiculosActivos.push(resp);
+
       Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
     })
@@ -842,4 +856,53 @@ export class MainComponent  {
   EditarUnVehiculo(vehiculo:T_Vehiculo){
 
   }
+  asignarVehiculo(placa){
+    this.placaChofer=placa;
+    this.modalRef.close();
+  }
+  onFileChange(event: any, modal: any) {
+    const file = event.target.files[0];
+    // Validar la extensión del archivo
+    const allowedExtensions = /(\.xls|\.xlsx)$/i;
+    if (!allowedExtensions.exec(file.name)) {
+      Swal.fire({ icon: 'error', title: 'Error!', text: 'El archivo seleccionado no es un archivo de Excel válido. Por favor, seleccione un archivo con extensión .xls o .xlsx' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const workbook = XLSX.read(e.target.result, { type: 'binary' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+      const lowerCaseData = jsonData.map((obj: any) => {
+        const newObj: any = {};
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            newObj[key.toLowerCase()] = obj[key];
+          }
+        }
+        return newObj;
+      });
+      this.dataProductosExcel=lowerCaseData;
+      this.modalRef = this.modalService.open(modal, { size: 'lg' });
+      this.fileInput.nativeElement.value = '';
+    };
+    reader.readAsBinaryString(file);
+  }
+  salirExcel(){
+    this.dataProductosExcel=[];
+    this.modalRef.close();
+  }
+  asignarProductoExcel(){
+    this.dataProductosExcel.forEach(element => {
+      element.cantidad=element.cantidad.toString();
+      element.codigosunat=element.codigosunat.toString();
+      element.unidadmedida=element.unidadmedida.toString();
+      element.descripcion=element.descripcion.toString();
+    });
+    this.listadoProductoDetalles=this.dataProductosExcel;
+    this.dataProductosExcel=[];
+    this.modalRef.close();
+  }
+
 }

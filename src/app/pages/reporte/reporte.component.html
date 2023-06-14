@@ -7,24 +7,24 @@
     <div class="card-body">
 
       <div class="row mb-2">
-        <div class="col-2">
-          <label>Desde:</label>
-          <input type="date" [(ngModel)]="desde" class="form-control">
+        <div class="col-md-3 col-sm-4 col-lg-2">
+          <label class="w-100">Desde:</label>
+          <input type="date" [(ngModel)]="desde" class="form-control w-100">
         </div>
-        <div class="col-2">
-          <label>Hasta:</label>
-          <input type="date" [(ngModel)]="hasta" class="form-control">
+        <div class="col-md-3 col-sm-4 col-lg-2">
+          <label class="w-100">Hasta:</label>
+          <input type="date" [(ngModel)]="hasta" class="form-control w-100">
         </div>
 
-        <div class="col-2" style="margin-bottom: 5px;">
-          <label for="">Filtrar por serie:</label><br>
-          <input type="text" class="form-control" maxlength="13" style="width: 250px" placeholder="Buscar.." [(ngModel)]="filterSerie"
+        <div class="col-md-3 col-sm-4 col-lg-2" style="margin-bottom: 5px;">
+          <label for="" class="w-100">Filtrar por serie:</label><br>
+          <input type="text" class="form-control w-100" maxlength="13" style="width: 250px" placeholder="Buscar.." [(ngModel)]="filterSerie"
             name="filterpost" />
         </div>
 
-        <div style="width: 240px;">
-          <label for="" style="width: 70px;">Estado:</label>
-          <select [value]="filtroEstado" id="filtroSelect" class="form-select" style="width: 210px;"
+        <div class="col-md-3 col-sm-4 col-lg-3">
+          <label for="" class="w-100">Estado:</label>
+          <select [value]="filtroEstado" id="filtroSelect" class="form-select w-100"
             (change)="llenarFiltro('filtroSelect')">
             <option value="">Todos</option>
             <option value="N">Generado</option>
@@ -33,15 +33,16 @@
             <option value="L">Enviado</option>
           </select>
         </div>
-        <div class="col-1">
-          <label for="">&nbsp;&nbsp;&nbsp;</label><br>
-          <button class="btn btn-success" (click)="exportToExcel()">Exportar <i class="fa fa-file-excel"></i></button>
-        </div>
-        <div class="col-1">
+
+        <div class="col-md-6 col-sm-4 col-lg-1">
           <div>
-            <label>Buscar:</label><br>
-            <i class="fa-solid fa-magnifying-glass" style="color: rgb(42, 103, 214);font-size: 28px;margin-top: 1px;cursor: pointer;" (click)="buscarReporteRango()"></i>
+            <button class="btn btn-primary mt-4" style="white-space: nowrap;">Buscar
+              <i class="fa-solid fa-magnifying-glass text-white" (click)="buscarReporteRango()"></i>
+            </button>
           </div>
+        </div>
+        <div class="col-md-6 col-sm-4 col-lg-2" >
+          <button class="btn btn-success mt-4 float-end me-2" style="white-space: nowrap;" (click)="exportToExcel()">Exportar <i class="fa fa-file-excel"></i></button>
         </div>
       </div>
       <div class="table table-responsive">

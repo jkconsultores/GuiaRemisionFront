@@ -2,11 +2,11 @@
   <app-navbar></app-navbar>
   <div class="card m-1">
     <div class="card-header">
-      <h4>Guia De Remision - Remitente</h4>
+      <h5 style="text-align: center;">Guia De Remision - Remitente</h5>
     </div>
     <div class="card-body">
       <div class="mb-1 row">
-        <div class="col-2">
+        <!-- <div class="col-2">
           <label>EMPRESA <b style="color: red;">(*)</b></label>
         </div>
         <div class="col-2">
@@ -20,21 +20,56 @@
               <button class="input-group-text" (click)="listarEmpresas(Empresa)">...</button>
             </div>
           </div>
-        </div>
-        <div class="col-2">
+        </div> -->
+        <div class="col-md-4 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label>EMPRESA <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6"><div class="input-group mb-1">
+              <select class="form-select" (ngModelChange)="empresaChange($event)" aria-label=".form-select-sm example"
+                [(ngModel)]="empresa">
+                <option value="">Seleccione una empresa</option>
+                <option value="{{item.id}}" *ngFor="let item of empresas">{{item.text}}</option>
+              </select>
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="listarEmpresas(Empresa)">...</button>
+              </div>
+            </div></div>
+          </div>
+          </div>
+
+        <!-- <div class="col-2">
           <label style="width: 150px;">FECHA EMISION</label>
         </div>
         <div class="col-2">
           <input type="datetime-local" [(ngModel)]="fecha_emision" name="fecha_emision" class="form-control">
+        </div> -->
+
+        <div class="col-md-4 col-lg-4 col-sm-6 col-12">
+          <div class="row">
+            <div class="col-md-6"><label class="w-100">FECHA EMISION</label></div>
+            <div class="col-md-6"><input type="datetime-local" [(ngModel)]="fecha_emision" name="fecha_emision" class="form-control"></div>
+          </div>
+          <!-- <label style="width: 150px;">FECHA EMISION</label>
+          <input type="datetime-local" [(ngModel)]="fecha_emision" name="fecha_emision" class="form-control"> -->
         </div>
-        <div class="col-1">
+
+        <!-- <div class="col-1">
           <label>TRASLADO</label>
         </div>
         <div class="col-2">
           <input type="date" [(ngModel)]="fecha_traslado" class="form-control">
+        </div> -->
+
+        <div class="col-md-4 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label>TRASLADO</label></div>
+            <div class="col-md-6"> <input type="date" [(ngModel)]="fecha_traslado" class="form-control"></div>
+          </div>
+
         </div>
+
       </div>
-      <div class="mb-1 row">
+      <!-- <div class="mb-1 row">
         <div class="col-2">
           <label style="width: 150px;">SERIE Y NUMERO <b style="color: red;">(*)</b></label>
         </div>
@@ -42,14 +77,31 @@
           <div class="input-group mb-1">
             <select [(ngModel)]="serieNumero" class="form-select">
               <option value="">Seleccione una serie</option>
-              <option value="{{item.SERIE}}" *ngFor="let item of arraySerie">{{item.SERIE}}</option>
+              <option value="{{item.SERIE}}" *ngFor="let item of arraySerie">{{item.SERIE| slice : 0 : 4}}</option>
             </select>
             <div class="input-group-append">
               <button class="input-group-text" (click)="listarSerie(Serie)">...</button>
             </div>
           </div>
-        </div>
-        <div class="col-2">
+        </div> -->
+        <div class="mb-1 row">
+          <div class="col-md-6 col-lg-4 col-sm-6">
+            <div class="row">
+              <div class="col-md-6"><label style="width: 150px;">SERIE DE GUIA <b style="color: red;">(*)</b></label></div>
+              <div class="col-md-6"><div class="input-group mb-1">
+                <select [(ngModel)]="serieNumero" class="form-select">
+                  <option value="">Seleccione una serie</option>
+                  <option value="{{item.SERIE}}" *ngFor="let item of arraySerie">{{item.SERIE| slice : 0 : 4}}</option>
+                </select>
+                <div class="input-group-append">
+                  <button class="input-group-text" (click)="listarSerie(Serie)">...</button>
+                </div>
+              </div></div>
+            </div>
+
+          </div>
+
+        <!-- <div class="col-2">
           <label style="width: 150px;">DESTINATARIO <b style="color: red;">(*)</b></label>
         </div>
         <div class="col-6">
@@ -59,9 +111,23 @@
               <button class="input-group-text" (click)="abrirModal(Destinatario)">...</button>
             </div>
           </div>
+        </div> -->
+
+        <div class="col-md-6 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label style="width: 150px;">DESTINATARIO <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6"><div class="input-group mb-1">
+              <input type="text" class="form-control" readonly name="destinatario_input" [(ngModel)]="destinatario_input">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(Destinatario)">...</button>
+              </div>
+            </div></div>
+          </div>
+
         </div>
+
       </div>
-      <div class="mb-1 row">
+      <!-- <div class="mb-1 row">
         <div class="col-2">
           <label style="width: 150px;">MODALIDAD <b style="color: red;">(*)</b></label>
         </div>
@@ -79,13 +145,42 @@
             <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
           </select>
         </div>
-      </div>
+      </div> -->
+
       <div class="mb-1 row">
+        <div class="col-md-6 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label class="w-100">MODALIDAD <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6"><select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vmodalidad">
+              <option value="{{item.id}}" *ngFor="let item of modalidad">{{item.text}}</option>
+            </select></div>
+          </div>
+
+        </div>
+        <!-- <div class="col-2">
+
+        </div> -->
+        <div class="col-md-6 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label class="w-100">DESTINO <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6"><select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vdestino">
+              <option value="">Seleccione un destino</option>
+              <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
+            </select></div>
+          </div>
+
+        </div>
+        <!-- <div class="col-6">
+
+        </div> -->
+      </div>
+
+
+      <!-- <div class="mb-1 row">
         <div class="col-2">
           <label style="width: 150px;">MOTIVO <b style="color: red;">(*)</b></label>
         </div>
         <div class="col-2">
-          <!-- <ng-select2 [data]="motivos" (ngModelChange)="motivoChange($event)" width="210" [(ngModel)]="vmotivo"></ng-select2> -->
           <select class="form-select" aria-label=".form-select-sm example" [(ngModel)]="vmotivo">
             <option value="">Seleccione un motivo</option>
             <option value="{{item.id+'-'+item.text}}" *ngFor="let item of motivos">{{item.text}}</option>
@@ -106,8 +201,36 @@
           </div>
         </div>
 
-      </div>
+      </div> -->
+
       <div class="mb-1 row">
+        <div class="col-md-6 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label class="w-100">MOTIVO <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6"><select class="form-select" aria-label=".form-select-sm example" [(ngModel)]="vmotivo">
+              <option value="">Seleccione un motivo</option>
+              <option value="{{item.id+'-'+item.text}}" *ngFor="let item of motivos">{{item.text}}</option>
+            </select></div>
+          </div>
+
+        </div>
+        <div class="col-md-6 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label class="w-100">ORIGEN <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6"><div class="input-group mb-1 w-100">
+              <select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vorigen">
+                <option value="">Seleccione un origen</option>
+                <option value="{{item.id}}" *ngFor="let item of origen">{{item.text}}</option>
+              </select>
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="listarOrigen(Origen)">...</button>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="mb-1 row">
         <div class="col-2">
           <label style="width: 150px;">PESO BRUTO <b style="color: red;">(*)</b></label>
         </div>
@@ -115,7 +238,6 @@
           <input type="text" class="form-control"  (keypress)="validarDecimal($event)" [(ngModel)]="pesoBruto">
         </div>
         <div class="col-1">
-          <!-- <ng-select2 [data]="medidas"(ngModelChange)="medidaChange($event)"  width="95" [(ngModel)]="medida"></ng-select2> -->
           <select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="medida">
             <option selected>Seleccionar</option>
             <option value="{{item.id}}" *ngFor="let item of medidas">{{item.text}}</option>
@@ -137,18 +259,107 @@
           </button>
 
         </div>
-      </div>
+      </div> -->
+
       <div class="mb-1 row">
+        <div class="col-md-4 col-lg-4 col-sm-6">
+          <div class="row">
+            <div class="col-md-6"><label style="width: 150px;">PESO BRUTO <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6">
+              <div class="d-flex bd-highlight">
+                <div class=" flex-grow-1 bd-highlight"> <input type="text" class="form-control"  (keypress)="validarDecimal($event)" [(ngModel)]="pesoBruto"></div>
+                <div class="bd-highlight"><select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="medida">
+                  <option selected>Seleccionar</option>
+                  <option value="{{item.id}}" *ngFor="let item of medidas">{{item.text}}</option>
+                </select></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-8 col-lg-8 col-sm-6">
+          <div class="row">
+            <div class="col-md-8 col-6 row m-0">
+              <div class="col-md-6 p-0">
+                <label style="width: 150px;">NRO BULTOS</label>
+              </div>
+              <div class="col-md-6  p-0">
+                <input type="text" class="form-control" (keypress)="validarNumero($event)" [(ngModel)]="Nrobultos">
+              </div>
+            </div>
+            <div class="col-md-4 col-6 d-flex align-items-end flex-column bd-highlight">
+              <div class="mt-auto float-end bd-highlight">
+                <button (click)="abrirModal(referenciados)" type="button" class="btn btn-primary position-relative">
+                  Documentos Ref.
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{documentosReferenciados.length}}
+                    <span class="visually-hidden">Total de documentos</span>
+                  </span>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <div class="mb-1 row">
         <div class="col-2">
           <label style="width: 150px;">OBSERVACIONES</label>
         </div>
         <div class="col-10">
           <input type="text" class="form-control" [(ngModel)]="observaciones">
         </div>
+      </div> -->
+      <div class="mb-1 mt-3 row">
+        <div class="d-flex bd-highlight">
+          <div class=" flex-grow-0 bd-highlight"><label class="w-100 me-3 mt-2">OBSERVACIONES</label></div>
+          <div class="bd-highlight w-100"><input type="text" class="form-control w-100" [(ngModel)]="observaciones"></div>
+        </div>
       </div>
+
       <hr>
       <div class="row">
-        <div class="col-2" *ngIf="vmodalidad!='02'">
+
+        <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="vmodalidad!='02'">
+          <div class="row">
+  <!-- <div class="col-md-4 col-lg-4"><label style="width: 150px;">TRANSPORTISTA <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-8 col-lg-8"><div class="input-group  flex-nowrap mb-1">
+              <input type="text" class="form-control" readonly [(ngModel)]="transportista_input">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(Transportista)">...</button>
+              </div>
+            </div>
+          </div> -->
+
+            <div class="col-md-12 col-lg-6 m-0 row mb-1">
+              <div class="d-flex align-items-center bd-highlight">
+                <div class="flex-grow-0 bd-highlight pe-2"><label>TRANSPORTISTA</label></div>
+                <div class="flex-fill bd-highlight"><div class="input-group mb-1">
+                  <input type="text" class="form-control" readonly [(ngModel)]="transportista_input">
+                  <div class="input-group-append">
+                    <button class="input-group-text" (click)="abrirModal(Transportista)">...</button>
+                  </div>
+                </div></div>
+              </div>
+            </div>
+
+          <div class="col-md-12 col-lg-6 m-0 row mb-1">
+            <div class="d-flex align-items-center bd-highlight">
+              <div class="flex-grow-0 bd-highlight pe-3"><label style="white-space: nowrap;">CARCAR EXCEL</label></div>
+              <div class="flex-fill bd-highlight"><input #fileInput type="file" class="form-control" accept=".xls, .xlsx" (change)="onFileChange($event, ProductoExcel)">
+              </div>
+            </div>
+          </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- <div class="col-2" *ngIf="vmodalidad!='02'">
           <label style="width: 150px;">TRANSPORTISTA <b style="color: red;">(*)</b></label>
         </div>
         <div class="col-2 " *ngIf="vmodalidad!='02'">
@@ -158,8 +369,40 @@
               <button class="input-group-text" (click)="abrirModal(Transportista)">...</button>
             </div>
           </div>
+        </div> -->
+        <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="vmodalidad!='01'">
+        <div class="row" >
+          <div class="col-md-6 col-lg-4 m-0 row mb-1">
+            <div class="d-flex align-items-center bd-highlight">
+              <div class="flex-grow-0 bd-highlight pe-2"><label>CHOFER</label></div>
+              <div class="flex-fill bd-highlight"><div class="input-group mb-1">
+                <input type="text" class="form-control" readonly [(ngModel)]="chofer_input">
+                <div class="input-group-append">
+                  <button class="input-group-text" (click)="abrirModal(Chofer)">...</button>
+                </div>
+              </div></div>
+            </div>
+          </div>
+          <div class="col-md-6  col-lg-4 m-0 row mb-1">
+            <div class="d-flex align-items-center bd-highlight">
+              <div class="flex-grow-0 bd-highlight  pe-2"><label>PLACA</label></div>
+              <div class="flex-fill bd-highlight"><div class="input-group mb-1">
+                <input type="text" [(ngModel)]="placaChofer" readonly class="form-control">
+                <div class="input-group-append">
+                  <button class="input-group-text" (click)="abrirModal(Vehiculos)">...</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-1" *ngIf="vmodalidad!='01'">
+        <div class="col-md-12 col-lg-4 m-0 row mb-1">
+          <div class="d-flex align-items-center bd-highlight">
+            <div class="flex-grow-0 bd-highlight pe-2"><label style="white-space: nowrap;">CARCAR EXCEL</label></div>
+            <div class="flex-fill bd-highlight"><input #fileInput type="file" class="form-control" accept=".xls, .xlsx" (change)="onFileChange($event, ProductoExcel)">
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-1" *ngIf="vmodalidad!='01'">
           <label style="width: 150px;">CHOFER</label>
         </div>
         <div class="col-2" *ngIf="vmodalidad!='01'">
@@ -169,8 +412,8 @@
               <button class="input-group-text" (click)="abrirModal(Chofer)">...</button>
             </div>
           </div>
-        </div>
-        <div class="col-1" *ngIf="vmodalidad!='01'">
+        </div> -->
+        <!-- <div class="col-1" *ngIf="vmodalidad!='01'">
           <label style="width: 150px;">PLACA</label>
         </div>
         <div class="col-2 " *ngIf="vmodalidad!='01'">
@@ -181,25 +424,31 @@
               <button class="input-group-text" (click)="abrirModal(Vehiculos)">...</button>
             </div>
           </div>
+        </div> -->
+        <!-- <div class="col-1">
+          <label style="width: 150px;">CARCAR EXCEL</label>
         </div>
+        <div class="col-2 ">
+          <input #fileInput type="file" class="form-control" accept=".xls, .xlsx" (change)="onFileChange($event, ProductoExcel)">
+        </div> -->
       </div>
+    </div>
       <hr>
-      <div class="row">
-        <div class="col-8">
-          <div class="table-responsive" style="height: 400px;">
+      <div style="display: flex;">
+          <div class="table-responsive" style="flex: 65%;">
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">Codigo</th>
-                  <th scope="col">Descripcion</th>
+                  <th scope="col" style="width: 120px;">Codigo</th>
+                  <th scope="col" style="width: 400px;">Descripcion</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Um</th>
                   <th scope="col">opt</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of listadoProductoDetalles">
-                  <th scope="row">{{item.codigo}}</th>
+                <tr *ngFor="let item of listadoProductoDetalles| paginate: {id:'productoGuia', itemsPerPage: 8, currentPage: pageProductGuia } ; let i = index">
+                  <td >{{item.codigo}}</td>
                   <td>{{item.descripcion}}</td>
                   <td>{{item.cantidad}}</td>
                   <td>{{item.unidadmedida}}</td>
@@ -208,21 +457,28 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
+           </table>
+           <div style="text-align: center;"><pagination-controls id="productoGuia" (pageChange)="pageProductGuia = $event"></pagination-controls></div>
+
           </div>
+          <div class="col-4 col-lg-2 d-flex align-items-start flex-column ps-3 bd-highlight">
+            <div class="col-12"> <button class="btn btn-light mb-1 w-100 " (click)="obtenerProductos(Producto);"
+              style="height: 80px;">Agregar Detalle</button></div>
+            <div class="col-12 mt-3">
+              <button class="btn btn-primary mb-1 w-100 " style="height: 80px;"
+                (click)="declararGuia()">Declarar</button>
+            </div>
+
+          </div>
+          <!-- <div class="big-buttons" style="flex: 35%;">
+            <button class="btn btn-light" (click)="obtenerProductos(Producto);">Agregar Detalle</button>
+            <button class="btn btn-primary" (click)="declararGuia()">Declarar</button>
+          </div> -->
         </div>
-        <div class="col-2">
-          <button class="btn btn-light mb-1" (click)="obtenerProductos(Producto);"
-            style="width: 200px;height: 80px;">Agregar Detalle</button>
-        </div>
-        <div class="col-2">
-          <button class="btn btn-primary mb-1" style="width: 200px;height: 80px;"
-            (click)="declararGuia()">Declarar</button>
-        </div>
+
       </div>
     </div>
   </div>
-</div>
 <ng-template #Destinatario>
   <div class="card">
     <div class="card-header text-center">
@@ -1388,8 +1644,6 @@
     </div>
   </div>
 </ng-template>
-
-
 <ng-template #Vehiculos let-modal>
 	<div class="modal-header">
     <div class="container">
@@ -1412,12 +1666,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of VehiculosActivos; let i = index">
-              <th>{{i+1}}</th>
-              <th>{{item.placaVehiculo}}</th>
-              <th>{{item.modelo}}</th>
-              <th>{{item.marca}}</th>
-              <th>{{item.color}}</th>
+            <tr *ngFor="let item of VehiculosActivos; let i = index" >
+              <th (click)="asignarVehiculo(item.placaVehiculo)" style="cursor: pointer;">{{i+1}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo)" style="cursor: pointer;">{{item.modelo}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo)" style="cursor: pointer;">{{item.marca}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo)" style="cursor: pointer;">{{item.color}}</th>
               <th>
                 <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
                 <button class="btn btn-danger ms-2" (click)="eliminarUnVehiculo(item.id,item.placaVehiculo)"><i class="bi bi-trash3 text-white"></i></button>
@@ -1429,8 +1683,6 @@
 		</form>
 	</div>
 </ng-template>
-
-
 <ng-template #CrudVehiculos let-modal>
 	<div class="modal-header">
     <h5>Agregar nuevo vehiculo</h5>
@@ -1465,4 +1717,46 @@
             type="submit">Aceptar</button>
 	</div>
 </ng-template>
+<ng-template #ProductoExcel let-modal>
+  <div class="card">
+    <div class="card-header">
+        <h5>PRODUCTO</h5>
+    </div>
+    <div class="card-body" style="min-height: 200px;">
+      <div class="table-responsive" style="max-height: 400px;">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">N°</th>
+              <th scope="col">CODIGO</th>
+              <th scope="col">PRODUCTO</th>
+              <th scope="col">UNIDAD</th>
+              <th scope="col">CANTIDAD</th>
+              <th scope="col">CODIGO SUNAT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of dataProductosExcel | paginate: {id:'productoExcel', itemsPerPage: 8, currentPage: pageProductExcel } ; let i = index ">
+              <td>{{i+1}}</td>
+              <td>{{item.codigo}}</td>
+              <td>{{item.descripcion}}</td>
+              <td>{{item.unidadmedida}}</td>
+              <td>{{item.cantidad}}</td>
+              <td>{{item.codigosunat}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="text-align: center;"><pagination-controls id="productoExcel" (pageChange)="pageProductExcel = $event"></pagination-controls></div>
+      <div class="row">
+        <div class="col-8">
 
+        </div>
+        <div class="col-4">
+          <button class="btn btn-danger" (click)="salirExcel()" style="width: 100px;">Salir</button>
+          <button class="btn btn-primary" (click)="asignarProductoExcel()" style="width: 100px;">Asignar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
