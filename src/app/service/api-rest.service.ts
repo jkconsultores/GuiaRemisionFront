@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { AAA_EMPRESA } from '../interface/Empresa';
 import { AuthServiceService } from './auth-service.service';
 import { T_Vehiculo, VehiculoDTO } from '../interface/Vehiculos';
+import { AAA_TIPODOCUMENTO } from '../interface/aaa_TipoDocumento';
+import { MOTIVOS } from '../interface/Motivos';
 @Injectable({
   providedIn: 'root'
 })
@@ -107,5 +109,11 @@ export class ApiRestService implements OnInit{
   }
   public ActualizarVehiculos(vehiculo:T_Vehiculo){
     return this.http.post(this.url+"Vehiculo/update",vehiculo,this.auth.obtenerDatos());
+  }
+  public getSeries(){
+    return this.http.get<AAA_TIPODOCUMENTO[]>(this.url+"NumeroDocumentoEmisor",this.auth.obtenerDatos());
+  }
+  public getMotivos(){
+    return this.http.get<MOTIVOS[]>(this.url+"Motivos",this.auth.obtenerDatos());
   }
 }

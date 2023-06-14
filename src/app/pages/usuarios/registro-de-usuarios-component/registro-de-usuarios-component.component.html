@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
       <div class="col-md-12">
-        <button class="btn btn-primary float-end">Agregar usuario</button>
+        <button class="btn btn-primary float-end" (click)="abrirModal(CrudVehiculos)">Agregar usuario</button>
       </div>
       <div class="mb-1 row">
         <div class="col-md-12 col-lg-6 conborderasds">
@@ -43,3 +43,58 @@
     </div>
   </div>
 </div>
+<ng-template #CrudVehiculos let-modal>
+	<div class="modal-header">
+    <h5>Agregar nuevo usuario</h5>
+	</div>
+	<div class="modal-body">
+		<form class="margen-modal" (ngSubmit)="AgregarUsuario(vehicuref)" #vehicuref="ngForm" id="vehicuref">
+			<div class="mb-3">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Nombre de usuario <span style="color: red;">(*)</span></label>
+          <input type="text" ngModel name="placaVehiculoVehiculo" class="form-control"  placeholder="Ingrese el nombre del usuario (obligatorio)">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Contraseña</label>
+          <input type="password" ngModel name="modeloVehiculo" class="form-control" placeholder="Ingrese una contraseña (obligatorio)">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+          <input type="text" ngModel name="colorVehiculo" class="form-control"  placeholder="Ingrese el nombre completo (obligatorio)">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Correo electronico</label>
+          <input type="text" ngModel name="marcaVehiculo" class="form-control" placeholder="Ingrese un correo electronico (obligatorio)">
+        </div>
+        <hr>
+        <h6>Agregar permisos</h6>
+        <div class="col-md-12">
+          <div class="col-12">
+            <label class="mb-1" for="serie">Seleccione una serie</label>
+            <select [(ngModel)]="serieNumero" name="serie" class="form-select">
+              <option value="">Seleccione una serie</option>
+              <option value="{{item.serie}}" *ngFor="let item of arraySerie">{{item.serie| slice : 0 : 4}}</option>
+            </select>
+          </div>
+
+
+          <div class="col-12">
+            <label class="mb-1" for="motivo">Seleccione un motivo</label>
+            <select [(ngModel)]="motivo" name="motivo" class="form-select">
+              <option value="">Seleccione un motivo</option>
+              <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
+            </select>
+          </div>
+
+          <button class="btn btn-success mt-2">Añadir permisos</button>
+        </div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+            (click)='salir()'>Salir</button>
+          <button class="btn btn-success" style="width: 90px;" form="vehicuref"
+            type="submit">Aceptar</button>
+	</div>
+</ng-template>
