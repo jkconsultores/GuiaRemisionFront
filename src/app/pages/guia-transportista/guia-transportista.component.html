@@ -1,0 +1,207 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+  <div class="card m-1">
+    <div class="card-header">
+      <h5 style="text-align: center;">Guia De Remision - transportista</h5>
+    </div>
+    <div class="card-body">
+      <div class="col-12 col-md-4 col-lg-4 col-sm-6">
+        <div class="row">
+          <div class="col-md-5"><label>TRANSPORTISTA <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-7"><div class="input-group mb-1">
+              <select class="form-select" aria-label=".form-select-sm example">
+                <option value>Seleccione un Transportista</option>
+                <option value="{{item.id}}"
+                  *ngFor="let item of [{id:'',text:''}]">{{item.text}}</option>
+              </select>
+              <div class="input-group-append">
+                <button class="input-group-text">...</button>
+              </div>
+            </div></div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-4 col-sm-6 col-12">
+        <div class="row">
+          <div class="col-md-6"><label class="w-100 center">FECHA EMISION<b
+                style="color: red;">(*)</b></label></div>
+          <div class="col-md-6"><input type="datetime-local"
+              [(ngModel)]="fecha_emision" name="fecha_emision"
+              class="form-control"></div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-4 col-sm-6 col-12">
+        <div class="row">
+          <div class="col-md-6">
+            <label class="w-100 center">TRASLADO<b style="color: red;">(*)</b></label>
+          </div>
+          <div class="col-md-6">
+            <input type="date" [(ngModel)]="fecha_traslado" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 col-sm-6">
+        <div class="row">
+          <div class="col-md-5"><label class="w-100">SERIE DE GUIA <b
+                style="color: red;">(*)</b></label></div>
+          <div class="col-md-7">
+            <div class="input-group mb-1">
+              <select class="form-select">
+                <option value>Seleccione una serie</option>
+                <option value="{{item.SERIE}}" *ngFor="let item of arraySerie">{{item.SERIE|
+                  slice : 0 : 4}}</option>
+              </select>
+              <div class="input-group-append">
+                <button class="input-group-text">...</button>
+              </div>
+            </div></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-8 col-sm-6">
+        <div class="row">
+          <div class="col-md-6 col-lg-3"><label class="w-100 center">DESTINATARIO
+              <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-6 col-lg-9"><div class="input-group">
+              <input type="text" class="form-control" readonly
+                name="destinatario_input">
+              <div class="input-group-append">
+                <button class="input-group-text">...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6 col-lg-4 col-sm-6">
+        <div class="row">
+          <div class="col-md-5"><label class="w-100 ">PESO BRUTO <b
+                style="color: red;">(*)</b></label></div>
+          <div class="col-md-7">
+            <div class="input-group mb-1">
+              <input type="text" class="form-control"
+                (keypress)="validarDecimal($event)" [(ngModel)]="pesoBruto">
+              <div class="input-group-append bd-highlight">
+                <select class="form-select "aria-label=".form-select-sm example" [(ngModel)]="medida">
+                  <option value="{{item.id}}" *ngFor="let item of medidas">{{item.text}}</option>
+                </select></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-8 col-sm-6">
+        <div class="row">
+          <div class="col-md-6 col-lg-3"><label class="w-100 center">DESTINO <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-6 col-lg-9"><select class="form-select " aria-label=".form-select-sm example">
+            <option value="">Seleccione un destino</option>
+            <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
+          </select></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 col-sm-6">
+        <div class="row">
+          <div class="col-md-6 col-lg-5">
+            <label class="w-100">NRO BULTOS</label>
+          </div>
+          <div class="col-md-6 col-lg-7">
+            <input type="text" class="form-control"
+              (keypress)="validarNumero($event)" [(ngModel)]="Nrobultos">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-8 col-sm-6">
+        <div class="row">
+          <div class="col-md-3"><label class="w-100 center">ORIGEN <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-9"><div class="input-group mb-1 w-100">
+            <select class="form-select " aria-label=".form-select-sm example">
+              <option value="">Seleccione un origen</option>
+              <option value="{{item.id}}" *ngFor="let item of origen">{{item.text}}</option>
+            </select>
+            <div class="input-group-append">
+              <button class="input-group-text">...</button>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-10 col-sm-6">
+        <div class="row">
+          <div class="col-md-6 col-lg-2"><label class="w-100">OBSERVACIONES</label></div>
+          <div class="col-md-6 col-lg-10"><input type="text" class="form-control"
+              [(ngModel)]="observaciones"></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-10 col-sm-6">
+        <div class="row">
+          <div class="col-md-6 col-lg-2">
+            <button class="btn btn-primary">Importar GRE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #Empaque>
+    <div class="card">
+      <div class="card-header">
+        <h5>EMPAQUE</h5>
+      </div>
+      <div class="card-body" style="min-height: 200px;">
+        <div class="row mb-2">
+          <div class="col-4">
+            <label>Desde:</label>
+            <input type="datetime-local" [(ngModel)]="desde" class="form-control">
+          </div>
+          <div class="col-4">
+            <label>Hasta:</label>
+            <input type="datetime-local" [(ngModel)]="hasta" class="form-control">
+          </div>
+          <div class="col-4">
+            <label>Filtrar:</label>
+            <div class="input-group">
+              <input type="text" [(ngModel)]="filtroGuia"  class="form-control">
+              <div class="input-group-append">
+                <button class="input-group-text" ><i class="fas fa-search"
+                    style="height: 23px;"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive" style="max-height: 400px;">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>EMPAQUE</th>
+                <th scope="col">DETALLES</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngFor="let item of guias | filter: filtroGuia:['serie']| paginate:{id:'pguia', itemsPerPage: 8, currentPage: pageGuia }">
+                <td style="width: 100px;">
+                  <span class="badge rounded-pill bg-light text-dark">Cod: {{item.codigoEmpaque}}</span>
+                <br>
+                <span class="badge rounded-pill bg-light text-dark">O/Compra: {{item.ordenCompra}}</span>
+                <br>
+                <span class="badge rounded-pill bg-light text-dark">fecha: {{item.fechaCreacion|date:'dd/MM/yyyy'}}</span>
+                <br>
+                <span class="badge rounded-pill bg-light text-dark">Cliente: {{item.numeroDocumentoAdquiriente}}</span>
+                </td>
+                <td><div style="display: flex; flex-wrap: wrap;">
+                    <div *ngFor="let p of [1,2,3]">
+                      <div>
+
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="text-align: center;"><pagination-controls id="pguia"
+            (pageChange)="pageGuia= $event"></pagination-controls></div>
+        <div style="display:flex;justify-content: flex-end; text-align: right;">
+          <button class="btn btn-danger" (click)="cerrarModal()" style="width:
+            100px;">Salir</button>
+          <button class="btn btn-primary"
+            style="width: 100px;margin-left: 10px;">Asignar</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>

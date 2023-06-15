@@ -21,7 +21,7 @@
             </div>
           </div>
         </div> -->
-        <div class="col-md-4 col-lg-4 col-sm-6">
+        <div class="col-12 col-md-4 col-lg-4 col-sm-6">
           <div class="row">
             <div class="col-md-6"><label>EMPRESA <b style="color: red;">(*)</b></label></div>
             <div class="col-md-6"><div class="input-group mb-1">
@@ -113,10 +113,10 @@
           </div>
         </div> -->
 
-        <div class="col-md-6 col-lg-4 col-sm-6">
+        <div class="col-md-6 col-lg-8 col-sm-6">
           <div class="row">
-            <div class="col-md-6"><label style="width: 150px;">DESTINATARIO <b style="color: red;">(*)</b></label></div>
-            <div class="col-md-6"><div class="input-group mb-1">
+            <div class="col-md-6 col-lg-3"><label >DESTINATARIO <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6 col-lg-9"><div class="input-group mb-1">
               <input type="text" class="form-control" readonly name="destinatario_input" [(ngModel)]="destinatario_input">
               <div class="input-group-append">
                 <button class="input-group-text" (click)="abrirModal(Destinatario)">...</button>
@@ -160,10 +160,10 @@
         <!-- <div class="col-2">
 
         </div> -->
-        <div class="col-md-6 col-lg-4 col-sm-6">
+        <div class="col-md-6 col-lg-8 col-sm-6">
           <div class="row">
-            <div class="col-md-6"><label class="w-100">DESTINO <b style="color: red;">(*)</b></label></div>
-            <div class="col-md-6"><select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vdestino">
+            <div class="col-md-6 col-lg-3"><label class="w-100">DESTINO <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-6 col-lg-9"><select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vdestino">
               <option value="">Seleccione un destino</option>
               <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
             </select></div>
@@ -214,10 +214,10 @@
           </div>
 
         </div>
-        <div class="col-md-6 col-lg-4 col-sm-6">
+        <div class="col-md-6 col-lg-8 col-sm-6">
           <div class="row">
-            <div class="col-md-6"><label class="w-100">ORIGEN <b style="color: red;">(*)</b></label></div>
-            <div class="col-md-6"><div class="input-group mb-1 w-100">
+            <div class="col-md-3"><label class="w-100">ORIGEN <b style="color: red;">(*)</b></label></div>
+            <div class="col-md-9"><div class="input-group mb-1 w-100">
               <select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vorigen">
                 <option value="">Seleccione un origen</option>
                 <option value="{{item.id}}" *ngFor="let item of origen">{{item.text}}</option>
@@ -279,11 +279,11 @@
         </div>
         <div class="col-md-8 col-lg-8 col-sm-6">
           <div class="row">
-            <div class="col-md-8 col-6 row m-0">
-              <div class="col-md-6 p-0">
+            <div class="col-md-8 col-6 row">
+              <div class="col-md-6 col-lg-5">
                 <label style="width: 150px;">NRO BULTOS</label>
               </div>
-              <div class="col-md-6  p-0">
+              <div class="col-md-6 col-lg-7">
                 <input type="text" class="form-control" (keypress)="validarNumero($event)" [(ngModel)]="Nrobultos">
               </div>
             </div>
@@ -449,9 +449,9 @@
               <tbody>
                 <tr *ngFor="let item of listadoProductoDetalles| paginate: {id:'productoGuia', itemsPerPage: 8, currentPage: pageProductGuia } ; let i = index">
                   <td >{{item.codigo}}</td>
-                  <td>{{item.descripcion}}</td>
                   <td>{{item.cantidad}}</td>
                   <td>{{item.unidadmedida}}</td>
+                  <td>{{item.descripcion}}</td>
                   <td><i class="fa-solid fa-trash" style="color: red;cursor: pointer;"
                       (click)="borrarListadoProductoDetalles(item.codigo,item.descripcion,item.cantidad,item.unidadmedida)"></i>
                   </td>
@@ -1739,9 +1739,9 @@
             <tr *ngFor="let item of dataProductosExcel | paginate: {id:'productoExcel', itemsPerPage: 8, currentPage: pageProductExcel } ; let i = index ">
               <td>{{i+1}}</td>
               <td>{{item.codigo}}</td>
-              <td>{{item.descripcion}}</td>
-              <td>{{item.unidadmedida}}</td>
               <td>{{item.cantidad}}</td>
+              <td>{{item.unidadmedida}}</td>
+              <td>{{item.descripcion}}</td>
               <td>{{item.codigosunat}}</td>
             </tr>
           </tbody>
@@ -1753,7 +1753,7 @@
 
         </div>
         <div class="col-4">
-          <button class="btn btn-danger" (click)="salirExcel()" style="width: 100px;">Salir</button>
+          <button class="btn btn-danger" (click)="salirExcel()" style="width: 100px;margin-right: 15px;">Salir</button>
           <button class="btn btn-primary" (click)="asignarProductoExcel()" style="width: 100px;">Asignar</button>
         </div>
       </div>
