@@ -6,6 +6,7 @@ import { AuthServiceService } from './auth-service.service';
 import { T_Vehiculo, VehiculoDTO } from '../interface/Vehiculos';
 import { AAA_TIPODOCUMENTO } from '../interface/aaa_TipoDocumento';
 import { MOTIVOS } from '../interface/Motivos';
+import { USUARIO, UsuariosDTO } from '../interface/Usuario';
 @Injectable({
   providedIn: 'root'
 })
@@ -115,5 +116,14 @@ export class ApiRestService implements OnInit{
   }
   public getMotivos(){
     return this.http.get<MOTIVOS[]>(this.url+"Motivos",this.auth.obtenerDatos());
+  }
+  public getUsuarios(){
+    return this.http.get<USUARIO[]>(this.url+"Usuario",this.auth.obtenerDatos());
+  }
+  public deleteUsuario(id:number){
+    return this.http.post(this.url+"Usuario/delete/"+id,null,this.auth.obtenerDatos());
+  }
+  public agregarUsuario(usuario:UsuariosDTO){
+    return this.http.post<USUARIO>(this.url+"Session/Register",usuario,this.auth.obtenerDatos())
   }
 }
