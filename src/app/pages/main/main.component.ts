@@ -896,7 +896,7 @@ export class MainComponent  {
   asignarProductoExcel(){
     this.dataProductosExcel.forEach(element => {
       element.cantidad=element.cantidad.toString();
-      element.codigosunat=element.codigosunat.toString();
+      element.codigosunat=element.codigo.toString();
       element.unidadmedida=element.unidadmedida.toString();
       element.descripcion=element.descripcion.toString();
     });
