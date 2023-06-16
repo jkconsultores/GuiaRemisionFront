@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-guia-transportista',
   templateUrl: './guia-transportista.component.html',
@@ -23,6 +25,13 @@ export class GuiaTransportistaComponent {
   medidas = [{ id: 'KGM', text: 'KGM' }, { id: 'NIU', text: 'NIU' }]
   medida = 'KGM';
   modalRef: NgbModalRef;
+
+
+  //doc relacionado
+  tipoDocumentoDocRel='01';
+  documentosReferenciados=[];
+  tipoDocumentoEmisorDocRel='6';
+
   constructor(private modalService: NgbModal){}
   fechaActual() {
     const now = new Date();
@@ -57,5 +66,48 @@ export class GuiaTransportistaComponent {
   }
   cerrarModal(){
     this.modalRef.close();
+  }
+  crearRef(ref: NgForm) {
+    if (ref.valid) {
+      const codigoDocumentoDocRel = ref.value.codigoDocumentoDocRel;
+      const tipoDocumentoDocRel = ref.value.tipoDocumentoDocRel;
+      const numeroDocumentoDocRel = ref.value.numeroDocumentoDocRel;
+      const numeroDocumentoEmisorDocRel = ref.value.numeroDocumentoEmisorDocRel;
+      const tipoDocumentoEmisorDocRel = ref.value.tipoDocumentoEmisorDocRel;
+      if (!this.existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel)) {
+        // El elemento no existe, se agrega a la matriz
+        this.documentosReferenciados.push(ref.value);
+        this.salir();
+      } else {
+        // El elemento ya existe
+        // Aquí puedes agregar el código que desees si el elemento ya existe
+        Swal.fire({icon:'warning',title:'Ya existe el documento!',text:'El docuemnto con el codigo: '+codigoDocumentoDocRel+' ya existe'})
+      }
+    }
+  }
+  salir() {
+    this.modalRef.close();
+  }
+  existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
+    return this.documentosReferenciados.some((elemento) =>
+      elemento.codigoDocumentoDocRel == codigoDocumentoDocRel &&
+      elemento.tipoDocumentoDocRel == tipoDocumentoDocRel &&
+      elemento.numeroDocumentoDocRel == numeroDocumentoDocRel &&
+      elemento.numeroDocumentoEmisorDocRel == numeroDocumentoEmisorDocRel &&
+      elemento.tipoDocumentoEmisorDocRel == tipoDocumentoEmisorDocRel
+    );
+  }
+  borrarRef(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
+    const existe = this.existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel);
+    if (existe) {
+      const indice = this.documentosReferenciados.findIndex((elemento) =>
+        elemento.codigoDocumentoDocRel == codigoDocumentoDocRel &&
+        elemento.tipoDocumentoDocRel == tipoDocumentoDocRel &&
+        elemento.numeroDocumentoDocRel == numeroDocumentoDocRel &&
+        elemento.numeroDocumentoEmisorDocRel == numeroDocumentoEmisorDocRel &&
+        elemento.tipoDocumentoEmisorDocRel == tipoDocumentoEmisorDocRel
+      );
+      this.documentosReferenciados.splice(indice, 1);
+    }
   }
 }

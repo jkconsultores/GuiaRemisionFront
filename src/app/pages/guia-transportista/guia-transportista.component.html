@@ -4,7 +4,7 @@
     <div class="card-header">
       <h5 style="text-align: center;">Guia De Remision - transportista</h5>
     </div>
-    <div class="card-body">
+    <div class="card-body flex">
       <div class="col-12 col-md-4 col-lg-4 col-sm-6">
         <div class="row">
           <div class="col-md-5"><label>TRANSPORTISTA <b style="color: red;">(*)</b></label></div>
@@ -128,6 +128,19 @@
               [(ngModel)]="observaciones"></div>
         </div>
       </div>
+      <div class="col-md-8 col-lg-2 col-sm-6">
+        <div class="row">
+            <div class="mt-auto float-end bd-highlight center">
+              <button (click)="abrirModal(referenciados)" type="button" class="btn btn-primary position-relative">
+                GRE
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{documentosReferenciados.length}}
+                  <span class="visually-hidden">Total de documentos</span>
+                </span>
+              </button>
+          </div>
+        </div>
+      </div>
       <div class="col-md-6 col-lg-10 col-sm-6">
         <div class="row">
           <div class="col-md-6 col-lg-2">
@@ -201,6 +214,117 @@
             100px;">Salir</button>
           <button class="btn btn-primary"
             style="width: 100px;margin-left: 10px;">Asignar</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #referenciados>
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; flex-wrap: wrap;justify-content: center;">
+          <div>
+            <h5>DOCUMENTOS RELACIONADOS&nbsp;&nbsp;</h5>
+          </div>
+          <div>
+            <button class="input-group-text" (click)="abrirModal(CrudRef)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover" style="width: 100%;">
+            <thead>
+              <tr>
+                <th scope="col">Tipo Doc</th>
+                <th scope="col">N° Doc Rel</th>
+                <th scope="col">N° Doc Emisor</th>
+                <th scope="col">Tipo Doc Emisor</th>
+                <th>Opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of documentosReferenciados">
+                <td > {{item.tipoDocumentoDocRel}}</td>
+                <td > {{item.numeroDocumentoDocRel}}</td>
+                <td > {{item.numerodocumentoemisorDocRel}}</td>
+                <td > {{item.tipoDocumentoEmisorDocRel}}</td>
+                <td ><i (click)="borrarRef(item.codigoDocumentoDocRel,item.tipoDocumentoDocRel,item.numeroDocumentoDocRel,item.numerodocumentoemisorDocRel,item.tipoDocumentoEmisorDocRel)"
+                  class="fa-solid fa-trash" style="color: red;cursor: pointer;"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #CrudRef>
+    <div class="card">
+      <div class="card-header">
+        <h5>Agregar Documento Referenciados</h5>
+      </div>
+      <div class="card-body">
+        <form class="margen-modal" (ngSubmit)="crearRef(docref)" #docref="ngForm" id="docref">
+          <div class="form-group row">
+            <label for="input" class="col-sm-3 col-form-label" style="width:
+              197px"><a style="color: red;">(*)</a> Tipo
+              Doc:</label>
+            <div class="col-sm-8">
+              <select [(ngModel)]="tipoDocumentoDocRel"  class="form-select"
+                name="tipoDocumentoDocRel" required>
+                <option value="01">Factura</option>
+                <option value="03">Boleta de venta</option>
+                <option value="09">Guia de Remision</option>
+                <option value="50">DAM</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-3 col-form-label" style="width:
+              197px"><a style="color: red;">(*)</a>
+              N° Doc Rel:</label>
+            <div class="col-sm-8">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid':
+                docref.submitted&&docref.controls['numeroDocumentoDocRel'].errors}"
+                name="numeroDocumentoDocRel"
+                 required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-3 col-form-label" style="width:
+             197px"><a style="color: red;">(*)</a>
+              N° Doc Emisor:</label>
+            <div class="col-sm-8">
+              <input type="text" maxlength="11" ngModel class="form-control"
+                [ngClass]="{'is-invalid':
+                docref.submitted&&docref.controls['numerodocumentoemisorDocRel'].errors}" name="numerodocumentoemisorDocRel"
+                 required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <label for="input" class="col-sm-3 col-form-label" style="width:
+              180px;"><a style="color: red;">(*)</a> Tipo
+              Doc Emisor:</label>
+            </div>
+            <div class="col-sm-8">
+              <select [(ngModel)]="tipoDocumentoEmisorDocRel" class="form-select"
+                name="tipoDocumentoEmisorDocRel" required>
+                <option value="1">DNI</option>
+                <option value="4">CARNET DE EXTRANJERIA</option>
+                <option value="6" >RUC</option>
+                <option value="7">PASAPORTE</option>
+              </select>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-2">
+          <div style="text-align: right;">
+            <button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+              (click)='salir()'>Salir</button>
+            <button class="btn btn-success" style="width: 90px;" form="docref"
+              type="submit">Aceptar</button>
+          </div>
         </div>
       </div>
     </div>

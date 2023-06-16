@@ -440,9 +440,9 @@
               <thead>
                 <tr>
                   <th scope="col" style="width: 120px;">Codigo</th>
-                  <th scope="col" style="width: 400px;">Descripcion</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Um</th>
+                  <th scope="col" style="width: 400px;">Descripcion</th>
                   <th scope="col">opt</th>
                 </tr>
               </thead>
@@ -1729,9 +1729,9 @@
             <tr>
               <th scope="col">N°</th>
               <th scope="col">CODIGO</th>
-              <th scope="col">PRODUCTO</th>
-              <th scope="col">UNIDAD</th>
               <th scope="col">CANTIDAD</th>
+              <th scope="col">UNIDAD</th>
+              <th scope="col">PRODUCTO</th>
               <th scope="col">CODIGO SUNAT</th>
             </tr>
           </thead>
@@ -1750,7 +1750,6 @@
       <div style="text-align: center;"><pagination-controls id="productoExcel" (pageChange)="pageProductExcel = $event"></pagination-controls></div>
       <div class="row">
         <div class="col-8">
-
         </div>
         <div class="col-4">
           <button class="btn btn-danger" (click)="salirExcel()" style="width: 100px;margin-right: 15px;">Salir</button>
