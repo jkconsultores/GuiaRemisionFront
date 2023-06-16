@@ -13,6 +13,7 @@ export class GuiaTransportistaComponent {
   desde=this.fechaActual();
   hasta=this.fechaActual();
   pageGuia=0;
+  pageProductGuia=0;
   filtroGuia='';
   cabecera={}
   pesoBruto = '';
@@ -25,6 +26,7 @@ export class GuiaTransportistaComponent {
   medidas = [{ id: 'KGM', text: 'KGM' }, { id: 'NIU', text: 'NIU' }]
   medida = 'KGM';
   modalRef: NgbModalRef;
+  listadoProductoDetalles = [];//todos los detalles de la guia de remision
 
 
   //doc relacionado
@@ -109,5 +111,9 @@ export class GuiaTransportistaComponent {
       );
       this.documentosReferenciados.splice(indice, 1);
     }
+  }
+  borrarListadoProductoDetalles(codigo, descripcion, cantidad, unidadmedida) {
+    const indice = this.listadoProductoDetalles.findIndex((elemento) => elemento.codigo == codigo && elemento.descripcion == descripcion && elemento.cantidad == cantidad && elemento.unidadmedida == unidadmedida);
+    this.listadoProductoDetalles.splice(indice, 1);
   }
 }

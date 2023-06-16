@@ -5,3 +5,20 @@
 .center{
   text-align: center;
 }
+
+.scroll-color::-webkit-scrollbar {
+  width: 8px; /* Ancho del scroll */
+}
+
+.scroll-color::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color del fondo del scroll */
+}
+
+.scroll-color::-webkit-scrollbar-thumb {
+  background: #9b9baf; /* Color del scroll */
+  cursor: pointer; /* Cursor de tipo "pointer" */
+}
+
+.scroll-color::-webkit-scrollbar-thumb:hover {
+  background: #276fdb; /* Color del scroll */
+}
