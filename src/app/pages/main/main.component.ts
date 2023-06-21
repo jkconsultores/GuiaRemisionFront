@@ -443,6 +443,11 @@ export class MainComponent  {
     if (this.listadoProductoDetalles.length == 0) {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Esta guia no tiene Detalles!' });
     }
+    for (var i = 0; i < this.listadoProductoDetalles.length; i++) {
+      if (this.listadoProductoDetalles[i].unidadmedida.length > 3) {
+        return Swal.fire({ icon: 'warning', title: 'Algunos de los productos no tienen unidades de medida válidas según SUNAT.!', text: 'Unidad de medida no puede tener un ancho mayor a 3!' });
+      }
+    }
 
     var obj = this.llenarGuia();
     Swal.showLoading();
