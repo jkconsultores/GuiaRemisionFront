@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AAA_DESTINO } from '../../interface/destino';
 import { T_Vehiculo, VehiculoDTO } from 'src/app/interface/Vehiculos';
 import * as XLSX from 'xlsx';
+import { chofer } from 'src/app/interface/chofer';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -25,6 +26,8 @@ export class MainComponent  {
   tipoDocumentoDocRel='01';
   documentosReferenciados=[];
   tipoDocumentoEmisorDocRel='6';
+
+  choferSec={nombreConductorSec1:''} as chofer
 
   filterTransportista='';
   filterOrigen='';
@@ -69,6 +72,9 @@ export class MainComponent  {
   marcaVehiculo='';
   modeloVehiculo='';
   placaVehiculoVehiculo='';
+  placaCarreta='';
+  modeloCarreta='';
+  marcaCarretaSec='';
   //producto modal -----------------------------------------
   selectedRow: number;
   objetoProducto: any = {};
@@ -304,6 +310,16 @@ export class MainComponent  {
     this.nombreConductor = nombre;
     this.apellidoConductor = apellido;
   }
+  asignarChoferSec(ndoc, nombre, apellido, placa, tipoDoc, brevete) {
+    var chofer={
+      nombreConductorSec1:nombre,
+      apellidoConductorSec1:apellido,
+      numeroDocumentoConductorSec1:ndoc,
+      numeroLicenciaSec1:brevete,
+      tipoDocumentoConductorSec1:tipoDoc } as chofer;
+    this.choferSec=chofer;
+    this.modalService.dismissAll();
+  }
   limpiarChofer(){
     this.chofer_input = '';
     this.tipoDocumentoConductor = '';
@@ -502,7 +518,15 @@ export class MainComponent  {
       apellidoConductor: this.apellidoConductor,
       numeroLicencia: this.brevete, //chofer
       spE_DESPATCH_ITEM: this.listadoProductoDetalles,
-      SPE_DESPATCH_DOCRELACIONADO:this.documentosReferenciados
+      SPE_DESPATCH_DOCRELACIONADO:this.documentosReferenciados,
+      numeroDocumentoConductorSec1:this.choferSec.numeroDocumentoConductorSec1,
+      tipoDocumentoConductorSec1:this.choferSec.tipoDocumentoConductorSec1,
+      nombreConductorSec1:this.choferSec.nombreConductorSec1,
+      apellidoConductorSec1 :this.choferSec.apellidoConductorSec1,
+      numeroLicenciaSec1:this.choferSec.numeroLicenciaSec1,
+      textoAuxiliar250_1:this.placaCarreta,//placa carreta
+      textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
+      textoAuxiliar250_2:this.marcaVehiculo // modelo del vehiculo
     }
     return obj;
   }
@@ -856,8 +880,14 @@ export class MainComponent  {
   EditarUnVehiculo(vehiculo:T_Vehiculo){
 
   }
-  asignarVehiculo(placa){
+  asignarVehiculo(placa,marca){
+    this.marcaVehiculo=marca;
     this.placaChofer=placa;
+    this.modalRef.close();
+  }
+  asignarCarreta(placa,marca){
+    this.placaCarreta=placa;
+    this.modeloCarreta=marca;
     this.modalRef.close();
   }
   onFileChange(event: any, modal: any) {
@@ -868,6 +898,7 @@ export class MainComponent  {
       Swal.fire({ icon: 'error', title: 'Error!', text: 'El archivo seleccionado no es un archivo de Excel válido. Por favor, seleccione un archivo con extensión .xls o .xlsx' });
       return;
     }
+
     const reader = new FileReader();
     reader.onload = (e: any) => {
       const workbook = XLSX.read(e.target.result, { type: 'binary' });
@@ -881,7 +912,13 @@ export class MainComponent  {
             newObj[key.toLowerCase()] = obj[key];
           }
         }
+
         return newObj;
+      });
+      lowerCaseData.forEach(element => {
+        if(element.peso!=null&&element.peso!=''){
+          element.descripcion=element.descripcion+' '+element.peso;
+        }
       });
       this.dataProductosExcel=lowerCaseData;
       this.modalRef = this.modalService.open(modal, { size: 'lg' });
@@ -895,14 +932,14 @@ export class MainComponent  {
   }
   asignarProductoExcel(){
     this.dataProductosExcel.forEach(element => {
-      element.cantidad=element.cantidad.toString();
-      element.codigosunat=element.codigo.toString();
-      element.unidadmedida=element.unidadmedida.toString();
-      element.descripcion=element.descripcion.toString();
+      element.cantidad = String(element.cantidad);
+      element.codigo = String(element.codigo);
+      element.unidadmedida = String(element.unidadmedida);
+      element.descripcion = String(element.descripcion);
     });
     this.listadoProductoDetalles=this.dataProductosExcel;
     this.dataProductosExcel=[];
     this.modalRef.close();
-  }
 
+  }
 }
