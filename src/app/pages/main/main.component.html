@@ -280,10 +280,10 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-3">
-          <label style="width: 150px;">DESTINATARIO</label>
+        <div class="col-12 col-lg-3 col-md-4 col-sm-12 d-flex align-items-center">
+          <h6 class="w-100">DESTINATARIO</h6>
         </div>
-        <div class="col-9">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-9">
           <div class="input-group mb-1">
             <input type="text" [(ngModel)]="filterDestinatario" name="filterDestinatario" class="form-control">
             <div class="input-group-append">
@@ -532,7 +532,7 @@
         </div>
       </form>
 
-      <button class="btn btn-success" (click)="crearFilas()">Agregar Destino</button>
+      <button class="btn btn-success mt-3 mb-3" (click)="crearFilas()">Agregar Destino</button>
       <div class="table table-responsive" *ngIf="destinos.length!=0" style="max-height: 200px;">
         <table class="table table-bordered">
           <thead>
@@ -625,18 +625,21 @@
     <div class="card-body">
       <form (ngSubmit)="crearChofer(chofer)" #chofer="ngForm" id="chofer">
         <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> N°
-            Doc:</label>
-          <div class="col-sm-9">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6 for="input" class="w-100 col-form-label"><a style="color: red;">(*)</a> N° Doc:</h6>
+          </div>
+          <div class="col-12 col-sm-8 col-md-8 col-lg-9">
             <input type="text" ngModel class="form-control" maxlength="11"
               [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['numerodocumentochofer'].errors}"
               name="numerodocumentochofer" placeholder="Ingrese el numero de documento" required>
           </div>
         </div>
         <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
-            Doc:</label>
-          <div class="col-sm-9">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+          <h6  for="input" class="w-100 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
+            Doc:</h6>
+            </div>
+          <div class="col-12 col-sm-8 col-md-8 col-lg-9">
             <select ngModel [(ngModel)]="tipodocChofer" class="form-select" name="TIPODOCUMENTOCHOFER" required>
               <option value="1">DNI</option>
               <option value="4">CARNET DE EXTRANJERIA</option>
@@ -646,36 +649,44 @@
           </div>
         </div>
         <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Nombre:</label>
-          <div class="col-sm-9">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+          <h6 for="input" class="w-100 col-form-label" ><a style="color: red;">(*)</a>
+            Nombre:</h6>
+          </div>
+          <div class="col-12 col-sm-8 col-md-8 col-lg-9">
             <input type="text" ngModel class="form-control"
               [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['NOMBRE'].errors}" name="NOMBRE"
               placeholder="Ingrese el nombre" required>
           </div>
         </div>
         <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Apellido:</label>
-          <div class="col-sm-9">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6 for="input" class="w-100 col-form-label" ><a style="color: red;">(*)</a>
+            Apellido:</h6>
+            </div>
+          <div class="col-12 col-sm-8 col-md-8 col-lg-9">
             <input type="text" ngModel class="form-control"
               [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['APELLIDO'].errors}" name="APELLIDO"
               placeholder="Ingrese la razón social" required>
           </div>
         </div>
         <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Brevete:</label>
-          <div class="col-sm-9">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6 for="input" class="w-100 col-form-label"><a style="color: red;">(*)</a>
+            Brevete:</h6>
+            </div>
+          <div class="col-12 col-sm-8 col-md-8 col-lg-9">
             <input type="text" ngModel class="form-control"
               [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['BREVETE'].errors}" name="BREVETE"
               placeholder="Ingrese el Brevete" required>
           </div>
         </div>
         <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Placa:</label>
-          <div class="col-sm-9">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6 for="input" class="w-100 col-form-label"><a style="color: red;">(*)</a>
+            Placa:</h6>
+            </div>
+          <div class="col-12 col-sm-8 col-md-8 col-lg-9">
             <input type="text" ngModel class="form-control"
               [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['PLACAVEHICULO'].errors}" name="PLACAVEHICULO"
               placeholder="Ingrese la placa del vehiculo" required>
@@ -874,7 +885,7 @@
         </div>
       </form>
 
-      <button class="btn btn-success" (click)="crearFilasUpdate()">Agregar Destino</button>
+      <button class="btn btn-success mt-3 mb-3" (click)="crearFilasUpdate()">Agregar Destino</button>
       <div class="table table-responsive" *ngIf="destinatarioObject.destino.length!=0" style="max-height: 200px;">
         <table class="table table-bordered">
           <thead>
@@ -1175,10 +1186,10 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-3">
-          <label style="width: 150px;">ORIGEN</label>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-12 d-flex align-items-center">
+          <h6 class="w-100">ORIGEN</h6>
         </div>
-        <div class="col-9">
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9">
           <div class="input-group mb-1">
             <input type="text" [(ngModel)]="filterOrigen" name="filterOrigen" class="form-control">
             <div class="input-group-append">
@@ -1373,11 +1384,12 @@
     </div>
     <div class="card-body">
       <form class="margen-modal" (ngSubmit)="crearRef(docref)" #docref="ngForm" id="docref">
-        <div class="form-group row">
-          <label for="input" class="col-sm-3 col-form-label" style="width:
-            197px"><a style="color: red;">(*)</a> Tipo
-            Doc:</label>
-          <div class="col-sm-8">
+        <div class="form-group row mt-3">
+          <div class="col-sm-4 col-md-4 col-lg-3 col-12 d-flex align-items-center">
+          <h6 for="input" class="col-form-label w-100"><a style="color: red;">(*)</a> Tipo
+            Doc:</h6>
+          </div>
+          <div class="col-sm-8 col-md-8 col-lg-9 col-12">
             <select [(ngModel)]="tipoDocumentoDocRel"  class="form-select"
               name="tipoDocumentoDocRel" required>
               <option value="01">Factura</option>
@@ -1387,11 +1399,12 @@
             </select>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-3 col-form-label" style="width:
-            197px"><a style="color: red;">(*)</a>
-            N° Doc Rel:</label>
-          <div class="col-sm-8">
+        <div class="form-group row mt-3">
+          <div class="col-sm-4 col-md-4 col-lg-3  col-12 d-flex align-items-center">
+          <h6 for="input" class="col-form-label w-100" ><a style="color: red;">(*)</a>
+            N° Doc Rel:</h6>
+          </div>
+          <div class="col-sm-8 col-md-8 col-lg-9  col-12">
             <input type="text" ngModel class="form-control"
               [ngClass]="{'is-invalid':
               docref.submitted&&docref.controls['numeroDocumentoDocRel'].errors}"
@@ -1399,24 +1412,25 @@
                required>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-3 col-form-label" style="width:
-           197px"><a style="color: red;">(*)</a>
-            N° Doc Emisor:</label>
-          <div class="col-sm-8">
+        <div class="form-group row  mt-3">
+          <div class="col-sm-4 col-md-4 col-lg-3 col-12 d-flex align-items-center">
+          <h6 for="input" class="col-form-label w-100"><a style="color: red;">(*)</a>
+            N° Doc Emisor:</h6>
+          </div>
+          <div class="col-sm-8 col-md-8 col-lg-9 ">
             <input type="text" maxlength="11" ngModel class="form-control"
               [ngClass]="{'is-invalid':
               docref.submitted&&docref.controls['numerodocumentoemisorDocRel'].errors}" name="numerodocumentoemisorDocRel"
                required>
           </div>
         </div>
-        <div class="form-group row">
-          <div class="col-sm-3">
+        <div class="form-group row mt-3">
+          <div class="col-sm-4 col-md-4 col-lg-3  col-12 d-flex align-items-center">
             <label for="input" class="col-sm-3 col-form-label" style="width:
             180px;"><a style="color: red;">(*)</a> Tipo
             Doc Emisor:</label>
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-8 col-md-8 col-lg-9">
             <select [(ngModel)]="tipoDocumentoEmisorDocRel" class="form-select"
               name="tipoDocumentoEmisorDocRel" required>
               <option value="1">DNI</option>

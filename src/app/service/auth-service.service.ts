@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 })
 export class AuthServiceService {
   Usuario:string = "token";
+  nombreUsuario:string="usuario";
   login = new Subject<Boolean>();
   login1$ = this.login.asObservable();
   httpOptions:any |undefined;
@@ -22,6 +23,9 @@ export class AuthServiceService {
   }
   SessionSaved( token:string){
     localStorage.setItem(this.Usuario, token);
+  }
+  UserSaved( usuario:string){
+    localStorage.setItem(this.nombreUsuario, usuario);
   }
   CloseSession(){
     localStorage.clear();
