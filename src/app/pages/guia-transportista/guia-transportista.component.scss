@@ -22,3 +22,8 @@
 .scroll-color::-webkit-scrollbar-thumb:hover {
   background: #276fdb; /* Color del scroll */
 }
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

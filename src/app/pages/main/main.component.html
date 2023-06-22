@@ -182,7 +182,7 @@
         <div class="row">
           <div class="col-md-6 col-lg-4 m-0 row mb-1">
             <div class="d-flex align-items-center bd-highlight">
-              <div class="flex-grow-0 bd-highlight pe-2"><label>CHOFER</label></div>
+              <div class="flex-grow-0 bd-highlight pe-2"><label>CHOFER 1</label></div>
               <div class="flex-fill bd-highlight"><div class="input-group mb-1">
                 <input type="text" class="form-control" readonly [(ngModel)]="chofer_input">
                 <div class="input-group-append">
@@ -202,7 +202,7 @@
           </div>
           <div class="col-md-6 col-lg-4 m-0 row mb-1">
             <div class="d-flex align-items-center bd-highlight">
-              <div class="flex-grow-0 bd-highlight  pe-2"><label>PLACA</label></div>
+              <div class="flex-grow-0 bd-highlight  pe-2"><label>PLACA 1</label></div>
               <div class="flex-fill bd-highlight"><div class="input-group mb-1">
                 <input type="text" [(ngModel)]="placaChofer" readonly class="form-control">
                 <div class="input-group-append">
@@ -212,7 +212,7 @@
             </div>
           </div>
           <div class="d-flex align-items-center bd-highlight">
-            <div class="flex-grow-0 bd-highlight  pe-2"><label>CARRETA</label></div>
+            <div class="flex-grow-0 bd-highlight  pe-2"><label>PLACA 2</label></div>
             <div class="flex-fill bd-highlight"><div class="input-group mb-1">
               <input type="text" [(ngModel)]="placaCarreta" readonly class="form-control">
               <div class="input-group-append">
@@ -1357,7 +1357,7 @@
               <td > {{item.numeroDocumentoDocRel}}</td>
               <td > {{item.numerodocumentoemisorDocRel}}</td>
               <td > {{item.tipoDocumentoEmisorDocRel}}</td>
-              <td ><i (click)="borrarRef(item.codigoDocumentoDocRel,item.tipoDocumentoDocRel,item.numeroDocumentoDocRel,item.numerodocumentoemisorDocRel,item.tipoDocumentoEmisorDocRel)"
+              <td ><i (click)="borrarRef(item.tipoDocumentoDocRel,item.numeroDocumentoDocRel,item.numerodocumentoemisorDocRel,item.tipoDocumentoEmisorDocRel)"
                 class="fa-solid fa-trash" style="color: red;cursor: pointer;"></i></td>
             </tr>
           </tbody>

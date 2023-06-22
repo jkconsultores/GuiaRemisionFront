@@ -5,6 +5,10 @@ import Swal from 'sweetalert2';
 import { transportista } from '../../interface/transportista';
 import { ApiRestService } from 'src/app/service/api-rest.service';
 import { origen } from 'src/app/interface/origen';
+import { chofer } from 'src/app/interface/chofer';
+import { adquiriente } from 'src/app/interface/adquiriente';
+import { destinatario } from 'src/app/interface/destinatario';
+import { ApiTransportistaService } from 'src/app/service/api-transportista.service';
 @Component({
   selector: 'app-guia-transportista',
   templateUrl: './guia-transportista.component.html',
@@ -20,24 +24,43 @@ export class GuiaTransportistaComponent {
   pageProductGuia=0;
   filtroGuia='';
   cabecera={}
-  pesoBruto = '';
-  observaciones='';
-  Nrobultos = '';
+
   //filtro inputs
   filterTransportista='';
   filterOrigen='';
-
-  //arreglos
+  filterDestinatario='';
+  filterProducto='';
+  //tablas
+  tablaEmpresas = [];
+  tablaOrigenes = [];
+  tablaSeries = [];
   arraySerie = [];
+  //arreglos
   destino = [];
+  destinos = [];
   origenes = [];
   guias=[];
+  destinatarios=[];
   transportistas=[];
-
+  empresas = [];
+  chofer = [];
+  origen = [];
+  // variable para formulario crud destinatario select tipo doc
+  tipodocForm = '1';
+  tipodocTrans = '6';
+  tipodocChofer = '1';
+  correlativo = 0;
+    //destinatario
+    destinatario={razonSocialDestinatario:''} as destinatario;
+    //destino
+    // destino={} destino
+    //
+  pais = 'PE';
+  tipodocEmp = '6';
+  empresa = '';
   //variables por defecto
   medidas = [{ id: 'KGM', text: 'KGM' }, { id: 'NIU', text: 'NIU' }]
   medida = 'KGM';
-  tipodocTrans='1';
   modalRef: NgbModalRef;
   listadoProductoDetalles = [];//todos los detalles de la guia de remision
 
@@ -47,7 +70,25 @@ export class GuiaTransportistaComponent {
   documentosReferenciados=[];
   tipoDocumentoEmisorDocRel='6';
 
-  constructor(private modalService: NgbModal,public api: ApiRestService){
+ choferSec={nombreConductorSec1:''} as chofer
+
+ ubigeoDestinoUpdate = '';
+ direccionDestinoUpdate = '';
+ codigolocalanexoUpdate = '';
+ destinatarioObject: adquiriente;
+   //destino modal-------------------------------------------
+   ubigeoDestino = '';
+   direccionDestino = '';
+   codigolocalanexo = '';
+   contador = 0;
+  //Guia de remision----------------------------------------
+  empresaid = '';
+  serieNumero='';
+  observaciones = '';
+  pesoBruto = '';
+  Nrobultos = '';
+  vorigen = '';
+  constructor(private modalService: NgbModal,public api: ApiRestService,public apiT:ApiTransportistaService){
     this.obtenerInfo();
   }
 
@@ -69,6 +110,14 @@ export class GuiaTransportistaComponent {
         event.preventDefault();
       }
     }
+  }
+  listarEmpresas(empresa) {
+    Swal.showLoading();
+    this.api.getEmpresas().subscribe((res: any) => {
+      Swal.close();
+      this.tablaEmpresas = res;
+      this.abrirModal(empresa);
+    });
   }
   validarNumero(event: KeyboardEvent) {
     if (event.charCode !== 0) {
@@ -231,5 +280,216 @@ export class GuiaTransportistaComponent {
       })
     }
 
+  }
+  crearEmpresa(form: NgForm) {
+    if (form.invalid) { return }
+    if (form.submitted) {
+      Swal.showLoading();
+      this.api.crearEmpresa(form.value).subscribe((res: any) => {
+        Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+        this.modalRef.close();
+        this.api.getEmpresas().subscribe((res: any) => {
+          this.tablaEmpresas = res;
+        });
+        this.obtenerInfo();
+      }, err => {
+        if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+        else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+      })
+    }
+  }
+  borrarEmpresa(ndoc) {
+    Swal.showLoading();
+    Swal.fire({
+      icon:'warning',
+      title: 'Estás seguro?',
+      text: 'La empresa con el N° Doc ' + ndoc + ' se eliminará',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor:'red',
+      cancelButtonText: 'Salir'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.api.BorrarEmpresa(ndoc).subscribe((res: any) => {
+          this.api.getEmpresas().subscribe((res: any) => {
+            Swal.close();
+            this.tablaEmpresas = res;
+          });
+        }, err => {
+          if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+          else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+        })
+      }
+    })
+  }
+  empresaChange(id: string) {
+    if (id) {
+      Swal.showLoading();
+      var num = id.split('-');
+      const partes = id.split("-");
+      const ruc = partes.shift();
+      this.empresaid = id;
+      this.api.getOrigenes(ruc, num[3]).subscribe((res: any) => {
+        Swal.close();
+        this.origen = res['ORIGEN'];
+        this.arraySerie = res['SERIE'];
+        this.serieNumero = '';
+        this.vorigen = '';
+      }, error => {
+        Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
+      })
+    }
+  }
+  borrarSerie(numDoc, serie) {
+    Swal.showLoading();
+    Swal.fire({
+      icon:'warning',
+      title: 'Estás seguro?',
+      text: 'La serie '+serie+' con el N° Doc ' + numDoc + ' se eliminará',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor:'red',
+      cancelButtonText: 'Salir'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.api.BorrarSerie(numDoc, serie).subscribe((res: any) => {
+          this.api.getSerie().subscribe((res: any) => {
+            Swal.close();
+            this.tablaSeries = res;
+          });
+        }, err => {
+          if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+          else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+        })
+      }
+    })
+
+  }
+  crearSerie(form) {
+    if (form.invalid) { return }
+    if (form.submitted) {
+      Swal.showLoading();
+      form.value.SERIE = form.value.SERIE.toUpperCase();
+      this.api.CrearSerie(form.value).subscribe((res: any) => {
+        Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+        this.modalRef.close();
+        this.api.getSerie().subscribe((res: any) => {
+          this.tablaSeries = res;
+        });
+        this.empresa = '';
+      }, err => {
+        if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+        else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+      })
+    }
+  }
+  crearAdquiriente(form: NgForm) {
+    if (form.invalid) {
+      return
+    }
+    if (form.submitted) {
+      Swal.showLoading();
+      form.value.destino = this.destinos;
+      this.api.crearAdquiriente(form.value).subscribe((res: any) => {
+        Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+        this.destinos = [];
+        this.modalRef.close();
+        this.obtenerInfo();
+      }, err => {
+        if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+        else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+      })
+    }
+  }
+  crearFilas() {
+    if (this.ubigeoDestino == '' || this.direccionDestino == '') {
+      return Swal.fire({ icon: 'error', title: 'Complete los campos' });
+    }
+    var obj = {
+      id: this.contador,
+      ubigeodestino: this.ubigeoDestino,
+      direcciondestino: this.direccionDestino,
+      codigolocalanexo:this.codigolocalanexo
+    }
+    this.destinos.push(obj);
+    this.ubigeoDestino = '';
+    this.direccionDestino = '';
+    this.codigolocalanexo = '';
+    this.contador++;
+  }
+  crearFilasUpdate() {
+    if (this.ubigeoDestinoUpdate == '' || this.direccionDestinoUpdate == '') {
+      return Swal.fire({ icon: 'error', title: 'Complete los campos' });
+    }
+    var obj = {
+       id: this.contador,
+       ubigeodestino: this.ubigeoDestinoUpdate,
+       direcciondestino: this.direccionDestinoUpdate,
+       codigolocalanexo: this.codigolocalanexoUpdate
+      }
+    this.destinatarioObject.destino.push(obj);
+    this.ubigeoDestinoUpdate = '';
+    this.direccionDestinoUpdate = '';
+    this.codigolocalanexoUpdate = '';
+    this.contador++;
+  }
+  asignarDestinatario(nombre, ndoc, correo, tipoDoc) {
+    var nuevoDestinatario={ razonSocialDestinatario:''} as destinatario
+    this.destinatario.razonSocialDestinatario = nuevoDestinatario.razonSocialDestinatario;
+    this.destinatario.correoDestinatario = correo;
+    this.destinatario.numeroDocumentoDestinatario = ndoc;
+    this.destinatario.tipoDocumentoDestinatario = tipoDoc;
+    this.modalService.dismissAll();
+    Swal.showLoading();
+    var getDestinosForm={
+      numerodocumentoadquiriente:ndoc,
+      datestamp:new Date(),
+      direcciondestino:null,
+      usuarioid:0,
+      ubigeodestino:null,
+      codigolocalanexo:""
+    };
+
+    this.api.getDestinos(getDestinosForm).subscribe((res: any) => {
+      this.destino = res;
+      Swal.close();
+    });
+  }
+  EditarDestinatario(modal, contenido) {
+    this.destinatarioObject = contenido;
+    this.abrirModal(modal);
+  }
+  updateAdquiriente(form: NgForm) {
+    if (form.invalid) { return }
+    if (form.submitted) {
+      Swal.showLoading();
+      form.value.DESTINO = this.destinatarioObject.destino;
+      this.api.updateAdquiriente(form.value).subscribe((res: any) => {
+        this.modalRef.close();
+        Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+        this.destinatarioObject.destino = [];
+        this.obtenerInfo();
+      }, err => {
+        if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+        else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+      })
+    }
+  }
+  borrarDestinoArray(id) {
+    const indice = this.destinos.findIndex((elemento) => elemento.id === id);
+    this.destinos.splice(indice, 1);
+  }
+  borrarDestinoArrayUpdate(id) {
+    const indice = this.destinatarioObject.destino.findIndex((elemento) => elemento.id === id);
+    this.destinatarioObject.destino.splice(indice, 1);
+  }
+  listarSerie(serie) {
+    Swal.showLoading()
+    this.api.getSerie().subscribe((res: any) => {
+      Swal.close();
+      this.abrirModal(serie);
+      this.tablaSeries = res;
+    });
   }
 }

@@ -49,25 +49,26 @@
                   slice : 0 : 4}}</option>
               </select>
               <div class="input-group-append">
-                <button class="input-group-text">...</button>
+                <button class="input-group-text" (click)="listarSerie(Serie)">...</button>
               </div>
             </div></div>
         </div>
       </div>
       <div class="col-md-6 col-lg-8 col-sm-6">
         <div class="row">
-          <div class="col-md-3"><label class="w-100 center">PTO PARTIDA <b
-                style="color: red;">(*)</b></label></div>
-          <div class="col-md-9"><div class="input-group mb-1 w-100">
-              <select class="form-select " aria-label=".form-select-sm example">
-                <option value>Seleccione un origen</option>
-                <option value="{{item.id}}" *ngFor="let item of []">{{item.text}}</option>
-              </select>
-              <div class="input-group-append">
-                <button class="input-group-text">...</button>
-              </div>
-            </div></div>
+          <div class="col-md-3"><label class="w-100 center">REMITENTE <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-9"><div class="input-group mb-1">
+            <select class="form-select" (ngModelChange)="empresaChange($event)" aria-label=".form-select-sm example"
+              [(ngModel)]="empresa">
+              <option value="">Seleccione un remitente</option>
+              <option value="{{item.id}}" *ngFor="let item of empresas">{{item.text}}</option>
+            </select>
+            <div class="input-group-append">
+              <button class="input-group-text" (click)="listarEmpresas(Empresa)">...</button>
+            </div>
+          </div></div>
         </div>
+
       </div>
 
       <div class="col-md-6 col-lg-4 col-sm-6">
@@ -89,17 +90,20 @@
       </div>
       <div class="col-md-6 col-lg-8 col-sm-6">
         <div class="row">
-          <div class="col-md-6 col-lg-3"><label class="w-100 center">DESTINATARIO
-              <b style="color: red;">(*)</b></label></div>
-          <div class="col-md-6 col-lg-9"><div class="input-group">
-              <input type="text" class="form-control" readonly
-                name="destinatario_input">
+
+          <div class="col-md-3"><label class="w-100 center">PTO PARTIDA <b
+                style="color: red;">(*)</b></label></div>
+          <div class="col-md-9"><div class="input-group mb-1 w-100">
+              <select class="form-select " aria-label=".form-select-sm example">
+                <option value>Seleccione un origen</option>
+                <option value="{{item.id}}" *ngFor="let item of []">{{item.text}}</option>
+              </select>
               <div class="input-group-append">
                 <button class="input-group-text">...</button>
               </div>
-            </div>
-          </div>
+            </div></div>
         </div>
+
       </div>
 
       <div class="col-md-6 col-lg-4 col-sm-6">
@@ -115,14 +119,18 @@
       </div>
       <div class="col-md-6 col-lg-8 col-sm-6">
         <div class="row">
-          <div class="col-md-6 col-lg-3"><label class="w-100 center">PTO LLEGADA
+          <div class="col-md-6 col-lg-3"><label class="w-100 center">DESTINATARIO
               <b style="color: red;">(*)</b></label></div>
-          <div class="col-md-6 col-lg-9"><select class="form-select "
-              aria-label=".form-select-sm example">
-              <option value>Seleccione un destino</option>
-              <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
-            </select></div>
+          <div class="col-md-6 col-lg-9"><div class="input-group">
+              <input type="text" class="form-control" readonly
+                name="destinatario" [(ngModel)]="destinatario.razonSocialDestinatario">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(Destinatario)">...</button>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
       <div class="col-md-6 col-lg-4 col-sm-6 mt-1 mb-1">
         <div class="row">
@@ -134,7 +142,18 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-8"></div>
+
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="col-md-6 col-lg-3"><label class="w-100 center">PTO LLEGADA
+              <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-6 col-lg-9"><select class="form-select "
+              aria-label=".form-select-sm example">
+              <option value>Seleccione un destino</option>
+              <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
+            </select></div>
+        </div>
+      </div>
       <div class="col-md-8 col-lg-4 col-sm-6">
         <div class="table-responsive scroll-color"
           style="flex: 65%;height:200px">
@@ -679,3 +698,629 @@
       </div>
     </div>
   </ng-template>
+  <ng-template #Empresa>
+    <div class="card">
+      <div class="card-header">
+        <div class="container">
+          <h5>EMPRESA &nbsp; &nbsp;</h5>
+          <button class="btn btn-secondary" (click)="abrirModal(CrudEmpresa)">+</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc Emisor</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Tipo Doc</th>
+                <th scope="col">Razon social</th>
+                <th scope="col">Ubigeo</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Distrito</th>
+                <th scope="col">Provincia</th>
+                <th scope="col">Razón Comercial</th>
+                <th scope="col">Opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tablaEmpresas">
+                <th scope="row">{{item.numerodocumentoemisor}}</th>
+                <td>{{item.nombreempresa}}</td>
+                <td>{{item.tipodocumentoemisor}}</td>
+                <td>{{item.razonsocialemisor}}</td>
+                <td>{{item.ubigeoemisor}}</td>
+                <td>{{item.direccionemisor}}</td>
+                <td>{{item.distritoemisor}}</td>
+                <td>{{item.provinciaemisor}}</td>
+                <td>{{item.razoncomercialemisor}}</td>
+                <td style="text-align: center;cursor: pointer;" (click)="borrarEmpresa(item.numerodocumentoemisor);"><i
+                    class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #CrudEmpresa>
+    <div class="card">
+      <div class="card-header">
+        <h5>Crear Empresa</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="crearEmpresa(empresa)" #empresa="ngForm" id="empresa">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              N° Documento:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['numerodocumentoemisor'].errors}"
+                name="numerodocumentoemisor" placeholder="Ingrese el documento" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Nombre:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['nombreempresa'].errors}"
+                name="nombreempresa" placeholder="Ingrese el nombre de la empresa" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
+              Doc:</label>
+            <div class="col-sm-9">
+              <select ngModel [(ngModel)]="tipodocEmp" class="form-select" name="tipodocumentoemisor" required>
+                <option value="1">DNI</option>
+                <option value="4">CARNET DE EXTRANJERIA</option>
+                <option value="6">RUC</option>
+                <option value="7">PASAPORTE</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Razón social:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['razonsocialemisor'].errors}"
+                name="razonsocialemisor" placeholder="Ingrese la razón social" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Dirección:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['direccionemisor'].errors}"
+                name="direccionemisor" placeholder="Ingrese la dirección" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Ubigeo:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['ubigeoemisor'].errors}" name="ubigeoemisor"
+                placeholder="Ingrese el ubigeo" required>
+            </div>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Distrito:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['distritoemisor'].errors}"
+                name="distritoemisor" placeholder="Ingrese el distrito" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Provincia:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['provinciaemisor'].errors}"
+                name="provinciaemisor" placeholder="Ingrese la provincia" required>
+            </div>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Departamento:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['departamentoemisor'].errors}"
+                name="departamentoemisor" placeholder="Ingrese el departamento" required>
+            </div>
+          </div>
+          <div class="form-group row" hidden>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Pais:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control" [(ngModel)]="pais" readonly
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['paisemisor'].errors}" name="paisemisor"
+                placeholder="Ingrese el pais" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Razón comercial:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': empresa.submitted&&empresa.controls['razoncomercialemisor'].errors}"
+                name="razoncomercialemisor" placeholder="Ingrese la razón comercial emisor" required>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-2">
+          <div style="text-align: right;">
+            <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+            <button class="btn btn-success" style="width: 90px;" form="empresa" type="submit">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #Serie>
+    <div class="card">
+      <div class="card-header">
+        <div class="container">
+          <h5>SERIE &nbsp; &nbsp;</h5>
+          <button class="btn btn-secondary" (click)="abrirModal(CrudSerie)">+</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc Emisor</th>
+                <th scope="col">Tipo Doc</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Serie</th>
+                <th scope="col">Correlativo</th>
+                <th scope="col">Opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tablaSeries">
+                <th scope="row">{{item.numerodocumentoemisor}}</th>
+                <td>{{item.tipodocumento}}</td>
+                <td>{{item.descripcion}}</td>
+                <td>{{item.serie}}</td>
+                <td>{{item.correlativo}}</td>
+                <td style="text-align: center;cursor: pointer;"
+                  (click)="borrarSerie(item.numerodocumentoemisor,item.serie)"><i
+                    class="fa-solid fa-trash"
+                    style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #CrudSerie>
+    <div class="card">
+      <div class="card-header">
+        <h5>Crear Serie</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="crearSerie(empresa)" #empresa="ngForm" id="empresa">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width:
+              160px;"><a style="color: red;">(*)</a>
+              N° Documento:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid':
+                empresa.submitted&&empresa.controls['NUMERODOCUMENTOEMISOR'].errors}"
+                name="NUMERODOCUMENTOEMISOR" placeholder="Ingrese el documento"
+                required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width:
+              160px;"><a style="color: red;">(*)</a> Tipo
+              Doc:</label>
+            <div class="col-sm-9">
+              <select ngModel [(ngModel)]="tipodocEmp" class="form-select"
+                name="TIPODOCUMENTO" required>
+                <option value="31">Guía de Remisión - Transportista</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width:
+              160px;"><a style="color: red;">(*)</a>
+              Descripción:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid':
+                empresa.submitted&&empresa.controls['DESCRIPCION'].errors}"
+                name="DESCRIPCION"
+                placeholder="Ingrese su descripción" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width:
+              160px;"><a style="color: red;">(*)</a>
+              Serie:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid':
+                empresa.submitted&&empresa.controls['SERIE'].errors}" name="SERIE"
+                placeholder="Ejemplo T001" maxlength="4" minlength="4" required>
+            </div>
+            <label for="input" class="col-sm-2 col-form-label" style="width:
+              160px;"><a style="color: red;">(*)</a>
+              Correlativo:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel class="form-control"
+                [(ngModel)]="correlativo"
+                [ngClass]="{'is-invalid':
+                empresa.submitted&&empresa.controls['CORRELATIVO'].errors}"
+                name="CORRELATIVO"
+                placeholder="Ingrese el correlativo" required>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-2">
+          <div style="text-align: right;">
+            <button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+              (click)='salir()'>Salir</button>
+            <button class="btn btn-success" style="width: 90px;" form="empresa"
+              type="submit">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #Destinatario>
+    <div class="card">
+      <div class="card-header text-center">
+        <h5>DESTINATARIO</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-3">
+            <label style="width: 150px;">DESTINATARIO</label>
+          </div>
+          <div class="col-9">
+            <div class="input-group mb-1">
+              <input type="text" [(ngModel)]="filterDestinatario" name="filterDestinatario" class="form-control">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(CrudDestinatario)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc</th>
+                <th scope="col">Tipo Doc</th>
+                <th scope="col">Razon social</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of destinatarios| filter:filterDestinatario:['numerodocumentoadquiriente','razonsocialadquiriente']">
+                <th scope="row" style="cursor: pointer;"
+                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  {{item.numerodocumentoadquiriente}}</th>
+                <td style="cursor: pointer;"
+                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  {{item.tipodocumentoadquiriente}}</td>
+                <td style="cursor: pointer;"
+                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  {{item.razonsocialadquiriente}}</td>
+                <td style="cursor: pointer;"
+                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  {{item.direccionadquiriente}}</td>
+                <td style="text-align: center;cursor: pointer;" (click)="EditarDestinatario(UpdateDestinatario,item)"><i
+                    class="fa-solid fa-user-pen" style="font-size: 20px;color: rgb(25, 0, 255);"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #CrudDestinatario>
+  <div class="card">
+    <div class="card-header">
+      <h5>Registrar Destinatario</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="crearAdquiriente(f)" #f="ngForm" id="destinatario">
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> N°
+            Doc:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['numerodocumentoadquiriente'].errors}"
+              name="numerodocumentoadquiriente" placeholder="Ingrese el numero de documento adquiriente" required>
+          </div>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
+            Doc:</label>
+          <div class="col-sm-3">
+            <select ngModel [(ngModel)]="tipodocForm" class="form-select" name="tipodocumentoadquiriente" required>
+              <option value="1">DNI</option>
+              <option value="4">CARNET DE EXTRANJERIA</option>
+              <option value="6">RUC</option>
+              <option value="7">PASAPORTE</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Razon
+            Social:</label>
+          <div class="col-sm-9">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['razonsocialadquiriente'].errors}"
+              name="razonsocialadquiriente" placeholder="Ingrese la razón social" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"> correo:</label>
+          <div class="col-sm-9">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['correo'].errors}" name="correo"
+              placeholder="Ingrese el correo">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Dirección:</label>
+          <div class="col-sm-9">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['direccionadquiriente'].errors}"
+              name="direccionadquiriente" placeholder="Ingrese la dirección" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Ubigeo:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['ubigeoadquiriente'].errors}" name="ubigeoadquiriente"
+              placeholder="Ingrese el ubigeo" required>
+          </div>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Distrito:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['distritoadquiriente'].errors}"
+              name="distritoadquiriente" placeholder="Ingrese el distrito">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Provincia:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['provinciaadquiriente'].errors}"
+              name="provinciaadquiriente" placeholder="Ingrese la provincia">
+          </div>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Departamento:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['departamentoadquiriente'].errors}"
+              name="departamentoadquiriente" placeholder="Ingrese el departamento">
+          </div>
+        </div>
+        <div class="form-group row" hidden>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Pais:</label>
+          <div class="col-sm-9">
+            <input type="text" readonly ngModel class="form-control" [(ngModel)]="pais"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['PAISADQUIRIENTE'].errors}" name="PAISADQUIRIENTE"
+              placeholder="Ingrese el Pais" required>
+          </div>
+        </div>
+        <hr>
+        <span><b>Destino</b></span>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Ubigeo:</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="ubigeoDestino" name="ubigeodestino" ngModel class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Dirección:</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="direccionDestino" name="direcciondestino" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Local anexo:</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="codigolocalanexo" name="codiglocalanexo" class="form-control">
+          </div>
+        </div>
+      </form>
+
+      <button class="btn btn-success" (click)="crearFilas()">Agregar Destino</button>
+      <div class="table table-responsive" *ngIf="destinos.length!=0" style="max-height: 200px;">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Ubigeo</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">opt</th>
+            </tr>
+          </thead>
+          <tbody id="tabla_destino">
+            <tr *ngFor="let item of destinos">
+              <th scope="row">{{item.ubigeodestino}}</th>
+              <td>{{item.direcciondestino}}</td>
+              <td><i class="fa-solid fa-trash" style="color: red;cursor: pointer;"
+                  (click)="borrarDestinoArray(item.id)"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row mt-5">
+        <div style="text-align: right;">
+          <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+          <button class="btn btn-success" style="width: 90px;" form="destinatario" type="submit">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #UpdateDestinatario>
+  <div class="card">
+    <div class="card-header">
+      <h5>Update Destinatario</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="updateAdquiriente(f)" #f="ngForm" id="destinatario">
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> N°
+            Doc:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.numerodocumentoadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['numerodocumentoadquiriente'].errors}"
+              name="numerodocumentoadquiriente" placeholder="Ingrese el numero de documento adquiriente" required>
+          </div>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
+            Doc:</label>
+          <div class="col-sm-3">
+            <select ngModel [(ngModel)]="destinatarioObject.tipodocumentoadquiriente" class="form-select"
+              name="tipodocumentoadquiriente" required>
+              <option value="1">DNI</option>
+              <option value="4">CARNET DE EXTRANJERIA</option>
+              <option value="6">RUC</option>
+              <option value="7">PASAPORTE</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Razon
+            Social:</label>
+          <div class="col-sm-9">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.razonsocialadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['razonsocialadquiriente'].errors}"
+              name="razonsocialadquiriente" placeholder="Ingrese la razón social" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"> correo:</label>
+          <div class="col-sm-9">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.correo" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['correo'].errors}" name="correo"
+              placeholder="Ingrese el correo">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Dirección:</label>
+          <div class="col-sm-9">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.direccionadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['direccionadquiriente'].errors}"
+              name="direccionadquiriente" placeholder="Ingrese la dirección" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Ubigeo:</label>
+          <div class="col-sm-3">
+            <input type="text" [(ngModel)]="destinatarioObject.ubigeoadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['ubigeoadquiriente'].errors}" name="ubigeoadquiriente"
+              placeholder="Ingrese el ubigeo" [maxLength]="6"  required>
+          </div>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Distrito:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.distritoadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['distritoadquiriente'].errors}"
+              name="distritoadquiriente" placeholder="Ingrese el distrito">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Provincia:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.provinciaadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['provinciaadquiriente'].errors}"
+              name="provinciaadquiriente" placeholder="Ingrese la provincia">
+          </div>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Departamento:</label>
+          <div class="col-sm-3">
+            <input type="text" ngModel [(ngModel)]="destinatarioObject.departamentoadquiriente" class="form-control"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['departamentoadquiriente'].errors}"
+              name="departamentoadquiriente" placeholder="Ingrese el departamento">
+          </div>
+        </div>
+        <div class="form-group row" hidden>
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Pais:</label>
+          <div class="col-sm-9">
+            <input type="text" readonly ngModel [(ngModel)]="pais" class="form-control" [(ngModel)]="pais"
+              [ngClass]="{'is-invalid': f.submitted&&f.controls['PAISADQUIRIENTE'].errors}" name="PAISADQUIRIENTE"
+              placeholder="Ingrese el Pais">
+          </div>
+        </div>
+        <hr>
+        <span><b>Destino</b></span>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Ubigeo:</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="ubigeoDestinoUpdate" [maxlength]="6" name="ubigeodestinoupdate" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+            Dirección:</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="direccionDestinoUpdate" name="direccionDestinoUpdate" class="form-control">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+            Local Anexo:</label>
+          <div class="col-sm-9">
+            <input type="text" maxlength="4" [(ngModel)]="codigolocalanexoUpdate" name="codigolocalanexoUpdate" class="form-control">
+          </div>
+        </div>
+      </form>
+
+      <button class="btn btn-success" (click)="crearFilasUpdate()">Agregar Destino</button>
+      <div class="table table-responsive" *ngIf="destinatarioObject.destino.length!=0" style="max-height: 200px;">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Ubigeo</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">Cod. local Anexo</th>
+              <th scope="col">opt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of destinatarioObject.destino">
+              <th scope="row">{{item.ubigeodestino}}</th>
+              <td>{{item.direcciondestino}}</td>
+              <td>{{item.codigolocalanexo}}</td>
+              <td><i class="fa-solid fa-trash" style="color: red;cursor: pointer;"
+                  (click)="borrarDestinoArrayUpdate(item.id)"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row mt-5">
+        <div style="text-align: right;">
+          <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+          <button class="btn btn-success" style="width: 90px;" form="destinatario" type="submit">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

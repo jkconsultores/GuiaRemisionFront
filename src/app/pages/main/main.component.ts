@@ -452,7 +452,7 @@ export class MainComponent  {
     var obj = this.llenarGuia();
     Swal.showLoading();
     this.api.declararGuia(obj).subscribe((res: any) => {
-      Swal.fire({ icon: 'success', title: 'Se creó con éxito' }).then(res => {
+      Swal.fire({ icon: 'success', title: 'Se creó con éxito',text:res }).then(res => {
         window.location.reload();
       })
     }, err => {
@@ -807,7 +807,7 @@ export class MainComponent  {
       const numeroDocumentoEmisorDocRel = ref.value.numeroDocumentoEmisorDocRel;
       const tipoDocumentoEmisorDocRel = ref.value.tipoDocumentoEmisorDocRel;
 
-      if (!this.existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel)) {
+      if (!this.existeDocumentoReferenciado( tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel)) {
         // El elemento no existe, se agrega a la matriz
         this.documentosReferenciados.push(ref.value);
         this.salir();
@@ -818,30 +818,24 @@ export class MainComponent  {
       }
     }
   }
-  existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
+  existeDocumentoReferenciado(tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
     return this.documentosReferenciados.some((elemento) =>
-      elemento.codigoDocumentoDocRel == codigoDocumentoDocRel &&
       elemento.tipoDocumentoDocRel == tipoDocumentoDocRel &&
       elemento.numeroDocumentoDocRel == numeroDocumentoDocRel &&
-      elemento.numeroDocumentoEmisorDocRel == numeroDocumentoEmisorDocRel &&
+      elemento.numerodocumentoemisorDocRel == numeroDocumentoEmisorDocRel &&
       elemento.tipoDocumentoEmisorDocRel == tipoDocumentoEmisorDocRel
     );
   }
-  borrarRef(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
-    const existe = this.existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel);
+  borrarRef( tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
+    const existe = this.existeDocumentoReferenciado(tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel);
     if (existe) {
       const indice = this.documentosReferenciados.findIndex((elemento) =>
-        elemento.codigoDocumentoDocRel == codigoDocumentoDocRel &&
         elemento.tipoDocumentoDocRel == tipoDocumentoDocRel &&
         elemento.numeroDocumentoDocRel == numeroDocumentoDocRel &&
         elemento.numeroDocumentoEmisorDocRel == numeroDocumentoEmisorDocRel &&
         elemento.tipoDocumentoEmisorDocRel == tipoDocumentoEmisorDocRel
       );
       this.documentosReferenciados.splice(indice, 1);
-    } else {
-      // El elemento no existe
-      // Aquí puedes agregar el código que desees si el elemento no existe
-      console.log('El elemento no existe');
     }
   }
   obtenerVehiculos(){
