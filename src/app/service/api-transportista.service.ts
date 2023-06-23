@@ -15,8 +15,8 @@ export class ApiTransportistaService {
   public getTipoDocumento(){
     return this.http.get(this.url+'AAA',this.auth.obtenerDatos());
   }
-  public getSerie(){
-    return this.http.get(this.url+'Aaa/getSerie/tipo?tipo=31',this.auth.obtenerDatos());
+  public getSerie(ruc:string){
+    return this.http.get(this.url+'Aaa/getSerie/tipo/31/'+ruc,this.auth.obtenerDatos());
   }
   public getOrigenes(ndoc:string){
 
@@ -33,5 +33,8 @@ export class ApiTransportistaService {
   }
   public getImportarDetallesGuiasTransportista(array){
     return this.http.post(this.url+'GreTransportista/ObtenerGuias',array,this.auth.obtenerDatos())
+  }
+  public declararGuia(guia){
+    return this.http.post(this.url+'GreTransportista',guia,this.auth.obtenerDatos())
   }
 }

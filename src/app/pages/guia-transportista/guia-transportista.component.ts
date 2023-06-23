@@ -15,6 +15,7 @@ import { AAA_EMPRESA } from 'src/app/interface/Empresa';
 import { AAA_DESTINO } from 'src/app/interface/destino';
 import { GuiaImportada } from 'src/app/interface/GuiaImportada';
 import { GuiaImportadaDetalle } from 'src/app/interface/GuiaImportadaDetalle';
+import { docRef } from 'src/app/interface/docRef';
 
 @Component({
   selector: 'app-guia-transportista',
@@ -22,6 +23,7 @@ import { GuiaImportadaDetalle } from 'src/app/interface/GuiaImportadaDetalle';
   styleUrls: ['./guia-transportista.component.scss']
 })
 export class GuiaTransportistaComponent {
+  pageProduct=0;
   transportista= {} as transportista;
   fecha_emision = this.fechaActual();
   fecha_traslado = this.fechaActual().substring(0, 10);
@@ -71,7 +73,6 @@ export class GuiaTransportistaComponent {
 
   pais = 'PE';
   tipodocEmp = '6';
-  empresa = '';
   //variables por defecto
   medidas = [{ id: 'KGM', text: 'KGM' }, { id: 'NIU', text: 'NIU' }]
   medida = 'KGM';
@@ -81,7 +82,7 @@ export class GuiaTransportistaComponent {
 
   //doc relacionado
   tipoDocumentoDocRel='01';
-  documentosReferenciados=[];
+  documentosReferenciados:docRef[]=[];
   tipoDocumentoEmisorDocRel='6';
   motivoTraslado='';
   descripcionMotivoTraslado='';
@@ -160,7 +161,7 @@ export class GuiaTransportistaComponent {
   }
   asignarTransportista(transportista:transportista) {
      this.transportista=transportista;
-     this.apiT.getSerie().subscribe((res: any) => {
+     this.apiT.getSerie(transportista.numerodocumentotransportista).subscribe((res: any) => {
       this.arraySerie = res;
     });
     console.log(this.transportista)
@@ -317,7 +318,7 @@ export class GuiaTransportistaComponent {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.api.BorrarSerie(numDoc, serie).subscribe((res: any) => {
-          this.apiT.getSerie().subscribe((res: any) => {
+          this.apiT.getSerie(this.transportista.numerodocumentotransportista).subscribe((res: any) => {
             Swal.close();
             this.tablaSeries = res;
           });
@@ -337,10 +338,9 @@ export class GuiaTransportistaComponent {
       this.api.CrearSerie(form.value).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
-        this.apiT.getSerie().subscribe((res: any) => {
+        this.apiT.getSerie(this.transportista.numerodocumentotransportista).subscribe((res: any) => {
           this.tablaSeries = res;
         });
-        this.empresa = '';
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -451,7 +451,7 @@ export class GuiaTransportistaComponent {
   listarSerie(serie) {
     if(this.transportista.numerodocumentotransportista??""!=""){
       Swal.showLoading()
-      this.apiT.getSerie().subscribe((res: any) => {
+      this.apiT.getSerie(this.transportista.numerodocumentotransportista).subscribe((res: any) => {
         Swal.close();
         this.abrirModal(serie);
         this.tablaSeries = res;
@@ -497,15 +497,18 @@ export class GuiaTransportistaComponent {
     if (this.serieNumero == '') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero esta vacio!' });
     }
-    if (this.serieNumero.length != 13) {
-      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero debe tener un ancho de 13 letras!' });
-    }
-    if (this.empresa == '') {
-      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una empresa!' });
-    }
-    if (this.destinatario??"") {
-      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
-    }
+    // if (this.origen.direccionorigen??''=="") {
+    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un Punto de partida!' });
+    // }
+    // if (this.destino.direcciondestino??''=="") {
+    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un Punto de llegada!' });
+    // }
+    // if (this.remitente.razonsocialemisor??''=="") {
+    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una empresa!' });
+    // }
+    // if (this.destinatario.razonsocialadquiriente??""=="") {
+    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
+    // }
     if (this.medida == '') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una medida!' });
     }
@@ -528,7 +531,7 @@ export class GuiaTransportistaComponent {
     }
     var obj = this.llenarGuia();
     Swal.showLoading();
-    this.api.declararGuia(obj).subscribe((res: any) => {
+    this.apiT.declararGuia(obj).subscribe((res: any) => {
       Swal.fire({ icon: 'success', title: 'Se creó con éxito',text:res }).then(res => {
         window.location.reload();
       })
@@ -546,7 +549,7 @@ export class GuiaTransportistaComponent {
     var obj = {
       tipoDocumentoRemitente: this.remitente.tipodocumentoemisor,
       numeroDocumentoRemitente: this.remitente.numerodocumentoemisor,
-      serieNumeroGuia: this.serieNumero,
+      serieNumeroGuia: this.serieNumero+'-1',
       fechaEmisionGuia: this.fecha_emision.substring(0, 10), //solo date yyyy-mm-dd
       observaciones: this.observaciones,
       razonSocialRemitente: this.remitente.razonsocialemisor, //razonsocialemisor empresa
@@ -570,8 +573,8 @@ export class GuiaTransportistaComponent {
       numeroPlacaVehiculoPrin: "", //conductor chofer
       numeroBultos: this.Nrobultos,
       ubigeoPtoLLegada: this.destino.ubigeodestino, //destino
- /*   codigoPtollegada:
-      codigoPtoPartida: */
+      codigoPtollegada: this.destino.codigolocalanexo??"",
+      codigoPtoPartida: this.origen.codigolocalanexo??"",
       direccionPtoLLegada: this.destino.direcciondestino, //destino
       ubigeoPtoPartida: this.destino.ubigeodestino, //origen
       direccionPtoPartida: this.origen.direccionorigen, //origen
@@ -679,5 +682,21 @@ extraerGuiaImportada(guia:GuiaImportada){
   this.unidadMedidaPesoBruto=guia.unidadMedidaPeso;
   this.pesoBruto=totalPesobruto.toString()??"0";
   this.Nrobultos=totalBultos.toString()??"0";
+  this.fecha_emision=(guia.fechaEmision+"T"+guia.horaEmision).substring(0,16);
+  this.fecha_traslado=guia.fechaEntregaBienes;
+  this.medida=guia.unidadMedidaPeso;
+  this.convertirFormatoDocFef();
+}
+convertirFormatoDocFef(){
+ this.documentosReferenciados=[];
+  this.selectedGuias.forEach(element=>{
+    this.documentosReferenciados.push({
+      codigoDocumentoDocRel:element.tipoDocumentoGuia,
+      numeroDocumentoDocRel:element.serieNumeroGuia,
+      numeroDocumentoEmisorDocRel:element.numeroDocumentoRemitente,
+      tipoDocumentoDocRel:element.tipoDocumentoGuia,
+      tipoDocumentoEmisorDocRel:element.tipoDocumentoRemitente
+    })
+  })
 }
 }

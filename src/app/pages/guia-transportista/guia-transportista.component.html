@@ -43,7 +43,7 @@
                 style="color: red;">(*)</b></label></div>
           <div class="col-md-7">
             <div class="input-group mb-1">
-              <select class="form-select">
+              <select class="form-select" [(ngModel)]="serieNumero">
                 <option value>Seleccione una serie</option>
                 <option value="{{item.serie}}" *ngFor="let item of arraySerie">{{item.serie}}</option>
               </select>
@@ -59,11 +59,6 @@
           <div class="col-md-9"><div class="input-group mb-1">
             <input type="text" class="form-control" readonly
                 [(ngModel)]="remitente.razonsocialemisor">
-      <!--       <select class="form-select" (ngModelChange)="empresaChange($event)" aria-label=".form-select-sm example"
-              [(ngModel)]="empresa">
-              <option value="">Seleccione un remitente</option>
-              <option value="{{item.id}}" *ngFor="let item of empresas">{{item.text}}</option>
-            </select> -->
             <div class="input-group-append">
               <button class="input-group-text" (click)="listarEmpresas(Empresa)">...</button>
             </div>
@@ -151,7 +146,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-8 col-lg-4 col-sm-6">
+      <div class="col-md-8 col-lg-8 col-sm-6">
         <div class="table-responsive scroll-color"
           style="flex: 65%;height:200px">
           <table class="table table-sm">
@@ -172,8 +167,15 @@
           </table>
         </div>
       </div>
-
-      <div class="col-md-8 col-lg-6 col-sm-6">
+      <div class="col-lg-2">
+        <div class="col-12"> <button class="btn btn-light mb-1 w-100 "
+          style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button></div>
+        <div class="col-12 mt-3">
+          <button class="btn btn-primary mb-1 w-100 " style="height: 80px;" (click)="declararGuia()"
+           >Declarar</button>
+      </div>
+  </div>
+      <div class="col-md-8 col-lg-12 col-sm-6">
         <div class="table-responsive " style="flex: 65%;height:200px">
           <table class="table table-sm">
             <thead class="table-light">
@@ -186,7 +188,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of listadoProductoDetalles; let i = index">
+              <tr *ngFor="let item of listadoProductoDetalles| paginate: {id:'product', itemsPerPage: 10, currentPage: pageProduct } ;  let i = index">
                 <td>{{item.codigo}}</td>
                 <td>{{item.cantidad}}</td>
                 <td>{{item.unidadmedida}}</td>
@@ -199,15 +201,10 @@
             </tbody>
           </table>
         </div>
+        <div style="text-align: center;"><pagination-controls id="product"
+          (pageChange)="pageProduct = $event"></pagination-controls></div>
       </div>
-      <div class="col-lg-2">
-          <div class="col-12"> <button class="btn btn-light mb-1 w-100 "
-            style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button></div>
-          <div class="col-12 mt-3">
-            <button class="btn btn-primary mb-1 w-100 " style="height: 80px;"
-             >Declarar</button>
-        </div>
-    </div>
+
     </div>
   </div>
   <ng-template #Empaque>
