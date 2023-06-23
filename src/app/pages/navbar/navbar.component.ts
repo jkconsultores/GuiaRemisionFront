@@ -11,11 +11,12 @@ export class NavbarComponent {
 
 
   constructor(public rout:Router){
-    this.empresa = localStorage.getItem("emp");
+    this.empresa = localStorage.getItem("usuario");
     console.log(this.empresa);
   }
   CerrarSesion(){
     localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
     this.rout.navigateByUrl('login');
   }
 }

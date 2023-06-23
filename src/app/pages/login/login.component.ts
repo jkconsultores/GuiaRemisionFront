@@ -51,12 +51,14 @@ export class LoginComponent {
       if (this.recordarme) {
         localStorage.setItem('user', this.usuario.nombreUsuario);
         localStorage.setItem('emp', this.usuario.empresa.toLowerCase());
+
       }else{
         localStorage.removeItem('user');
         localStorage.removeItem('emp');
       }
       Swal.close();
       this.guard.SessionSaved(res.token);
+      this.guard.UserSaved(res.usuario);
       // localStorage.setItem('token',res.token);
       localStorage.setItem('emp',this.usuario.empresa.toLowerCase());
       return this.router.navigateByUrl('main');
