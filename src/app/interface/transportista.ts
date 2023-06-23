@@ -1,5 +1,5 @@
 export interface transportista{
-  numerotransportista:string,
+  numerodocumentotransportista:string,
   tipodocumentotransportista:string,
   razonsocialtransportista:string,
   numeroregistromtc:string

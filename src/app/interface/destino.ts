@@ -1,8 +1,9 @@
 export interface AAA_DESTINO {
-  numerodocumentoadquiriente: string | null;
-  ubigeodestino: string | null;
-  direcciondestino: string | null;
-  usuarioid: number;
-  datestamp: Date;
-  codigolocalanexo:string;
+  numerodocumentoadquiriente?: string;
+  ubigeodestino?: string;
+  direcciondestino?: string;
+  usuarioid?: number;
+  datestamp?: Date;
+  codigolocalanexo?:string;
+
 }

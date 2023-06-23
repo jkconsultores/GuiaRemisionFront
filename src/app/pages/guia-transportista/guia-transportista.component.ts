@@ -1,3 +1,4 @@
+import { producto } from './../../interface/producto';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +10,12 @@ import { chofer } from 'src/app/interface/chofer';
 import { adquiriente } from 'src/app/interface/adquiriente';
 import { destinatario } from 'src/app/interface/destinatario';
 import { ApiTransportistaService } from 'src/app/service/api-transportista.service';
+import { serie } from 'src/app/interface/serie';
+import { AAA_EMPRESA } from 'src/app/interface/Empresa';
+import { AAA_DESTINO } from 'src/app/interface/destino';
+import { GuiaImportada } from 'src/app/interface/GuiaImportada';
+import { GuiaImportadaDetalle } from 'src/app/interface/GuiaImportadaDetalle';
+
 @Component({
   selector: 'app-guia-transportista',
   templateUrl: './guia-transportista.component.html',
@@ -30,13 +37,16 @@ export class GuiaTransportistaComponent {
   filterOrigen='';
   filterDestinatario='';
   filterProducto='';
+  filterDestino='';
   //tablas
   tablaEmpresas = [];
   tablaOrigenes = [];
-  tablaSeries = [];
+  tablaSeries:serie[] = [];
   arraySerie = [];
+  arrayGuiasImportadas:GuiaImportada[]=[]
+  arrayGuiasImportadasCabecera= [];
+  arrayGuiasImportadasDetalle:GuiaImportadaDetalle[]=[];
   //arreglos
-  destino = [];
   destinos = [];
   origenes = [];
   guias=[];
@@ -44,17 +54,21 @@ export class GuiaTransportistaComponent {
   transportistas=[];
   empresas = [];
   chofer = [];
-  origen = [];
+  selectedGuias:GuiaImportada[]=[]
   // variable para formulario crud destinatario select tipo doc
   tipodocForm = '1';
   tipodocTrans = '6';
   tipodocChofer = '1';
   correlativo = 0;
     //destinatario
-    destinatario={razonSocialDestinatario:''} as destinatario;
+    destinatario={razonsocialadquiriente:''} as destinatario;
+    //remitente
+    remitente={razonsocialemisor:''} as AAA_EMPRESA;
+    //origen
+    origen = {} as origen;
     //destino
-    // destino={} destino
-    //
+    destino={} as AAA_DESTINO;
+
   pais = 'PE';
   tipodocEmp = '6';
   empresa = '';
@@ -62,14 +76,17 @@ export class GuiaTransportistaComponent {
   medidas = [{ id: 'KGM', text: 'KGM' }, { id: 'NIU', text: 'NIU' }]
   medida = 'KGM';
   modalRef: NgbModalRef;
-  listadoProductoDetalles = [];//todos los detalles de la guia de remision
+  listadoProductoDetalles:producto[] = [];//todos los detalles de la guia de remision
 
 
   //doc relacionado
   tipoDocumentoDocRel='01';
   documentosReferenciados=[];
   tipoDocumentoEmisorDocRel='6';
-
+  motivoTraslado='';
+  descripcionMotivoTraslado='';
+  modalidadTraslado='';
+  unidadMedidaPesoBruto='';
  choferSec={nombreConductorSec1:''} as chofer
 
  ubigeoDestinoUpdate = '';
@@ -87,7 +104,6 @@ export class GuiaTransportistaComponent {
   observaciones = '';
   pesoBruto = '';
   Nrobultos = '';
-  vorigen = '';
   constructor(private modalService: NgbModal,public api: ApiRestService,public apiT:ApiTransportistaService){
     this.obtenerInfo();
   }
@@ -100,6 +116,7 @@ export class GuiaTransportistaComponent {
     const hours = now.getHours() - 5;
     const minutes = now.getMinutes();
     const isoString = new Date(year, month, day, hours, minutes).toISOString().slice(0, -8);
+    console.log(isoString);
     return (isoString);
   }
   validarDecimal(event: KeyboardEvent) {
@@ -134,48 +151,8 @@ export class GuiaTransportistaComponent {
   cerrarModal(){
     this.modalRef.close();
   }
-  crearRef(ref: NgForm) {
-    if (ref.valid) {
-      const codigoDocumentoDocRel = ref.value.codigoDocumentoDocRel;
-      const tipoDocumentoDocRel = ref.value.tipoDocumentoDocRel;
-      const numeroDocumentoDocRel = ref.value.numeroDocumentoDocRel;
-      const numeroDocumentoEmisorDocRel = ref.value.numeroDocumentoEmisorDocRel;
-      const tipoDocumentoEmisorDocRel = ref.value.tipoDocumentoEmisorDocRel;
-      if (!this.existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel)) {
-        // El elemento no existe, se agrega a la matriz
-        this.documentosReferenciados.push(ref.value);
-        this.salir();
-      } else {
-        // El elemento ya existe
-        // Aquí puedes agregar el código que desees si el elemento ya existe
-        Swal.fire({icon:'warning',title:'Ya existe el documento!',text:'El docuemnto con el codigo: '+codigoDocumentoDocRel+' ya existe'})
-      }
-    }
-  }
   salir() {
     this.modalRef.close();
-  }
-  existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
-    return this.documentosReferenciados.some((elemento) =>
-      elemento.codigoDocumentoDocRel == codigoDocumentoDocRel &&
-      elemento.tipoDocumentoDocRel == tipoDocumentoDocRel &&
-      elemento.numeroDocumentoDocRel == numeroDocumentoDocRel &&
-      elemento.numeroDocumentoEmisorDocRel == numeroDocumentoEmisorDocRel &&
-      elemento.tipoDocumentoEmisorDocRel == tipoDocumentoEmisorDocRel
-    );
-  }
-  borrarRef(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel) {
-    const existe = this.existeDocumentoReferenciado(codigoDocumentoDocRel, tipoDocumentoDocRel, numeroDocumentoDocRel, numeroDocumentoEmisorDocRel, tipoDocumentoEmisorDocRel);
-    if (existe) {
-      const indice = this.documentosReferenciados.findIndex((elemento) =>
-        elemento.codigoDocumentoDocRel == codigoDocumentoDocRel &&
-        elemento.tipoDocumentoDocRel == tipoDocumentoDocRel &&
-        elemento.numeroDocumentoDocRel == numeroDocumentoDocRel &&
-        elemento.numeroDocumentoEmisorDocRel == numeroDocumentoEmisorDocRel &&
-        elemento.tipoDocumentoEmisorDocRel == tipoDocumentoEmisorDocRel
-      );
-      this.documentosReferenciados.splice(indice, 1);
-    }
   }
   borrarListadoProductoDetalles(codigo, descripcion, cantidad, unidadmedida) {
     const indice = this.listadoProductoDetalles.findIndex((elemento) => elemento.codigo == codigo && elemento.descripcion == descripcion && elemento.cantidad == cantidad && elemento.unidadmedida == unidadmedida);
@@ -183,6 +160,10 @@ export class GuiaTransportistaComponent {
   }
   asignarTransportista(transportista:transportista) {
      this.transportista=transportista;
+     this.apiT.getSerie().subscribe((res: any) => {
+      this.arraySerie = res;
+    });
+    console.log(this.transportista)
      this.modalService.dismissAll();
    }
    borrarTransportista(ndoc) {
@@ -322,24 +303,6 @@ export class GuiaTransportistaComponent {
       }
     })
   }
-  empresaChange(id: string) {
-    if (id) {
-      Swal.showLoading();
-      var num = id.split('-');
-      const partes = id.split("-");
-      const ruc = partes.shift();
-      this.empresaid = id;
-      this.api.getOrigenes(ruc, num[3]).subscribe((res: any) => {
-        Swal.close();
-        this.origen = res['ORIGEN'];
-        this.arraySerie = res['SERIE'];
-        this.serieNumero = '';
-        this.vorigen = '';
-      }, error => {
-        Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
-      })
-    }
-  }
   borrarSerie(numDoc, serie) {
     Swal.showLoading();
     Swal.fire({
@@ -354,7 +317,7 @@ export class GuiaTransportistaComponent {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.api.BorrarSerie(numDoc, serie).subscribe((res: any) => {
-          this.api.getSerie().subscribe((res: any) => {
+          this.apiT.getSerie().subscribe((res: any) => {
             Swal.close();
             this.tablaSeries = res;
           });
@@ -374,7 +337,7 @@ export class GuiaTransportistaComponent {
       this.api.CrearSerie(form.value).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
-        this.api.getSerie().subscribe((res: any) => {
+        this.apiT.getSerie().subscribe((res: any) => {
           this.tablaSeries = res;
         });
         this.empresa = '';
@@ -434,31 +397,32 @@ export class GuiaTransportistaComponent {
     this.codigolocalanexoUpdate = '';
     this.contador++;
   }
-  asignarDestinatario(nombre, ndoc, correo, tipoDoc) {
-    var nuevoDestinatario={ razonSocialDestinatario:''} as destinatario
-    this.destinatario.razonSocialDestinatario = nuevoDestinatario.razonSocialDestinatario;
-    this.destinatario.correoDestinatario = correo;
-    this.destinatario.numeroDocumentoDestinatario = ndoc;
-    this.destinatario.tipoDocumentoDestinatario = tipoDoc;
-    this.modalService.dismissAll();
+  asignarDestinatario(destinatario:destinatario) {
     Swal.showLoading();
-    var getDestinosForm={
-      numerodocumentoadquiriente:ndoc,
-      datestamp:new Date(),
-      direcciondestino:null,
-      usuarioid:0,
-      ubigeodestino:null,
-      codigolocalanexo:""
-    };
-
-    this.api.getDestinos(getDestinosForm).subscribe((res: any) => {
-      this.destino = res;
+    this.destinatario=destinatario;
+    this.modalService.dismissAll();
+    this.apiT.getDestinosByRuc(destinatario.numerodocumentoadquiriente).subscribe((res:any)=>{
+      this.destinos=res;
       Swal.close();
-    });
+    },err=>{
+      Swal.close();
+    })
+
   }
   EditarDestinatario(modal, contenido) {
     this.destinatarioObject = contenido;
     this.abrirModal(modal);
+  }
+  asignarRemitente(remitente:AAA_EMPRESA){
+    Swal.showLoading();
+    this.remitente=remitente;
+    this.apiT.getOrigenes(remitente.numerodocumentoemisor.toString()).subscribe((res:any)=>{
+      this.origenes=res;
+      Swal.close();
+    },err=>{
+      Swal.close();
+    })
+    this.modalRef.close();
   }
   updateAdquiriente(form: NgForm) {
     if (form.invalid) { return }
@@ -485,11 +449,235 @@ export class GuiaTransportistaComponent {
     this.destinatarioObject.destino.splice(indice, 1);
   }
   listarSerie(serie) {
-    Swal.showLoading()
-    this.api.getSerie().subscribe((res: any) => {
-      Swal.close();
-      this.abrirModal(serie);
-      this.tablaSeries = res;
-    });
+    if(this.transportista.numerodocumentotransportista??""!=""){
+      Swal.showLoading()
+      this.apiT.getSerie().subscribe((res: any) => {
+        Swal.close();
+        this.abrirModal(serie);
+        this.tablaSeries = res;
+      },err=>{
+        Swal.close();
+      });
+    }
   }
+  listarOrigen(origen) {
+    Swal.showLoading();
+    this.api.getOrigen().subscribe((res: any) => {
+      this.abrirModal(origen);
+      this.tablaOrigenes = res;
+      Swal.close();
+    },err=>{
+      Swal.close();
+    });
+
+  }
+  asignarOrigen(origen:origen){
+    this.origen=origen;
+    this.modalRef.close();
+  }
+  getDestinatarios(){
+    Swal.showLoading();
+    this.apiT.getDestinatario().subscribe((res:any)=>{
+      this.destinatarios=res
+      Swal.close();
+    },err=>{
+      Swal.close();
+    })
+  }
+  asignarDestino(destino:AAA_DESTINO){
+    this.destino=destino;
+    this.modalRef.close();
+  }
+  importarGuias(){
+    this.apiT.getImportarGuiasTransportista(this.remitente.numerodocumentoemisor).subscribe((res:any)=>{
+      this.arrayGuiasImportadas=res;
+    })
+  }
+  declararGuia() {
+    if (this.serieNumero == '') {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero esta vacio!' });
+    }
+    if (this.serieNumero.length != 13) {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero debe tener un ancho de 13 letras!' });
+    }
+    if (this.empresa == '') {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una empresa!' });
+    }
+    if (this.destinatario??"") {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
+    }
+    if (this.medida == '') {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una medida!' });
+    }
+    if (this.pesoBruto == '') {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo peso bruto es requerido!' });
+    }
+    if(this.validarDecimales(parseFloat(this.pesoBruto))){
+      return Swal.fire({ icon: 'warning', title: 'Corregir Campo', text: 'El campo peso bruto solo se admite hasta 3 decimales!' });
+    }
+    if (this.Nrobultos != '' && Number.isNaN(this.Nrobultos)) {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo N° Bultos debe ser numerico!' });
+    }
+    if (this.listadoProductoDetalles.length == 0) {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Esta guia no tiene Detalles!' });
+    }
+    for (var i = 0; i < this.listadoProductoDetalles.length; i++) {
+      if (this.listadoProductoDetalles[i].unidadmedida.length > 3) {
+        return Swal.fire({ icon: 'warning', title: 'Algunos de los productos no tienen unidades de medida válidas según SUNAT.!', text: 'Unidad de medida no puede tener un ancho mayor a 3!' });
+      }
+    }
+    var obj = this.llenarGuia();
+    Swal.showLoading();
+    this.api.declararGuia(obj).subscribe((res: any) => {
+      Swal.fire({ icon: 'success', title: 'Se creó con éxito',text:res }).then(res => {
+        window.location.reload();
+      })
+    }, err => {
+      if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+      else { Swal.fire({ icon: 'warning', text: 'Hubo un error al crear el registro' }); }
+    })
+  }
+  validarDecimales(num:Number){
+    const numString = num.toString();
+    const match = numString.match(/\.(\d{4,})/);
+    return match !== null && match[1].length > 3;
+  }
+  llenarGuia() {
+    var obj = {
+      tipoDocumentoRemitente: this.remitente.tipodocumentoemisor,
+      numeroDocumentoRemitente: this.remitente.numerodocumentoemisor,
+      serieNumeroGuia: this.serieNumero,
+      fechaEmisionGuia: this.fecha_emision.substring(0, 10), //solo date yyyy-mm-dd
+      observaciones: this.observaciones,
+      razonSocialRemitente: this.remitente.razonsocialemisor, //razonsocialemisor empresa
+      correoRemitente:'-',
+      correoDestinatario: this.destinatario.correo??"-",
+      numeroDocumentoDestinatario: this.destinatario.numerodocumentoadquiriente,
+      tipoDocumentoDestinatario: this.destinatario.tipodocumentoadquiriente,
+      razonSocialDestinatario: this.destinatario.razonsocialadquiriente,
+      motivoTraslado: this.motivoTraslado,
+      descripcionMotivoTraslado: this.descripcionMotivoTraslado,
+      indTransbordoProgramado: '',
+      pesoBrutoTotalBienes: parseFloat(this.pesoBruto).toString(),
+      unidadMedidaPesoBruto: this.unidadMedidaPesoBruto,
+      modalidadTraslado: this.modalidadTraslado, //01 publico 02 privado
+      fechaInicioTraslado: this.fecha_traslado,
+      numeroRucTransportista: this.transportista.numerodocumentotransportista,
+      tipoDocumentoTransportista: this.transportista.tipodocumentotransportista,
+      razonSocialTransportista: this.transportista.razonsocialtransportista,
+      numeroDocumentoConductor: "",
+      tipoDocumentoConductor: "",
+      numeroPlacaVehiculoPrin: "", //conductor chofer
+      numeroBultos: this.Nrobultos,
+      ubigeoPtoLLegada: this.destino.ubigeodestino, //destino
+ /*   codigoPtollegada:
+      codigoPtoPartida: */
+      direccionPtoLLegada: this.destino.direcciondestino, //destino
+      ubigeoPtoPartida: this.destino.ubigeodestino, //origen
+      direccionPtoPartida: this.origen.direccionorigen, //origen
+      // horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
+      fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
+      numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
+      nombreConductor: "",
+      apellidoConductor: "",
+      numeroLicencia: "", //chofer
+      spE_DESPATCH_ITEM: this.listadoProductoDetalles,
+      SPE_DESPATCH_DOCRELACIONADO:this.documentosReferenciados,
+      numeroDocumentoConductorSec1:this.choferSec.numeroDocumentoConductorSec1,
+      tipoDocumentoConductorSec1:this.choferSec.tipoDocumentoConductorSec1,
+      nombreConductorSec1:this.choferSec.nombreConductorSec1,
+      apellidoConductorSec1 :this.choferSec.apellidoConductorSec1,
+      numeroLicenciaSec1:this.choferSec.numeroLicenciaSec1,
+      textoAuxiliar250_1:"",//placa carreta
+      textoAuxiliar250_3:"",//modelo carreta,
+      textoAuxiliar250_2:"" // modelo del vehiculo
+    }
+    return obj;
+  }
+asignarGuiaImportada(guia:GuiaImportada){
+  const checkbox = document.getElementById(guia.serieNumeroGuia + guia.numeroDocumentoRemitente) as HTMLInputElement;
+  if (checkbox.checked) {
+    this.selectedGuias.push(guia);
+  } else {
+    const index = this.selectedGuias.indexOf(guia);
+    if (index > -1) {
+      this.selectedGuias.splice(index, 1);
+    }
+  }
+}
+cerrarModalGuiasImportadas(){
+  this.modalService.dismissAll();
+  this.arrayGuiasImportadas=[];
+  this.selectedGuias=[];
+}
+asignarGuiasImportadas(){
+ this.arrayGuiasImportadasCabecera= this.arrayGuiasImportadas.map(item => {
+    return { serieNumeroGuia: item.serieNumeroGuia, numeroDocumentoRemitente: item.numeroDocumentoRemitente,fechaEmision:item.fechaEmision };
+  });
+  this.modalService.dismissAll();
+  var nuevoArreglo=this.convertirFormatoArreglo(this.arrayGuiasImportadas);
+  this.apiT.getImportarDetallesGuiasTransportista(nuevoArreglo).subscribe((a:any)=>{
+      this.convertirFormatoProducto(a);
+  })
+  if(this.selectedGuias.length>0){
+   this.extraerGuiaImportada(this.selectedGuias[0]);
+  }
+  this.arrayGuiasImportadas=[];
+  this.selectedGuias=[];
+}
+abrirModalEvitarCerrar(ModalTemplate) {
+  return this.modalService.open(ModalTemplate, { size: 'lg' ,backdrop:'static'});
+}
+convertirFormatoArreglo(array:GuiaImportada[]){
+  var nuevoArray=[]
+  array.forEach(element => {
+   nuevoArray.push({ruc:element.numeroDocumentoRemitente,serieYCorrealtivo:element.serieNumeroGuia})
+  });
+  return nuevoArray;
+}
+convertirFormatoProducto(array:any){
+  this.listadoProductoDetalles=[];
+  array.forEach(element => {
+    this.listadoProductoDetalles.push({cantidad:element.cantidad,codigo:element.codigo,descripcion:element.descripcion,unidadmedida:element.unidad})
+  });
+}
+extraerGuiaImportada(guia:GuiaImportada){
+
+  this.remitente={
+    razonsocialemisor:guia.razonSocialRemitente,
+    numerodocumentoemisor:guia.numeroDocumentoRemitente,
+    tipodocumentoemisor:guia.tipoDocumentoRemitente,
+  };
+  this.origen={
+    direccionorigen:guia.direccionPtoPartida,
+    numerodocumentoemisor:guia.numeroDocumentoRemitente,
+    ubigeoorigen:guia.ubigeoPtoPartida,
+    codigolocalanexo:guia.codigoPtoPartida
+  }
+  this.destinatario={
+  razonsocialadquiriente:guia.razonSocialDestinatario,
+  tipodocumentoadquiriente:guia.tipoDocumentoDestinatario,
+  numerodocumentoadquiriente:guia.numeroDocumentoDestinatario,
+  }
+  this.destino={
+    direcciondestino:guia.direccionPtoLlegada,
+    numerodocumentoadquiriente:guia.numeroDocumentoDestinatario,
+    ubigeodestino:guia.ubigeoPtoLLegada,
+    codigolocalanexo:guia.codigoPtoLLegada
+  }
+  const totalPesobruto = this.selectedGuias.reduce((total, objeto) => {
+    const pesobruto = parseFloat(objeto.pesoBruto);
+    return total + pesobruto;
+  }, 0);
+  const totalBultos = this.selectedGuias.reduce((total, objeto) => {
+    const pesobruto = parseFloat(objeto.numeroBultos);
+    return total + pesobruto;
+  }, 0);
+  this.motivoTraslado=guia.modalidadTraslado;
+  this.descripcionMotivoTraslado=guia.descripcionMotivo;
+  this.modalidadTraslado=guia.modalidadTraslado;
+  this.unidadMedidaPesoBruto=guia.unidadMedidaPeso;
+  this.pesoBruto=totalPesobruto.toString()??"0";
+  this.Nrobultos=totalBultos.toString()??"0";
+}
 }
