@@ -45,8 +45,7 @@
             <div class="input-group mb-1">
               <select class="form-select">
                 <option value>Seleccione una serie</option>
-                <option value="{{item.SERIE}}" *ngFor="let item of arraySerie">{{item.SERIE|
-                  slice : 0 : 4}}</option>
+                <option value="{{item.serie}}" *ngFor="let item of arraySerie">{{item.serie}}</option>
               </select>
               <div class="input-group-append">
                 <button class="input-group-text" (click)="listarSerie(Serie)">...</button>
@@ -58,19 +57,19 @@
         <div class="row">
           <div class="col-md-3"><label class="w-100 center">REMITENTE <b style="color: red;">(*)</b></label></div>
           <div class="col-md-9"><div class="input-group mb-1">
-            <select class="form-select" (ngModelChange)="empresaChange($event)" aria-label=".form-select-sm example"
+            <input type="text" class="form-control" readonly
+                [(ngModel)]="remitente.razonsocialemisor">
+      <!--       <select class="form-select" (ngModelChange)="empresaChange($event)" aria-label=".form-select-sm example"
               [(ngModel)]="empresa">
               <option value="">Seleccione un remitente</option>
               <option value="{{item.id}}" *ngFor="let item of empresas">{{item.text}}</option>
-            </select>
+            </select> -->
             <div class="input-group-append">
               <button class="input-group-text" (click)="listarEmpresas(Empresa)">...</button>
             </div>
           </div></div>
         </div>
-
       </div>
-
       <div class="col-md-6 col-lg-4 col-sm-6">
         <div class="row">
           <div class="col-md-5"><label class="w-100 ">PESO BRUTO <b
@@ -90,22 +89,16 @@
       </div>
       <div class="col-md-6 col-lg-8 col-sm-6">
         <div class="row">
-
-          <div class="col-md-3"><label class="w-100 center">PTO PARTIDA <b
-                style="color: red;">(*)</b></label></div>
+          <div class="col-md-3"><label class="w-100 center">PTO PARTIDA <b style="color: red;">(*)</b></label></div>
           <div class="col-md-9"><div class="input-group mb-1 w-100">
-              <select class="form-select " aria-label=".form-select-sm example">
-                <option value>Seleccione un origen</option>
-                <option value="{{item.id}}" *ngFor="let item of []">{{item.text}}</option>
-              </select>
+            <input type="text" class="form-control" readonly [(ngModel)]="origen.direccionorigen">
               <div class="input-group-append">
-                <button class="input-group-text">...</button>
+                <button class="input-group-text" (click)="listarOrigen(Origen)">...</button>
               </div>
-            </div></div>
+            </div>
+          </div>
         </div>
-
       </div>
-
       <div class="col-md-6 col-lg-4 col-sm-6">
         <div class="row">
           <div class="col-md-6 col-lg-5">
@@ -123,9 +116,9 @@
               <b style="color: red;">(*)</b></label></div>
           <div class="col-md-6 col-lg-9"><div class="input-group">
               <input type="text" class="form-control" readonly
-                name="destinatario" [(ngModel)]="destinatario.razonSocialDestinatario">
+                name="destinatario" [(ngModel)]="destinatario.razonsocialadquiriente">
               <div class="input-group-append">
-                <button class="input-group-text" (click)="abrirModal(Destinatario)">...</button>
+                <button class="input-group-text" (click)="abrirModal(Destinatario);getDestinatarios();">...</button>
               </div>
             </div>
           </div>
@@ -147,11 +140,15 @@
         <div class="row">
           <div class="col-md-6 col-lg-3"><label class="w-100 center">PTO LLEGADA
               <b style="color: red;">(*)</b></label></div>
-          <div class="col-md-6 col-lg-9"><select class="form-select "
-              aria-label=".form-select-sm example">
-              <option value>Seleccione un destino</option>
-              <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
-            </select></div>
+          <div class="col-md-6 col-lg-9">
+            <div class="input-group mb-1 w-100">
+            <input type="text" class="form-control" readonly
+            [(ngModel)]="destino.direcciondestino">
+            <div class="input-group-append">
+              <button class="input-group-text" (click)="listarOrigen(Destino)">...</button>
+            </div>
+          </div>
+          </div>
         </div>
       </div>
       <div class="col-md-8 col-lg-4 col-sm-6">
@@ -166,69 +163,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let item of []| paginate: {id:'productoGuia', itemsPerPage: 8, currentPage: pageProductGuia } ; let i = index">
-
-              </tr>
-              <tr>
-                <td>T999-00000001</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000002</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000003</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000001</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000002</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000003</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000001</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000002</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000003</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000001</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000002</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
-              </tr>
-              <tr>
-                <td>T999-00000003</td>
-                <td>12345678912</td>
-                <td>01/04/2023</td>
+              <tr *ngFor="let item of arrayGuiasImportadasCabecera; let i = index">
+                <td>{{item.serieNumeroGuia}}</td>
+                <td>{{item.numeroDocumentoRemitente}}</td>
+                <td>{{item.fechaEmision}}</td>
               </tr>
             </tbody>
           </table>
@@ -264,7 +202,7 @@
       </div>
       <div class="col-lg-2">
           <div class="col-12"> <button class="btn btn-light mb-1 w-100 "
-            style="height: 80px;" (click)="abrirModal(referenciados)">Importar GRE</button></div>
+            style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button></div>
           <div class="col-12 mt-3">
             <button class="btn btn-primary mb-1 w-100 " style="height: 80px;"
              >Declarar</button>
@@ -348,7 +286,7 @@
     </div>
   </ng-template>
   <ng-template #referenciados>
-    <div class="card">
+    <div class="card" >
       <div class="card-header">
         <div style="display: flex; flex-wrap: wrap;justify-content: center;">
           <div>
@@ -364,103 +302,34 @@
           <table class="table table-bordered table-hover" style="width: 100%;">
             <thead>
               <tr>
-                <th scope="col">Tipo Doc</th>
-                <th scope="col">N° Doc Rel</th>
-                <th scope="col">N° Doc Emisor</th>
-                <th scope="col">Tipo Doc Emisor</th>
+                <th scope="col">Serie</th>
+                <th scope="col">N° Documento</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Fecha Emisión</th>
                 <th>Opt</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of documentosReferenciados">
-                <td> {{item.tipoDocumentoDocRel}}</td>
-                <td> {{item.numeroDocumentoDocRel}}</td>
-                <td> {{item.numerodocumentoemisorDocRel}}</td>
-                <td> {{item.tipoDocumentoEmisorDocRel}}</td>
-                <td><i
-                    (click)="borrarRef(item.codigoDocumentoDocRel,item.tipoDocumentoDocRel,item.numeroDocumentoDocRel,item.numerodocumentoemisorDocRel,item.tipoDocumentoEmisorDocRel)"
-                    class="fa-solid fa-trash"
-                    style="color: red;cursor: pointer;"></i></td>
+              <tr *ngFor="let item of arrayGuiasImportadas">
+                <td> {{item.serieNumeroGuia}}</td>
+                <td> {{item.numeroDocumentoRemitente}}</td>
+                <td> {{item.descripcionMotivo}}</td>
+                <td> {{item.fechaEmision}}</td>
+                <td style="align-items: center;">
+                  <div class="form-check" (click)="asignarGuiaImportada(item)">
+                    <input class="form-check-input" style="height: 25px;width: 25px;" type="checkbox" value="" [id]="item.serieNumeroGuia + item.numeroDocumentoRemitente">
+                    <label class="form-check-label" for="flexCheckDefault">
+                    </label>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
-  </ng-template>
-  <ng-template #CrudRef>
-    <div class="card">
-      <div class="card-header">
-        <h5>Agregar Documento Referenciados</h5>
-      </div>
-      <div class="card-body">
-        <form class="margen-modal" (ngSubmit)="crearRef(docref)"
-          #docref="ngForm" id="docref">
-          <div class="form-group row">
-            <label for="input" class="col-sm-3 col-form-label" style="width:
-              197px"><a style="color: red;">(*)</a> Tipo
-              Doc:</label>
-            <div class="col-sm-8">
-              <select [(ngModel)]="tipoDocumentoDocRel" class="form-select"
-                name="tipoDocumentoDocRel" required>
-                <option value="01">Factura</option>
-                <option value="03">Boleta de venta</option>
-                <option value="09">Guia de Remisión</option>
-                <option value="50">DAM</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="input" class="col-sm-3 col-form-label" style="width:
-              197px"><a style="color: red;">(*)</a>
-              N° Doc Rel:</label>
-            <div class="col-sm-8">
-              <input type="text" ngModel class="form-control"
-                [ngClass]="{'is-invalid':
-                docref.submitted&&docref.controls['numeroDocumentoDocRel'].errors}"
-                name="numeroDocumentoDocRel"
-                required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="input" class="col-sm-3 col-form-label" style="width:
-             197px"><a style="color: red;">(*)</a>
-              N° Doc Emisor:</label>
-            <div class="col-sm-8">
-              <input type="text" maxlength="11" ngModel class="form-control"
-                [ngClass]="{'is-invalid':
-                docref.submitted&&docref.controls['numerodocumentoemisorDocRel'].errors}"
-                name="numerodocumentoemisorDocRel"
-                required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-3">
-              <label for="input" class="col-sm-3 col-form-label" style="width:
-              180px;"><a style="color: red;">(*)</a> Tipo
-                Doc Emisor:</label>
-            </div>
-            <div class="col-sm-8">
-              <select [(ngModel)]="tipoDocumentoEmisorDocRel"
-                class="form-select"
-                name="tipoDocumentoEmisorDocRel" required>
-                <option value="1">DNI</option>
-                <option value="4">CARNET DE EXTRANJERIA</option>
-                <option value="6">RUC</option>
-                <option value="7">PASAPORTE</option>
-              </select>
-            </div>
-          </div>
-        </form>
-        <div class="row mt-2">
-          <div style="text-align: right;">
-            <button class="btn btn-danger"
-              style="width: 80px;margin-right: 5px;"
-              (click)='salir()'>Salir</button>
-            <button class="btn btn-success" style="width: 90px;" form="docref"
-              type="submit">Aceptar</button>
-          </div>
-        </div>
+      <div class="card-footer" style="text-align: right;">
+        <button class="btn btn-danger" style="margin-right: 5px;width: 110px;" (click)="cerrarModalGuiasImportadas()">Salir</button>
+          <button class="btn btn-primary" (click)="asignarGuiasImportadas()">Asignar Guias</button>
       </div>
     </div>
   </ng-template>
@@ -585,56 +454,6 @@
       </div>
     </div>
   </ng-template>
-  <ng-template #Origen>
-    <div class="card">
-      <div class="card-header">
-        <div class="container">
-          <h5>ORIGEN &nbsp; &nbsp;</h5>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-3">
-            <label style="width: 150px;">ORIGEN</label>
-          </div>
-          <div class="col-9">
-            <div class="input-group mb-1">
-              <input type="text" [(ngModel)]="filterOrigen" name="filterOrigen"
-                class="form-control">
-              <div class="input-group-append">
-                <button class="btn btn-secondary"
-                  (click)="abrirModal(CrudOrigen)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="table-responsive" style="height: 400px;">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th scope="col">N° Doc Emisor</th>
-                <th scope="col">Ubigeo</th>
-                <th scope="col">Dirección</th>
-                <th scope="col" style="text-align: center;">Opt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let item of origenes|filter:filterOrigen:['numerodocumentoemisor','ubigeoorigen','direccionorigen']">
-                <th scope="row">{{item.numerodocumentoemisor}}</th>
-                <td>{{item.ubigeoorigen}}</td>
-                <td>{{item.direccionorigen}}</td>
-                <td style="text-align: center;cursor: pointer;"
-                  (click)="borrarOrigen(item);"><i
-                    class="fa-solid fa-trash"
-                    style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </ng-template>
   <ng-template #CrudOrigen>
     <div class="card">
       <div class="card-header">
@@ -725,15 +544,15 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of tablaEmpresas">
-                <th scope="row">{{item.numerodocumentoemisor}}</th>
-                <td>{{item.nombreempresa}}</td>
-                <td>{{item.tipodocumentoemisor}}</td>
-                <td>{{item.razonsocialemisor}}</td>
-                <td>{{item.ubigeoemisor}}</td>
-                <td>{{item.direccionemisor}}</td>
-                <td>{{item.distritoemisor}}</td>
-                <td>{{item.provinciaemisor}}</td>
-                <td>{{item.razoncomercialemisor}}</td>
+                <th scope="row" (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.numerodocumentoemisor}}</th>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.nombreempresa}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.tipodocumentoemisor}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.razonsocialemisor}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.ubigeoemisor}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.direccionemisor}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.distritoemisor}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.provinciaemisor}}</td>
+                <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.razoncomercialemisor}}</td>
                 <td style="text-align: center;cursor: pointer;" (click)="borrarEmpresa(item.numerodocumentoemisor);"><i
                     class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
               </tr>
@@ -1006,16 +825,16 @@
             <tbody>
               <tr *ngFor="let item of destinatarios| filter:filterDestinatario:['numerodocumentoadquiriente','razonsocialadquiriente']">
                 <th scope="row" style="cursor: pointer;"
-                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  (click)="asignarDestinatario(item)">
                   {{item.numerodocumentoadquiriente}}</th>
                 <td style="cursor: pointer;"
-                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  (click)="asignarDestinatario(item)">
                   {{item.tipodocumentoadquiriente}}</td>
                 <td style="cursor: pointer;"
-                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  (click)="asignarDestinatario(item)">
                   {{item.razonsocialadquiriente}}</td>
                 <td style="cursor: pointer;"
-                  (click)="asignarDestinatario(item.razonsocialadquiriente,item.numerodocumentoadquiriente,item.correo,item.tipodocumentoadquiriente)">
+                  (click)="asignarDestinatario(item)">
                   {{item.direccionadquiriente}}</td>
                 <td style="text-align: center;cursor: pointer;" (click)="EditarDestinatario(UpdateDestinatario,item)"><i
                     class="fa-solid fa-user-pen" style="font-size: 20px;color: rgb(25, 0, 255);"></i></td>
@@ -1320,6 +1139,94 @@
           <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
           <button class="btn btn-success" style="width: 90px;" form="destinatario" type="submit">Aceptar</button>
         </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #Origen>
+  <div class="card">
+    <div class="card-header">
+      <div class="container">
+        <h5>PTO SALIDA &nbsp; &nbsp;</h5>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <label style="width: 150px;">PTO SALIDA</label>
+        </div>
+        <div class="col-9">
+          <div class="input-group mb-1">
+            <input type="text" [(ngModel)]="filterOrigen" name="filterOrigen" class="form-control">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" (click)="abrirModal(CrudOrigen)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive" style="height: 400px;">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">N° Doc Emisor</th>
+              <th scope="col">Ubigeo</th>
+              <th scope="col">Dirección</th>
+              <th scope="col" style="text-align: center;">Opt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of tablaOrigenes|filter:filterOrigen:['numerodocumentoemisor','ubigeoorigen','direccionorigen']">
+              <th scope="row" (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.numerodocumentoemisor}}</th>
+              <td (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.ubigeoorigen}}</td>
+              <td (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.direccionorigen}}</td>
+              <td style="text-align: center;cursor: pointer;"
+                (click)="borrarOrigen(item);"><i
+                  class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #Destino>
+  <div class="card">
+    <div class="card-header">
+      <div class="container">
+        <h5>PTO LLEGADA &nbsp; &nbsp;</h5>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <label style="width: 150px;">PTO LLEGADA</label>
+        </div>
+        <div class="col-9">
+          <div class="input-group mb-1">
+            <input type="text" name="filterDestino" [(ngModel)]="filterDestino" class="form-control">
+            <!-- <div class="input-group-append">
+              <button class="btn btn-secondary" (click)="abrirModal(CrudOrigen)">+</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive" style="height: 400px;">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">N° Doc Emisor</th>
+              <th scope="col">Ubigeo</th>
+              <th scope="col">Dirección</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of destinos|filter:filterDestino:['numerodocumentoadquiriente','ubigeodestino','direcciondestino']">
+              <th scope="row" (click)="asignarDestino(item)" style="cursor: pointer;">{{item.numerodocumentoadquiriente}}</th>
+              <td (click)="asignarDestino(item)" style="cursor: pointer;">{{item.ubigeodestino}}</td>
+              <td (click)="asignarDestino(item)" style="cursor: pointer;">{{item.direcciondestino}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
