@@ -4,7 +4,9 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\pages",
-    "\\src\\app\\pages\\navbar"
+    "\\src\\app\\pages\\navbar",
+    "\\src\\app\\pages\\reporte"
   ],
+  "SelectedNode": "\\src\\app\\pages\\reporte\\reporte.component.ts",
   "PreviewInSolutionExplorer": false
 }

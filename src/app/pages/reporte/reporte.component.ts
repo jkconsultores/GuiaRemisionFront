@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
 @Component({
   selector: 'app-reporte',
   templateUrl: './reporte.component.html',
@@ -60,5 +62,11 @@ export class ReporteComponent {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'spe_despatch.xlsx');
   }
-
+  descargarPdf(url: string,nombre:string) {
+    this.api.ObtenerPDFDeFactura(url).subscribe((resp: any) => this.downLoadFile(resp, "application/pdf", nombre))
+  }
+  downLoadFile(data: any, type: string, nombre: string) {
+    const file = new File([data], nombre, { type: type });
+    saveAs(file);
+  }
 }

@@ -89,7 +89,9 @@
                 <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED/RC_05'">RECHAZADO</span>
                 <span class="badge text-bg-success" *ngIf="item.bl_estadoProceso=='L'">Enviado</span>
              </td>
-              <td><i (click)="abrirModal(DetallesSpe,item.serieNumeroGuia)" class="fa-sharp fa-solid fa-circle-info"
+              <td>
+               <!--  deonde esta el url?? <i (click)="descargarPdf()" class="bi bi-file-earmark-pdf me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i> -->
+              <i (click)="abrirModal(DetallesSpe,item.serieNumeroGuia)" class="fa-sharp fa-solid fa-circle-info"
                   style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;"></i></td>
             </tr>
           </tbody>
