@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { transportista } from '../../interface/transportista';
 import { ApiRestService } from 'src/app/service/api-rest.service';
 import { origen } from 'src/app/interface/origen';
-import { chofer } from 'src/app/interface/chofer';
+import { choferSec1 } from 'src/app/interface/chofer';
 import { adquiriente } from 'src/app/interface/adquiriente';
 import { destinatario } from 'src/app/interface/destinatario';
 import { ApiTransportistaService } from 'src/app/service/api-transportista.service';
@@ -88,7 +88,7 @@ export class GuiaTransportistaComponent {
   descripcionMotivoTraslado='';
   modalidadTraslado='';
   unidadMedidaPesoBruto='';
- choferSec={nombreConductorSec1:''} as chofer
+ choferSec={nombreConductorSec1:''} as choferSec1
 
  ubigeoDestinoUpdate = '';
  direccionDestinoUpdate = '';
@@ -407,7 +407,6 @@ export class GuiaTransportistaComponent {
     },err=>{
       Swal.close();
     })
-
   }
   EditarDestinatario(modal, contenido) {
     this.destinatarioObject = contenido;

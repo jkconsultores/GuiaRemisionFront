@@ -63,7 +63,8 @@ export class ReporteComponent {
     XLSX.writeFile(wb, 'spe_despatch.xlsx');
   }
   descargarPdf(url: string,nombre:string) {
-    this.api.ObtenerPDFDeFactura(url).subscribe((resp: any) => this.downLoadFile(resp, "application/pdf", nombre))
+    window.open(url,'_blank');
+    // this.api.ObtenerPDFDeFactura(url).subscribe((resp: any) => this.downLoadFile(resp, "application/pdf", nombre))
   }
   downLoadFile(data: any, type: string, nombre: string) {
     const file = new File([data], nombre, { type: type });

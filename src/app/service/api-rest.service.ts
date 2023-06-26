@@ -129,4 +129,7 @@ export class ApiRestService implements OnInit{
   public ObtenerPDFDeFactura(ruta:string){
     return this.http.get<any>(ruta,{headers:{'Content-Type':'application/json'},responseType:'blob' as 'json'});
   }
+  public getDestinosByRuc(ndoc){
+    return this.http.post(this.url+'GreTransportista/Destino',[ndoc],this.auth.obtenerDatos())
+}
 }

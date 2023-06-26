@@ -8,7 +8,13 @@ import { Router } from '@angular/router';
 import { AAA_DESTINO } from '../../interface/destino';
 import { T_Vehiculo, VehiculoDTO } from 'src/app/interface/Vehiculos';
 import * as XLSX from 'xlsx';
-import { chofer } from 'src/app/interface/chofer';
+import { choferSec1 } from 'src/app/interface/chofer';
+import { transportista } from 'src/app/interface/transportista';
+import { destinatario } from 'src/app/interface/destinatario';
+import { AAA_EMPRESA } from 'src/app/interface/Empresa';
+import { origen } from 'src/app/interface/origen';
+import { serie } from 'src/app/interface/serie';
+import { chofer } from 'src/app/interface/choferSec';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -17,6 +23,21 @@ import { chofer } from 'src/app/interface/chofer';
 export class MainComponent  {
   //carga excel
   @ViewChild('fileInput') fileInput!: ElementRef;
+  transportista= {} as transportista;
+  //destinatario
+  destinatario={razonsocialadquiriente:''} as destinatario;
+  //remitente
+  remitente={razonsocialemisor:''} as AAA_EMPRESA;
+  //origen
+  origen = {} as origen;
+  //destino
+  destino={} as AAA_DESTINO;
+  //chofer
+  chofer={nombre:''} as chofer;
+  //chofersec
+  choferSec={nombre:''} as chofer;
+  //destinatario
+  destinatarioObject: adquiriente;
   //detalles guia pag
   pageProductGuia=1;
   //carga excel
@@ -27,27 +48,39 @@ export class MainComponent  {
   documentosReferenciados=[];
   tipoDocumentoEmisorDocRel='6';
 
-  choferSec={nombreConductorSec1:''} as chofer
-
-  filterTransportista='';
-  filterOrigen='';
-  filterDestinatario='';
-  filterProducto='';
   pais = 'PE';
   tipodocEmp = '6';
   ubigeoDestinoUpdate = '';
   direccionDestinoUpdate = '';
   codigolocalanexoUpdate = '';
-  destinatarioObject: adquiriente;
+
+  //arreglos
+  destinos = [];
+  origenes = [];
+  guias=[];
+  destinatarios=[];
+  transportistas=[];
+  empresas = [];
+  choferes = [];
+  motivos = [];
+  //tablas
   tablaEmpresas = [];
   tablaOrigenes = [];
-  tablaSeries = [];
+  tablaSeries:serie[] = [];
   arraySerie = [];
+
   // variable para formulario crud destinatario select tipo doc
   tipodocForm = '1';
   tipodocTrans = '6';
   tipodocChofer = '1';
   correlativo = 0;
+
+  //filtro inputs
+  filterTransportista='';
+  filterOrigen='';
+  filterDestinatario='';
+  filterProducto='';
+  filterDestino='';
   //-------------------------------------------------------------
   pageProduct = 0;
   vmotivo = '';
@@ -55,66 +88,41 @@ export class MainComponent  {
   fecha_emision = this.fechaActual();
   horaEmision = new Date(this.fecha_emision).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   fecha_traslado = this.fechaActual().substring(0, 10);
-  empresas = [];
-  empresa = '';
+
   modalidad = [{ id: '01', text: 'PUBLICO', }, { id: '02', text: 'PRIVADO' }];
   medidas = [{ id: 'KGM', text: 'KGM' }, { id: 'NIU', text: 'NIU' }]
   medida = 'KGM';
   medidaProductoCrud = 'KGM';
-  motivos = [];
-  destinatarios = [];
-  transportistas = [];
-  chofer = [];
-  destino = [];
-  origen = [];
+
   modalRef: NgbModalRef;
-  colorVehiculo ='';
-  marcaVehiculo='';
-  modeloVehiculo='';
-  placaVehiculoVehiculo='';
-  placaCarreta='';
-  modeloCarreta='';
-  marcaCarretaSec='';
+
   //producto modal -----------------------------------------
   selectedRow: number;
   objetoProducto: any = {};
   //destino modal-------------------------------------------
-  destinos = [];
   ubigeoDestino = '';
   direccionDestino = '';
   codigolocalanexo = '';
   contador = 0;
-  //select destino------------------------------------------
-  vdestino = '';
-  //select origen-------------------------------------------
-  vorigen = '';
   //producto modal------------------------------------------
   descripcion = '';
-  //Guia de remision----------------------------------------
-  empresaid = '';
-  destinatario_input = '';
-  chofer_input = '';
-  transportista_input = '';
+
   productos = [];//todos los productos del modal
   listadoProductoDetalles = [];//todos los detalles de la guia de remision
   cantidad = '1';
+  //datos adicionales chofer placas
   placaChofer = '';
+  placaCarreta = '';
+  modeloCarreta='';
+  marcaVehiculo='';
+
   brevete = '';
   serieNumero = '';
   observaciones = '';
-  correoDestinatario = '';
-  numeroDocDestinatario = '';
-  tipodocumentoadquiriente = '';
+
   pesoBruto = '';
   medidaGRE = 'KGM';
-  numeroRucTransportista = '';
-  mtcTransportista = '';
-  tipoDocumentoTransportista = '';
-  razonSocialTransportista = '';
-  numeroDocumentoConductor: '';
-  tipoDocumentoConductor: '';
-  nombreConductor: '';
-  apellidoConductor: '';
+
   Nrobultos = '';
   public VehiculosActivos:T_Vehiculo[]=[];
   public DestinoSeelct:AAA_DESTINO | undefined;
@@ -132,7 +140,7 @@ export class MainComponent  {
       Swal.close();
       this.empresas = res['empresas'];
       this.motivos = res['motivos'];
-      this.chofer = res['chofer'];
+      this.choferes = res['chofer'];
       this.transportistas = res['transportista'];
       this.destinatarios = res['adquiriente'];
     });
@@ -265,6 +273,10 @@ export class MainComponent  {
     this.codigolocalanexoUpdate = '';
     this.contador++;
   }
+  asignarOrigen(origen:origen){
+    this.origen=origen;
+    this.modalRef.close();
+  }
   borrarDestinoArray(id) {
     const indice = this.destinos.findIndex((elemento) => elemento.id === id);
     this.destinos.splice(indice, 1);
@@ -273,96 +285,54 @@ export class MainComponent  {
     const indice = this.destinatarioObject.destino.findIndex((elemento) => elemento.id === id);
     this.destinatarioObject.destino.splice(indice, 1);
   }
-  asignarDestinatario(nombre, ndoc, correo, tipoDoc) {
-    this.destinatario_input = '';
-    this.correoDestinatario = '';
-    this.numeroDocDestinatario = '';
-    this.tipodocumentoadquiriente = '';
-    this.destinatario_input = nombre;
-    this.correoDestinatario = correo;
-    this.numeroDocDestinatario = ndoc;
-    this.tipodocumentoadquiriente = tipoDoc;
+  asignarDestinatario(destinatario:destinatario) {
     this.modalService.dismissAll();
+    this.destinatario=destinatario;
     Swal.showLoading();
-    this.DestinoSeelct={
-      numerodocumentoadquiriente:ndoc,
-      datestamp:new Date(),
-      direcciondestino:null,
-      usuarioid:0,
-      ubigeodestino:null,
-      codigolocalanexo:""
-    };
-
-    this.api.getDestinos(this.DestinoSeelct).subscribe((res: any) => {
-      this.destino = res;
-      this.DestinoAUSar=res;
+    this.api.getDestinosByRuc(destinatario.numerodocumentoadquiriente).subscribe((res:any)=>{
+      this.destinos=res;
       Swal.close();
-    });
+    },err=>{
+      Swal.close();
+    })
   }
-  asignarChofer(ndoc, nombre, apellido, placa, tipoDoc, brevete) {
-    this.limpiarChofer();
-    this.chofer_input = nombre + ' ' + apellido;
-    this.tipoDocumentoConductor = tipoDoc;
-    this.numeroDocumentoConductor = ndoc;
-    this.brevete = brevete;
+  asignarChofer(chofer:chofer) {
+    console.log(chofer)
+    this.chofer=chofer;
     this.modalService.dismissAll();
-    this.placaChofer = placa;
-    this.nombreConductor = nombre;
-    this.apellidoConductor = apellido;
+    console.log(this.chofer)
+
   }
-  asignarChoferSec(ndoc, nombre, apellido, placa, tipoDoc, brevete) {
-    var chofer={
-      nombreConductorSec1:nombre,
-      apellidoConductorSec1:apellido,
-      numeroDocumentoConductorSec1:ndoc,
-      numeroLicenciaSec1:brevete,
-      tipoDocumentoConductorSec1:tipoDoc } as chofer;
-    this.choferSec=chofer;
+  asignarChoferSec(choferSec:chofer) {
+    this.choferSec=choferSec;
     this.modalService.dismissAll();
   }
-  limpiarChofer(){
-    this.chofer_input = '';
-    this.tipoDocumentoConductor = '';
-    this.numeroDocumentoConductor = '';
-    this.brevete = '';
-    this.placaChofer = '';
-    this.nombreConductor = '';
-    this.apellidoConductor = '';
-  }
-  asignarTransportista(ndoc, nombre, tipoDoc, mtc) {
-   this.limpiarTransportista();
-    this.transportista_input = nombre;
-    this.numeroRucTransportista = ndoc;
-    this.razonSocialTransportista = nombre;
-    this.tipoDocumentoTransportista = tipoDoc;
-    this.mtcTransportista = mtc;
+
+  asignarTransportista(transportista:transportista) {
+    this.transportista=transportista;
     this.modalService.dismissAll();
   }
   salir() {
     this.destinos = []
     this.modalRef.close();
   }
-  empresaChange(id: string) {
-    if (id) {
-      Swal.showLoading();
-      var num = id.split('-');
-      const partes = id.split("-");
-      const ruc = partes.shift();
-      this.empresaid = id
-      this.api.getOrigenes(ruc, num[3]).subscribe((res: any) => {
-        Swal.close();
-        this.origen = res['ORIGEN'];
-        this.arraySerie = res['SERIE'];
-        this.serieNumero = '';
-        this.vorigen = '';
-      }, error => {
-        Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
-      })
-    }
-  }
+
   seleccionarProducto(codigo, descripcion, unidadmedida, row: number) {
     this.selectedRow = row;
     this.objetoProducto = { codigo: codigo, descripcion: descripcion, unidadmedida: unidadmedida }
+  }
+  asignarRemitente(remitente:AAA_EMPRESA){
+    console.log(remitente)
+    this.remitente=remitente;
+    this.modalRef.close();
+    this.api.getOrigenes(remitente.numerodocumentoemisor,0).subscribe((res: any) => {
+      Swal.close();
+      this.origen = res['ORIGEN'];
+      this.arraySerie = res['SERIE'];
+      this.serieNumero = '';
+    }, error => {
+      Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
+    })
   }
   asignarProducto() {
     this.objetoProducto.cantidad = this.cantidad.toString();
@@ -407,16 +377,13 @@ export class MainComponent  {
     if (this.serieNumero.length != 13) {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero debe tener un ancho de 13 letras!' });
     }
-    if (this.empresa == '') {
+    if (this.remitente.razonsocialemisor == '') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una empresa!' });
     }
-    if (this.destinatario_input == '') {
-      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
-    }
-    if (this.vdestino == '') {
+    if (this.destino.direcciondestino == '') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destino!' });
     }
-    if (this.vorigen == '') {
+    if (this.origen.direccionorigen == '') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un origen!' });
     }
     if (this.vmotivo == '') {
@@ -431,10 +398,10 @@ export class MainComponent  {
     if(this.validarDecimales(parseFloat(this.pesoBruto))){
       return Swal.fire({ icon: 'warning', title: 'Corregir Campo', text: 'El campo peso bruto solo se admite hasta 3 decimales!' });
     }
-    if (this.transportista_input == '' && this.vmodalidad == '01') {
+    if (this.transportista.razonsocialtransportista == '' && this.vmodalidad == '01') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un transportista!' });
     }
-    if (this.chofer_input == '' && this.vmodalidad == '02') {
+    if (this.chofer.nombre == '' && this.vmodalidad == '02') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un chofer!' });
     }
     if (this.Nrobultos != '' && Number.isNaN(this.Nrobultos)) {
@@ -464,38 +431,24 @@ export class MainComponent  {
   }
   llenarGuia() {
     if(this.vmodalidad=='01'){
-      this.limpiarChofer();
+      this.choferSec={} as chofer;
+      this.chofer={} as chofer;
     }else{
-      this.limpiarTransportista();
+      this.transportista={} as transportista;
     }
-    const partes = this.empresaid.split("-");
-    const ndocEmisor = partes.shift();
-    const tipoDoc = partes.shift();
-    const razonsocialEmisor = partes.join("-");
-    var tipoDocRem = tipoDoc;
-    var numeroDocRem = ndocEmisor;
-    var razonsocialemisorRem = razonsocialEmisor;
-    var motivo = this.vmotivo.split('-');
-    var destino = this.vdestino.split('-');
-    var destino0 = destino.shift();
-    var destino1 = destino.shift();
-    var destino2 = destino.join('-')
-    var origen = this.vorigen.split('-');
-    var origen0 = origen.shift();
-    var origen1 = origen.shift();
-    var origen2 = origen.join('-')
+    var motivo=this.vmotivo.split("-");
     var obj = {
-      tipoDocumentoRemitente: tipoDocRem,
-      numeroDocumentoRemitente: numeroDocRem,
+      tipoDocumentoRemitente: this.remitente.tipodocumentoemisor,
+      numeroDocumentoRemitente: this.remitente.numerodocumentoemisor,
       serieNumeroGuia: this.serieNumero,
       fechaEmisionGuia: this.fecha_emision.substring(0, 10), //solo date yyyy-mm-dd
       observaciones: this.observaciones,
-      razonSocialRemitente: razonsocialemisorRem, //razonsocialemisor empresa
+      razonSocialRemitente: this.remitente.razoncomercialemisor, //razonsocialemisor empresa
       correoRemitente: '-',
-      correoDestinatario: this.correoDestinatario,
-      numeroDocumentoDestinatario: this.numeroDocDestinatario,
-      tipoDocumentoDestinatario: this.tipodocumentoadquiriente,
-      razonSocialDestinatario: this.destinatario_input,
+      correoDestinatario: this.destinatario.correo,
+      numeroDocumentoDestinatario: this.destinatario.numerodocumentoadquiriente,
+      tipoDocumentoDestinatario: this.destinatario.tipodocumentoadquiriente,
+      razonSocialDestinatario: this.destinatario.razonsocialadquiriente,
       motivoTraslado: motivo[0],
       descripcionMotivoTraslado: motivo[1],
       indTransbordoProgramado: '',
@@ -503,32 +456,32 @@ export class MainComponent  {
       unidadMedidaPesoBruto: this.medidaGRE,
       modalidadTraslado: this.vmodalidad, //01 publico 02 privado
       fechaInicioTraslado: this.fecha_traslado,
-      numeroRucTransportista: this.numeroRucTransportista,
-      tipoDocumentoTransportista: this.tipoDocumentoTransportista,
-      razonSocialTransportista: this.razonSocialTransportista,
-      numeroDocumentoConductor: this.numeroDocumentoConductor == null ? '' : this.numeroDocumentoConductor,
-      tipoDocumentoConductor: this.tipoDocumentoConductor == null ? '' : this.tipoDocumentoConductor,
+      numeroRucTransportista: this.transportista.numerodocumentotransportista,
+      tipoDocumentoTransportista: this.transportista.tipodocumentotransportista,
+      razonSocialTransportista: this.transportista.razonsocialtransportista,
+      numeroDocumentoConductor: this.chofer.numerodocumentochofer == null ? '' : this.chofer.numerodocumentochofer,
+      tipoDocumentoConductor: this.chofer.tipodocumentochofer == null ? '' : this.chofer.tipodocumentochofer,
       numeroPlacaVehiculoPrin: this.placaChofer, //conductor chofer
       numeroBultos: this.Nrobultos,
-      ubigeoPtoLLegada: destino1, //destino
- /*      codigoPtollegada:
-      codigoPtoPartida: */
-      direccionPtoLLegada: destino2, //destino
-      ubigeoPtoPartida: origen1, //origen
-      direccionPtoPartida: origen2, //origen
+      ubigeoPtoLLegada: this.destino.ubigeodestino??"", //destino
+      codigoPtollegada: this.destino.codigolocalanexo??"",
+      codigoPtoPartida:  this.origen.codigolocalanexo??"",
+      direccionPtoLLegada: this.destino.direcciondestino??"", //destino
+      ubigeoPtoPartida: this.origen.ubigeoorigen??"", //origen
+      direccionPtoPartida: this.origen.direccionorigen, //origen
       horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
-      numeroRegistroMTC: this.mtcTransportista,//puede estar en blanco
-      nombreConductor: this.nombreConductor,
-      apellidoConductor: this.apellidoConductor,
-      numeroLicencia: this.brevete, //chofer
+      numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
+      nombreConductor: this.chofer.nombre,
+      apellidoConductor: this.chofer.apellido,
+      numeroLicencia: this.chofer.brevete, //chofer
       spE_DESPATCH_ITEM: this.listadoProductoDetalles,
       SPE_DESPATCH_DOCRELACIONADO:this.documentosReferenciados,
-      numeroDocumentoConductorSec1:this.choferSec.numeroDocumentoConductorSec1,
-      tipoDocumentoConductorSec1:this.choferSec.tipoDocumentoConductorSec1,
-      nombreConductorSec1:this.choferSec.nombreConductorSec1,
-      apellidoConductorSec1 :this.choferSec.apellidoConductorSec1,
-      numeroLicenciaSec1:this.choferSec.numeroLicenciaSec1,
+      numeroDocumentoConductorSec1:this.choferSec.numerodocumentochofer,
+      tipoDocumentoConductorSec1:this.choferSec.tipodocumentochofer,
+      nombreConductorSec1:this.choferSec.nombre,
+      apellidoConductorSec1 :this.choferSec.apellido,
+      numeroLicenciaSec1:this.choferSec.brevete,
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
       textoAuxiliar250_2:this.marcaVehiculo // modelo del vehiculo
@@ -624,7 +577,7 @@ export class MainComponent  {
         this.api.getOrigen().subscribe((res: any) => {
           this.tablaOrigenes = res;
         });
-        this.empresa = '';
+        this.remitente={} as AAA_EMPRESA;
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -651,7 +604,7 @@ export class MainComponent  {
         this.api.getSerie().subscribe((res: any) => {
           this.tablaSeries = res;
         });
-        this.empresa = '';
+        this.remitente={} as AAA_EMPRESA;
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -756,7 +709,7 @@ export class MainComponent  {
             Swal.close();
             this.transportistas = res;
           });
-          this.limpiarTransportista();
+          this.transportista={} as transportista;
         }, err => {
           if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
           else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -779,20 +732,13 @@ export class MainComponent  {
       if (result.isConfirmed) {
         this.api.BorrarChofer(ndoc).subscribe((res: any) => {
            this.obtenerInfo();
-           this.limpiarChofer();
+           this.chofer={} as chofer;
         }, err => {
           if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
           else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
         })
       }
     })
-  }
-  limpiarTransportista(){
-    this.transportista_input = '';
-    this.numeroRucTransportista = '';
-    this.razonSocialTransportista = '';
-    this.tipoDocumentoTransportista = '';
-    this.mtcTransportista = '';
   }
   validarDecimales(num:Number){
     const numString = num.toString();
@@ -940,5 +886,9 @@ export class MainComponent  {
     this.dataProductosExcel=[];
     this.modalRef.close();
 
+  }
+  asignarDestino(destino:AAA_DESTINO){
+    this.destino=destino;
+    this.modalRef.close();
   }
 }
