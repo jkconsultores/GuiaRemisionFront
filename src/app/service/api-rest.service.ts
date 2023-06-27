@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { AAA_EMPRESA } from '../interface/Empresa';
 import { AuthServiceService } from './auth-service.service';
 import { T_Vehiculo, VehiculoDTO } from '../interface/Vehiculos';
-import { AAA_TIPODOCUMENTO } from '../interface/aaa_TipoDocumento';
+import { AAA_TIPODOCUMENTO, urlANdTipo } from '../interface/aaa_TipoDocumento';
 import { MOTIVOS } from '../interface/Motivos';
 import { USUARIO, UsuariosDTO } from '../interface/Usuario';
 @Injectable({
@@ -126,10 +126,10 @@ export class ApiRestService implements OnInit{
   public agregarUsuario(usuario:UsuariosDTO){
     return this.http.post<USUARIO>(this.url+"Session/Register",usuario,this.auth.obtenerDatos())
   }
-  public ObtenerPDFDeFactura(ruta:string){
-    return this.http.get<any>(ruta,{headers:{'Content-Type':'application/json'},responseType:'blob' as 'json'});
+  public ObtenerPDFDeFactura(ruta:urlANdTipo){
+    return this.http.post<any>(this.url+"GestionDeDocumentos/Descargar",ruta,{headers:{'Content-Type':'application/json','Authorization': 'Bearer '+this.auth.ObtenerSoloBearer()},responseType:'blob' as 'json'});
   }
   public getDestinosByRuc(ndoc){
     return this.http.post(this.url+'GreTransportista/Destino',[ndoc],this.auth.obtenerDatos())
-}
+  }
 }

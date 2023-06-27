@@ -232,7 +232,16 @@ export class MainComponent  {
     }
     if (form.submitted) {
       Swal.showLoading();
-      this.api.crearChofer(form.value).subscribe((res: any) => {
+      let valueform = form.value;
+      let chofer:chofer ={
+        apellido : valueform.APELLIDO,
+brevete:valueform.BREVETE,
+nombre:valueform.NOMBRE,
+numerodocumentochofer: valueform.numerodocumentochofer,
+placavehiculo: valueform.PLACAVEHICULO,
+tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
+      } ;
+      this.api.crearChofer(chofer).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
         this.obtenerInfo();

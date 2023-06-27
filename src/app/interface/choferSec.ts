@@ -1,8 +1,8 @@
 export interface chofer{
-apellido:string,
-brevete:string,
-nombre:string,
-numerodocumentochofer:string,
-placavehiculo:string,
-tipodocumentochofer:string
+  numerodocumentochofer: string
+  tipodocumentochofer: string
+  nombre: string
+  apellido: string
+  brevete: string
+  placavehiculo: string
 }

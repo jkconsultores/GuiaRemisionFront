@@ -81,16 +81,18 @@
               <td>{{item.pesoBrutoTotalBienes}}</td>
               <td>{{item.fechaInicioTraslado}}</td>
               <td>
-                <span class="badge text-bg-primary" *ngIf="item.bl_estadoProceso=='SIGNED/AC_03'">ACEPTADO</span>
-                <span class="badge text-bg-warning" *ngIf="item.bl_estadoProceso=='SIGNED/PE_02'">EN PROCESO</span>
-                <span class="badge text-bg-warning" *ngIf="item.bl_estadoProceso=='SIGNED/PE_09'">EN PROCESO</span>
-                <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED'">ERROR LOCAL</span>
-                <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED/AN_04'">ANULADO</span>
-                <span class="badge text-bg-danger" *ngIf="item.bl_estadoProceso=='SIGNED/RC_05'">RECHAZADO</span>
-                <span class="badge text-bg-success" *ngIf="item.bl_estadoProceso=='L'">Enviado</span>
+                <span class="badge text-bg-primary" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/AC_03'" (click)="MostrarEstado(item.bl_mensajeSunat)">ACEPTADO</span>
+                <span class="badge text-bg-warning" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/PE_02'" (click)="MostrarEstado(item.bl_mensajeSunat)">EN PROCESO</span>
+                <span class="badge text-bg-warning" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/PE_09'" (click)="MostrarEstado(item.bl_mensajeSunat)">EN PROCESO</span>
+                <span class="badge text-bg-danger" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED'" (click)="MostrarEstado(item.bl_mensajeSunat)">ERROR LOCAL</span>
+                <span class="badge text-bg-danger" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/AN_04'" (click)="MostrarEstado(item.bl_mensajeSunat)">ANULADO</span>
+                <span class="badge text-bg-danger" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/RC_05'" (click)="MostrarEstado(item.bl_mensajeSunat)">RECHAZADO</span>
+                <span class="badge text-bg-success" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='L'" (click)="MostrarEstado(item.bl_mensajeSunat)">Enviado</span>
              </td>
               <td>
-                <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_url_pdf,(item.serieNumeroGuia+'.pdf'))" class="bi bi-file-earmark-pdf me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
+                <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_url_pdf,(item.serieNumeroGuia+'.pdf'),'application/json')" class="bi bi-file-earmark-pdf me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
+                <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_url_cdr,(item.serieNumeroGuia+'.cdr'),'application/cdr')" class="bi bi-file-earmark-medical me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
+                <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_xml_rsp,(item.serieNumeroGuia+'.xml'),'application/xml')" class="bi bi-filetype-xml me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
               <i (click)="abrirModal(DetallesSpe,item.serieNumeroGuia)" class="fa-sharp fa-solid fa-circle-info"
                   style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;"></i></td>
             </tr>
