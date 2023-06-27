@@ -322,12 +322,10 @@ export class MainComponent  {
     this.objetoProducto = { codigo: codigo, descripcion: descripcion, unidadmedida: unidadmedida }
   }
   asignarRemitente(remitente:AAA_EMPRESA){
-    console.log(remitente)
     this.remitente=remitente;
     this.modalRef.close();
     this.api.getOrigenes(remitente.numerodocumentoemisor,0).subscribe((res: any) => {
       Swal.close();
-      this.origen = res['ORIGEN'];
       this.arraySerie = res['SERIE'];
       this.serieNumero = '';
     }, error => {
@@ -562,10 +560,14 @@ export class MainComponent  {
     });
   }
   listarOrigen(origen) {
-    this.api.getOrigen().subscribe((res: any) => {
+    if((this.remitente.numerodocumentoemisor??"")==''){
+      return Swal.fire({icon:'warning',title:'Ingrese una empresaa'});
+    }
+    this.api.getOrigenesByRuc(this.remitente.numerodocumentoemisor).subscribe((res:any)=>{
+      this.tablaOrigenes=res;
+    },err=>{},()=>{
       this.abrirModal(origen);
-      this.tablaOrigenes = res;
-    });
+    })
   }
   crearOrigen(form) {
     if (form.invalid) { return }
@@ -681,7 +683,6 @@ export class MainComponent  {
           this.api.getOrigen().subscribe((res: any) => {
             Swal.close();
             this.tablaOrigenes = res;
-
           });
         }, err => {
           if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }

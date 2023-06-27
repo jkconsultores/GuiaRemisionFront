@@ -19,7 +19,6 @@ export class ApiTransportistaService {
     return this.http.get(this.url+'Aaa/getSerie/tipo/31/'+ruc,this.auth.obtenerDatos());
   }
   public getOrigenes(ndoc:string){
-
     return this.http.post(this.url+'GreTransportista/Origenes',[ndoc],this.auth.obtenerDatos())
   }
   public getDestinatario(){

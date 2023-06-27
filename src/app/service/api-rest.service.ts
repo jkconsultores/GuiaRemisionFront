@@ -28,6 +28,10 @@ export class ApiRestService implements OnInit{
   public crearAdquiriente(form){
     return this.http.post(this.url+'AAA',form,this.auth.obtenerDatos())
   }
+  public getOrigenesByRuc(ndoc:string){
+    return this.http.post(this.url+'GreTransportista/Origenes',[ndoc],this.auth.obtenerDatos())
+  }
+
   public updateAdquiriente(form){
     return this.http.post(this.url+'AAA/UpdateAdquiriente',form,this.auth.obtenerDatos())
   }

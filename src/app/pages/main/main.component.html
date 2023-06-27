@@ -79,7 +79,7 @@
               <input type="text" class="form-control" readonly
               [(ngModel)]="destino.direcciondestino">
               <div class="input-group-append">
-                <button class="input-group-text" (click)="listarOrigen(Destino)">...</button>
+                <button class="input-group-text" (click)="abrirModal(Destino)">...</button>
               </div>
             </div>
           </div>
@@ -740,11 +740,11 @@
           <tbody>
             <tr (click)="seleccionarProducto(item.codigo,item.descripcion,item.unidadmedida,i)"
               *ngFor="let item of productos| filter:filterProducto:['descripcion','codigo'] | paginate: {id:'pasistencia', itemsPerPage: 8, currentPage: pageProduct } ; let i = index "
-              style="cursor: pointer;" [ngClass]="{'selected-row': i === selectedRow}">
-              <td>{{item.codigo}}</td>
-              <td>{{item.descripcion}}</td>
-              <td>{{item.unidadmedida}}</td>
-              <td style="text-align: center;cursor: pointer;" (click)="borrarProducto(item.codigo);"><i
+              style="cursor: pointer;" >
+              <td [ngClass]="{'selected-row': i === selectedRow}">{{item.codigo}}</td>
+              <td [ngClass]="{'selected-row': i === selectedRow}">{{item.descripcion}}</td>
+              <td [ngClass]="{'selected-row': i === selectedRow}">{{item.unidadmedida}}</td>
+              <td [ngClass]="{'selected-row': i === selectedRow}" style="text-align: center;cursor: pointer;" (click)="borrarProducto(item.codigo);"><i
                   class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
             </tr>
           </tbody>
@@ -997,7 +997,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of tablaEmpresas">
-              <th scope="row">{{item.numerodocumentoemisor}}</th>
+              <th (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.numerodocumentoemisor}}</th>
               <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.nombreempresa}}</td>
               <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.tipodocumentoemisor}}</td>
               <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.razonsocialemisor}}</td>
