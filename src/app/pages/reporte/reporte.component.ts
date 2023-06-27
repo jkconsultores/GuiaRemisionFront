@@ -4,6 +4,7 @@ import { NgbDateStruct, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { urlANdTipo } from 'src/app/interface/aaa_TipoDocumento';
 
 @Component({
   selector: 'app-reporte',
@@ -62,12 +63,30 @@ export class ReporteComponent {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'spe_despatch.xlsx');
   }
-  descargarPdf(url: string,nombre:string) {
-    window.open(url,'_blank');
-    // this.api.ObtenerPDFDeFactura(url).subscribe((resp: any) => this.downLoadFile(resp, "application/pdf", nombre))
+  descargarPdf(url: string,nombre:string,tipo:string) {
+    // window.open(url,'_blank');
+    let datos:urlANdTipo={
+      url:url,
+      nombre:nombre,
+      tipo:tipo
+    }
+    this.downloadDocument(url,nombre);
+    // this.api.ObtenerPDFDeFactura(datos).subscribe((resp: any) => this.downLoadFile(resp, tipo, nombre))
   }
   downLoadFile(data: any, type: string, nombre: string) {
     const file = new File([data], nombre, { type: type });
     saveAs(file);
   }
+  MostrarEstado(mensaje:string){
+    Swal.fire("Mensaje",mensaje,"info")
+  }
+
+  downloadDocument(url: string, filename: string): void {
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.download = filename;
+    link.click();
+  }
+
 }

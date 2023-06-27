@@ -6,3 +6,8 @@ export interface AAA_TIPODOCUMENTO {
   serie: string;
   correlativo: number;
 }
+export interface urlANdTipo {
+  url: string;
+  tipo: string;
+  nombre: string;
+}

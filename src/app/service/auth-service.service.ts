@@ -38,6 +38,13 @@ export class AuthServiceService {
   sendData(){
     this.login.next(this.isLogin());
   }
+  public ObtenerSoloBearer(){
+    var datos = localStorage.getItem(this.Usuario);
+    if(datos!="" && datos!= undefined){
+      return localStorage.getItem(this.Usuario)
+    }
+    return "";
+  }
   public obtenerDatos():any{
     var datos = localStorage.getItem(this.Usuario);
     if(datos!="" && datos!= undefined){
