@@ -10,11 +10,12 @@ import { RegistroDeUsuariosComponentComponent } from './pages/usuarios/registro-
 import { GuiaTransportistaComponent } from './pages/guia-transportista/guia-transportista.component';
 
 const routes: Routes = [
-  {path:'main',component:MainComponent,canActivate:[AuthGuard]},
-  {path:'',component:MainComponent,canActivate:[AuthGuard]},
+ /*  {path:'main',component:MainComponent,canActivate:[AuthGuard]}, */
+/*   {path:'',component:MainComponent,canActivate:[AuthGuard]}, */
   {path:'login',component:LoginComponent},
   {path:'facturacion',component:FacturacionElectronicaComponent,canActivate:[AuthGuard]},
   {path:'reporte',component:ReporteComponent,canActivate:[AuthGuard]},
+  {path:'',component:GuiaTransportistaComponent,canActivate:[AuthGuard]},
   {path:'gre-transportista',component:GuiaTransportistaComponent,canActivate:[AuthGuard]},
   {path:'reporte-transportistas',component:ReporteTransportistaComponent,canActivate:[AuthGuard]},
   {path:'registro/usuarios',component:RegistroDeUsuariosComponentComponent,canActivate:[AuthGuard]},

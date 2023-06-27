@@ -10,7 +10,7 @@
           <div class="row">
             <div class="col-md-6"><label>EMPRESA <b style="color: red;">(*)</b></label></div>
             <div class="col-md-6"><div class="input-group mb-1">
-              <input type="text" class="form-control" readonly [(ngModel)]="remitente.razonsocialemisor">
+              <input type="text" class="form-control" placeholder="Seleccione una empresa" readonly [(ngModel)]="remitente.razonsocialemisor">
               <div class="input-group-append">
                 <button class="input-group-text" (click)="listarEmpresas(Empresa)">...</button>
               </div>
@@ -49,7 +49,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-3"><label >DESTINATARIO <b style="color: red;">(*)</b></label></div>
             <div class="col-md-6 col-lg-9"><div class="input-group mb-1">
-              <input type="text" class="form-control" readonly  [(ngModel)]="destinatario.razonsocialadquiriente">
+              <input type="text" class="form-control" readonly placeholder="Seleccione un destinatario" [(ngModel)]="destinatario.razonsocialadquiriente">
               <div class="input-group-append">
                 <button class="input-group-text" (click)="abrirModal(Destinatario)">...</button>
               </div>
@@ -71,20 +71,15 @@
           <div class="row">
             <div class="col-md-6 col-lg-3"><label class="w-100">DESTINO <b style="color: red;">(*)</b></label></div>
             <div class="col-md-6 col-lg-9">
-           <!--    <select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="vdestino">
-              <option value="">Seleccione un destino</option>
-              <option value="{{item.id}}" *ngFor="let item of destino">{{item.text}}</option>
-            </select> -->
             <div class="input-group mb-1 w-100">
-              <input type="text" class="form-control" readonly
+              <input type="text" class="form-control" placeholder="Seleccione un destino" readonly
               [(ngModel)]="destino.direcciondestino">
               <div class="input-group-append">
-                <button class="input-group-text" (click)="abrirModal(Destino)">...</button>
+                <button class="input-group-text" (click)="abrirModal(Destino);cargarDestinos()">...</button>
               </div>
             </div>
           </div>
           </div>
-
         </div>
       </div>
       <div class="mb-1 row">
@@ -106,7 +101,7 @@
                 <option value="">Seleccione un origen</option>
                 <option value="{{item.id}}" *ngFor="let item of origen">{{item.text}}</option>
               </select> -->
-              <input type="text" class="form-control" readonly [(ngModel)]="origen.direccionorigen">
+              <input type="text" class="form-control" placeholder="Seleccione un origen" readonly [(ngModel)]="origen.direccionorigen">
               <div class="input-group-append">
                 <button class="input-group-text" (click)="listarOrigen(Origen)">...</button>
               </div>
@@ -120,7 +115,7 @@
             <div class="col-md-6"><label style="width: 150px;">PESO BRUTO <b style="color: red;">(*)</b></label></div>
             <div class="col-md-6">
               <div class="d-flex bd-highlight">
-                <div class=" flex-grow-1 bd-highlight"> <input type="text" class="form-control"  (keypress)="validarDecimal($event)" [(ngModel)]="pesoBruto"></div>
+                <div class=" flex-grow-1 bd-highlight"> <input type="text" class="form-control" placeholder="ejemplo: 1" (keypress)="validarDecimal($event)" [(ngModel)]="pesoBruto"></div>
                 <div class="bd-highlight"><select class="form-select " aria-label=".form-select-sm example" [(ngModel)]="medida">
                   <option selected>Seleccionar</option>
                   <option value="{{item.id}}" *ngFor="let item of medidas">{{item.text}}</option>
@@ -190,7 +185,7 @@
             <div class="d-flex align-items-center bd-highlight">
               <div class="flex-grow-0 bd-highlight pe-2"><label>CHOFER 1</label></div>
               <div class="flex-fill bd-highlight"><div class="input-group mb-1">
-                <input type="text" class="form-control" readonly [(ngModel)]="chofer.nombre">
+                <input type="text" class="form-control"  readonly [(ngModel)]="chofer.nombre">
                 <div class="input-group-append">
                   <button class="input-group-text" (click)="abrirModal(Chofer)">...</button>
                 </div>
@@ -199,7 +194,7 @@
             <div class="d-flex align-items-center bd-highlight">
               <div class="flex-grow-0 bd-highlight pe-2"><label>CHOFER 2</label></div>
               <div class="flex-fill bd-highlight"><div class="input-group mb-1">
-                <input type="text" class="form-control" readonly [(ngModel)]="choferSec.nombre">
+                <input type="text" class="form-control" placeholder="Opcional" readonly [(ngModel)]="choferSec.nombre">
                 <div class="input-group-append">
                   <button class="input-group-text" (click)="abrirModal(ChoferSec)">...</button>
                 </div>
@@ -220,7 +215,7 @@
           <div class="d-flex align-items-center bd-highlight">
             <div class="flex-grow-0 bd-highlight  pe-2"><label>PLACA 2</label></div>
             <div class="flex-fill bd-highlight"><div class="input-group mb-1">
-              <input type="text" [(ngModel)]="placaCarreta" readonly class="form-control">
+              <input type="text" [(ngModel)]="placaCarreta" placeholder="Opcional" readonly class="form-control">
               <div class="input-group-append">
                 <button class="input-group-text" (click)="abrirModal(Carrera)">...</button>
               </div>
@@ -268,11 +263,14 @@
 
           </div>
           <div class="col-4 col-lg-2 d-flex align-items-start flex-column ps-3 bd-highlight">
-            <div class="col-12"> <button class="btn btn-light mb-1 w-100 " (click)="obtenerProductos(Producto);"
-              style="height: 80px;">Agregar Detalle</button></div>
+            <div class="col-12">
+              <button class="btn btn-light mb-1 w-100 " (click)="obtenerProductos(Producto);" style="height: 80px;">Agregar Detalle</button>
+            </div>
             <div class="col-12 mt-3">
-              <button class="btn btn-primary mb-1 w-100 " style="height: 80px;"
-                (click)="declararGuia()">Declarar</button>
+              <button class="btn btn-info mb-1 w-100" style="height: 80px;" (click)="importarBalanza()">Importar Balanza</button>
+            </div>
+            <div class="col-12 mt-3">
+              <button class="btn btn-primary mb-1 w-100 " style="height: 80px;" (click)="declararGuia()">Declarar</button>
             </div>
           </div>
         </div>
@@ -1487,7 +1485,8 @@
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
               <th>
-                <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                 -->
                 <button class="btn btn-danger ms-2" (click)="eliminarUnVehiculo(item.id,item.placaVehiculo)"><i class="bi bi-trash3 text-white"></i></button>
               </th>
             </tr>
@@ -1526,7 +1525,8 @@
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
               <th>
-                <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                -->
                 <button class="btn btn-danger ms-2" (click)="eliminarUnVehiculo(item.id,item.placaVehiculo)"><i class="bi bi-trash3 text-white"></i></button>
               </th>
             </tr>

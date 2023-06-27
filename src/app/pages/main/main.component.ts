@@ -1,3 +1,4 @@
+import { ImportarBalanza } from './../../interface/balanza';
 import { adquiriente } from './../../interface/adquiriente';
 import { NgForm } from '@angular/forms';
 import { ApiRestService } from './../../service/api-rest.service';
@@ -235,18 +236,21 @@ export class MainComponent  {
       let valueform = form.value;
       let chofer:chofer ={
         apellido : valueform.APELLIDO,
-brevete:valueform.BREVETE,
-nombre:valueform.NOMBRE,
-numerodocumentochofer: valueform.numerodocumentochofer,
-placavehiculo: valueform.PLACAVEHICULO,
-tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
+        brevete:valueform.BREVETE,
+        nombre:valueform.NOMBRE,
+        numerodocumentochofer: valueform.numerodocumentochofer,
+        placavehiculo: valueform.PLACAVEHICULO,
+        tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
       } ;
       this.api.crearChofer(chofer).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
         this.obtenerInfo();
       }, error => {
-        Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+        if (error.error) { Swal.fire({ icon: 'warning', text: error.error }); }
+        else{
+          Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+        }
       })
     }
   }
@@ -294,16 +298,23 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
     const indice = this.destinatarioObject.destino.findIndex((elemento) => elemento.id === id);
     this.destinatarioObject.destino.splice(indice, 1);
   }
-  asignarDestinatario(destinatario:destinatario) {
+  asignarDestinatario(destinatario: destinatario) {
     this.modalService.dismissAll();
-    this.destinatario=destinatario;
-    Swal.showLoading();
-    this.api.getDestinosByRuc(destinatario.numerodocumentoadquiriente).subscribe((res:any)=>{
-      this.destinos=res;
-      Swal.close();
-    },err=>{
-      Swal.close();
-    })
+    this.destinatario = Object.assign({}, destinatario);
+  }
+
+  cargarDestinos(){
+    this.destino={} as AAA_DESTINO;
+    if((this.destinatario.numerodocumentoadquiriente??"")!=""){
+      Swal.showLoading();
+      this.api.getDestinosByRuc(this.destinatario.numerodocumentoadquiriente).subscribe((res:any)=>{
+        this.destinos=res;
+        Swal.close();
+      },err=>{
+        Swal.close();
+      })
+    }
+
   }
   asignarChofer(chofer:chofer) {
     console.log(chofer)
@@ -384,13 +395,16 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
     if (this.serieNumero.length != 13) {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero debe tener un ancho de 13 letras!' });
     }
-    if (this.remitente.razonsocialemisor == '') {
+    if ((this.remitente.razonsocialemisor??"")=="") {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una empresa!' });
     }
-    if (this.destino.direcciondestino == '') {
+    if ((this.destinatario.razonsocialadquiriente??"")=="") {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
+    }
+    if ((this.destino.direcciondestino??"")=="") {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destino!' });
     }
-    if (this.origen.direccionorigen == '') {
+    if ((this.origen.direccionorigen??"")=="") {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un origen!' });
     }
     if (this.vmotivo == '') {
@@ -405,10 +419,10 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
     if(this.validarDecimales(parseFloat(this.pesoBruto))){
       return Swal.fire({ icon: 'warning', title: 'Corregir Campo', text: 'El campo peso bruto solo se admite hasta 3 decimales!' });
     }
-    if (this.transportista.razonsocialtransportista == '' && this.vmodalidad == '01') {
+    if ((this.transportista.razonsocialtransportista??"")=="" && this.vmodalidad == '01') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un transportista!' });
     }
-    if (this.chofer.nombre == '' && this.vmodalidad == '02') {
+    if ((this.chofer.nombre??"")=="" && this.vmodalidad == '02') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un chofer!' });
     }
     if (this.Nrobultos != '' && Number.isNaN(this.Nrobultos)) {
@@ -452,7 +466,7 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
       observaciones: this.observaciones,
       razonSocialRemitente: this.remitente.razoncomercialemisor, //razonsocialemisor empresa
       correoRemitente: '-',
-      correoDestinatario: this.destinatario.correo,
+      correoDestinatario: (this.destinatario.correo??"-"),
       numeroDocumentoDestinatario: this.destinatario.numerodocumentoadquiriente,
       tipoDocumentoDestinatario: this.destinatario.tipodocumentoadquiriente,
       razonSocialDestinatario: this.destinatario.razonsocialadquiriente,
@@ -463,11 +477,11 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
       unidadMedidaPesoBruto: this.medidaGRE,
       modalidadTraslado: this.vmodalidad, //01 publico 02 privado
       fechaInicioTraslado: this.fecha_traslado,
-      numeroRucTransportista: this.transportista.numerodocumentotransportista,
-      tipoDocumentoTransportista: this.transportista.tipodocumentotransportista,
-      razonSocialTransportista: this.transportista.razonsocialtransportista,
-      numeroDocumentoConductor: this.chofer.numerodocumentochofer == null ? '' : this.chofer.numerodocumentochofer,
-      tipoDocumentoConductor: this.chofer.tipodocumentochofer == null ? '' : this.chofer.tipodocumentochofer,
+      numeroRucTransportista: (this.transportista.numerodocumentotransportista??"")==""?"":this.transportista.numerodocumentotransportista,
+      tipoDocumentoTransportista: (this.transportista.tipodocumentotransportista??"")==""?"":this.transportista.tipodocumentotransportista,
+      razonSocialTransportista: (this.transportista.razonsocialtransportista??"")==""?"":this.transportista.razonsocialtransportista,
+      numeroDocumentoConductor: (this.chofer.numerodocumentochofer??"")==""?"":this.chofer.numerodocumentochofer,
+      tipoDocumentoConductor: (this.chofer.tipodocumentochofer??"")==""?"":this.chofer.tipodocumentochofer,
       numeroPlacaVehiculoPrin: this.placaChofer, //conductor chofer
       numeroBultos: this.Nrobultos,
       ubigeoPtoLLegada: this.destino.ubigeodestino??"", //destino
@@ -479,16 +493,16 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
       horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
       numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
-      nombreConductor: this.chofer.nombre,
-      apellidoConductor: this.chofer.apellido,
-      numeroLicencia: this.chofer.brevete, //chofer
+      nombreConductor: (this.chofer.nombre??"")==""?"":this.chofer.nombre,
+      apellidoConductor: (this.chofer.apellido??"")==""?"":this.chofer.apellido,
+      numeroLicencia: (this.chofer.brevete??"")==""?"":this.chofer.brevete, //chofer
       spE_DESPATCH_ITEM: this.listadoProductoDetalles,
       SPE_DESPATCH_DOCRELACIONADO:this.documentosReferenciados,
       numeroDocumentoConductorSec1:this.choferSec.numerodocumentochofer,
       tipoDocumentoConductorSec1:this.choferSec.tipodocumentochofer,
-      nombreConductorSec1:this.choferSec.nombre,
-      apellidoConductorSec1 :this.choferSec.apellido,
-      numeroLicenciaSec1:this.choferSec.brevete,
+      nombreConductorSec1:(this.choferSec.nombre??"")==""?"":this.choferSec.nombre,
+      apellidoConductorSec1 :(this.choferSec.apellido??"")==""?"":this.choferSec.apellido,
+      numeroLicenciaSec1:(this.choferSec.brevete??"")==""?"":this.choferSec.brevete,
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
       textoAuxiliar250_2:this.marcaVehiculo // modelo del vehiculo
@@ -833,7 +847,6 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
     })
   }
   EditarUnVehiculo(vehiculo:T_Vehiculo){
-
   }
   asignarVehiculo(placa,marca){
     this.marcaVehiculo=marca;
@@ -900,5 +913,57 @@ tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
   asignarDestino(destino:AAA_DESTINO){
     this.destino=destino;
     this.modalRef.close();
+  }
+  importarBalanza(){
+    if((this.remitente.numerodocumentoemisor??"")==""){
+        return Swal.fire({icon:'warning',title:'Ingrese una empresa!'})
+    }
+    Swal.fire({
+      title: 'Ingrese tres textos',
+      html:
+        '<input id="texto1" class="swal2-input" placeholder="N° Ticket">' +
+        '<input id="texto2" class="swal2-input" placeholder="N° Balanza">',
+      focusConfirm: false,
+      showCancelButton:true,
+      cancelButtonText:'Salir',
+      confirmButtonText:'Confirmar',
+      reverseButtons:true,
+      confirmButtonColor:'green',
+      cancelButtonColor:'red',
+      preConfirm: () => {
+        const texto1 = (document.getElementById('texto1') as HTMLInputElement).value;
+        const texto2 = (document.getElementById('texto2') as HTMLInputElement).value;
+        return { texto1: texto1, texto2: texto2};
+      }
+    }).then((result) => {
+      // Obtener los valores ingresados y hacer algo con ellos
+      if (result.isConfirmed) {
+        const ndoc = result.value.texto1;
+        const bal = result.value.texto2;
+        this.api.importarBalanza(ndoc,this.remitente.numerodocumentoemisor,bal).subscribe((res:any)=>{
+          this.llenarBalanza(res);
+        })
+      }
+    });
+  }
+  llenarBalanza(res:ImportarBalanza[]){
+      // this.placaChofer=res[0].placaVehiculo;
+      // this.chofer.nombre=res[0].nombreConductor;
+      // this.chofer.brevete=res[0].numeroLicencia;
+
+      if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
+        this.destinatario.numerodocumentoadquiriente=res[0].numeroDocumentoDestinatario;
+        this.destinatario.razonsocialadquiriente=res[0].razonSocialDestinatario;
+        this.destinatario.tipodocumentoadquiriente=res[0].tipoDocumentoDestinatario;
+        this.destino={} as AAA_DESTINO;
+      }
+      if(this.vmodalidad=='01'&&((res[0].numeroDocumentoTransportista??"")!=""||(res[0].razonSocialTransportista??"")!=""||(res[0].tipoDocumentoTransportista??"")!="")){
+        this.transportista={} as transportista;
+        this.transportista.numerodocumentotransportista=res[0].numeroDocumentoTransportista;
+        this.transportista.razonsocialtransportista=res[0].razonSocialTransportista;
+        this.transportista.tipodocumentotransportista=res[0].tipoDocumentoTransportista;
+      }
+      var producto=[{codigo:'-',descripcion:res[0].descripcion,unidadmedida:'NIU',cantidad:res[0].cantidad.toString()}]
+      this.listadoProductoDetalles=producto;
   }
 }

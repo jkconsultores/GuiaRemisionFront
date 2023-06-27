@@ -136,4 +136,12 @@ export class ApiRestService implements OnInit{
   public getDestinosByRuc(ndoc){
     return this.http.post(this.url+'GreTransportista/Destino',[ndoc],this.auth.obtenerDatos())
   }
+  //solo para 8 sur
+  public importarBalanza(ndoc:string,ruc:string,nbalanza:string){
+    return this.http.post(this.url+'balanza',{
+      "numdoc": ndoc,
+      "ruc": ruc,
+      "nbalanza": nbalanza
+    },this.auth.obtenerDatos())
+  }
 }

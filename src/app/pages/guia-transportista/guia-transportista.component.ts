@@ -488,26 +488,29 @@ export class GuiaTransportistaComponent {
     this.modalRef.close();
   }
   importarGuias(){
+    if((this.remitente.numerodocumentoemisor??"")==""){
+      return Swal.fire({ icon: 'warning', title: 'Seleccione un remitente', text: 'Para la busqueda de guias el campo remitente es necesario!' });
+    }
     this.apiT.getImportarGuiasTransportista(this.remitente.numerodocumentoemisor).subscribe((res:any)=>{
       this.arrayGuiasImportadas=res;
     })
   }
   declararGuia() {
     if (this.serieNumero == '') {
-      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y numero esta vacio!' });
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El campo serie y número esta vacio!' });
     }
-    // if (this.origen.direccionorigen??''=="") {
-    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un Punto de partida!' });
-    // }
-    // if (this.destino.direcciondestino??''=="") {
-    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un Punto de llegada!' });
-    // }
-    // if (this.remitente.razonsocialemisor??''=="") {
-    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una empresa!' });
-    // }
-    // if (this.destinatario.razonsocialadquiriente??""=="") {
-    //   return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
-    // }
+    if ((this.origen.direccionorigen??"")=="") {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un Punto de partida!' });
+    }
+    if ((this.destino.direcciondestino??"")=="") {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un Punto de llegada!' });
+    }
+    if ((this.remitente.razonsocialemisor??"")=="") {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un remitente!' });
+    }
+    if ((this.destinatario.razonsocialadquiriente??"")=="") {
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
+    }
     if (this.medida == '') {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione una medida!' });
     }
