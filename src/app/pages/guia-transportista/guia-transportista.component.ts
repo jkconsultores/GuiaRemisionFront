@@ -616,14 +616,15 @@ cerrarModalGuiasImportadas(){
   this.selectedGuias=[];
 }
 asignarGuiasImportadas(){
- this.arrayGuiasImportadasCabecera= this.arrayGuiasImportadas.map(item => {
+ this.arrayGuiasImportadasCabecera= this.selectedGuias.map(item => {
     return { serieNumeroGuia: item.serieNumeroGuia, numeroDocumentoRemitente: item.numeroDocumentoRemitente,fechaEmision:item.fechaEmision };
   });
   this.modalService.dismissAll();
-  var nuevoArreglo=this.convertirFormatoArreglo(this.arrayGuiasImportadas);
+  var nuevoArreglo=this.convertirFormatoArreglo(this.selectedGuias);
   this.apiT.getImportarDetallesGuiasTransportista(nuevoArreglo).subscribe((a:any)=>{
       this.convertirFormatoProducto(a);
   })
+  console.log(this.selectedGuias);
   if(this.selectedGuias.length>0){
    this.extraerGuiaImportada(this.selectedGuias[0]);
   }

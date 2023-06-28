@@ -60,12 +60,30 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       Swal.fire("No se pudo crear el usuario","","error")
     });
   }
-  eliminarUsuario(idUsuario:number){
-    this.api.deleteUsuario(idUsuario).subscribe(resp=>{
-      Swal.fire("Usuario eliminado satisfactoriamente","","success");
-      this.obtenerUsuarios();
-    },error=>{
-      Swal.fire("No se pudo eliminar el usuario","","error")
+  async eliminarUsuario(idUsuario: number) {
+    const result = await Swal.fire({
+      title: '¿Estás seguro de borrar?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons:true,
+      cancelButtonColor:'red',
+      confirmButtonColor:'green'
     });
+    if (!result.isConfirmed) {
+      return;
+    }
+    this.api.deleteUsuario(idUsuario).subscribe(
+      resp => {
+        Swal.fire('Usuario eliminado satisfactoriamente', '', 'success');
+        this.obtenerUsuarios();
+      },
+      error => {
+        Swal.fire('No se pudo eliminar el usuario', '', 'error');
+      }
+    );
   }
+
 }
