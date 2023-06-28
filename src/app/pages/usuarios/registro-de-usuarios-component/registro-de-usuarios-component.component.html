@@ -12,7 +12,40 @@
     </div>
     <div class="card-body">
       <div class="mb-1 col-12 m-0 row">
-        <div class="col-md-12 col-sm-12 col-lg-10 col-xl-8 col-xxl-7 conborderasds">
+
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center"></th>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Nombre de usuario</th>
+              <th class="text-center">Correo</th>
+              <th class="text-center">Acceso a la plataforma</th>
+              <th class="text-center">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of usuarios;let i = index">
+              <td><div class="avatar bg-warning avatar-lg me-3">
+                <span class="avatar-content">{{item.nombreusuario | slice:0:2}}</span>
+              </div></td>
+              <td><h6>{{item.nombres}}</h6></td>
+              <td><h6>{{item.nombreusuario}}</h6></td>
+              <td><h6>{{item.correoelectronico}}</h6></td>
+              <td *ngIf="item.estado">Permitido</td>
+              <td *ngIf="!item.estado">Denegado</td>
+              <td><button class="btn btn-light me-2" (click)="editaRoles(EditarRoles,item.usuarioid)" ><img src="../../../assets/usuario.png" width="36px"></button>
+                <button class="btn btn-danger ms-2" (click)="eliminarUsuario(item.usuarioid)"><img
+                    src="../../../assets/borrar-usuario.png" width="36px"></button>
+                    <!-- <button class="btn btn-primary ms-2" (click)="abrirModal(item.usuarioid)"><img
+                       width="36px"></button> -->
+                <button class="btn btn-primary ms-2" (click)="cambiarPass(item)" ><i class="bi bi-shield-lock-fill" style="font-size: 25px"></i></button>
+                <button class="btn btn-secondary ms-2" (click)="DarDeBaja(item)" ><i class="bi bi-person-fill-x" style="font-size: 25px"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <div class="col-md-12 col-sm-12 col-lg-10 col-xl-8 col-xxl-7 conborderasds">
           <div class="col-md-12 inter row" *ngFor="let item of usuarios;let i = index">
             <div class="col-sm-2 col-2">
               <div class="avatar bg-warning avatar-lg me-3">
@@ -27,13 +60,11 @@
             </div>
             <div class="col-md-3 col-sm-2">
               <div class="p-2 d-flex justify-content-end">
-                <button class="btn btn-light me-2"><img src="../../../assets/usuario.png" width="36px"></button>
-                <button class="btn btn-danger ms-2" (click)="eliminarUsuario(item.usuarioid)"><img
-                    src="../../../assets/borrar-usuario.png" width="36px"></button>
+
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -67,32 +98,150 @@
             placeholder="Ingrese un correo electronico (obligatorio)">
         </div>
         <hr>
-        <!-- <h6>Agregar permisos</h6>
+         <h6>Agregar permisos</h6>
         <div class="col-md-12">
-          <div class="col-12">
-            <label class="mb-1" for="serie">Seleccione una serie</label>
-            <select [(ngModel)]="serieNumero" name="serie" class="form-select">
-              <option value="">Seleccione una serie</option>
-              <option value="{{item.serie}}" *ngFor="let item of arraySerie">{{item.serie| slice : 0 : 4}}</option>
-            </select>
+
+          <div class="row mb-2">
+            <div class="col-md-6">
+            <div class="col-12">
+              <label class="mb-1" for="TipoServicio">Tipo de permiso</label>
+              <select [(ngModel)]="TipoServicio" name="TipoServicio" class="form-select">
+                <option value="">Seleccione un tipo de permiso</option>
+                <option value="Serie">Serie</option>
+                <option value="Motivo">Motivo</option>
+              </select>
+            </div>
           </div>
 
-
-          <div class="col-12">
-            <label class="mb-1" for="motivo">Seleccione un motivo</label>
-            <select [(ngModel)]="motivo" name="motivo" class="form-select">
-              <option value="">Seleccione un motivo</option>
-              <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
-            </select>
+          <div class="col-md-6" *ngIf="TipoServicio=='Serie'">
+            <div class="col-12" >
+              <label class="mb-1" for="serie">Seleccione una serie</label>
+              <select [(ngModel)]="serieNumero" name="serie" class="form-select">
+                <option value="">Seleccione una serie</option>
+                <option value="{{item.serie}}" *ngFor="let item of arraySerie">{{item.serie| slice : 0 : 4}}</option>
+              </select>
+            </div>
           </div>
 
-          <button class="btn btn-success mt-2">Añadir permisos</button>
-        </div> -->
+          <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
+            <div class="col-12" >
+              <label class="mb-1" for="motivo">Seleccione un motivo</label>
+              <select [(ngModel)]="motivo" name="motivo" class="form-select">
+                <option value="">Seleccione un motivo</option>
+                <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
+              </select>
+            </div>
+          </div>
+          </div>
+
+          <a class="btn btn-success mt-2" (click)="AgregarPermisos()">Añadir permisos</a>
+        </div>
+
+        <div class="row mt-3">
+          <hr>
+          <h6>Permisos activos</h6>
+
+          <div class="col-12">
+            <h6 class="text-danger text-center" *ngIf="permisos.length == 0"> NO SE ASIGNARON PERMISOS</h6>
+            <table class="table table-bordered table-responsive" *ngIf="permisos.length > 0">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Permiso</th>
+                  <th>Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of permisos">
+                  <td>{{item.tipo}}</td>
+                  <td>{{item.valor}}</td>
+                  <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermiso(item.tipo,item.valor)"></i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </form>
   </div>
   <div class="modal-footer">
     <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
     <button class="btn btn-success" style="width: 90px;" form="vehicuref" type="submit">Aceptar</button>
+  </div>
+</ng-template>
+
+
+<!-- //editar roles de usaurio Cambiar series-->
+<ng-template #EditarRoles let-modal>
+
+  <div class="row p-3">
+  <h6>Agregar permisos</h6>
+  <div class="col-md-12 mb-3">
+
+    <div class="row mb-2">
+      <div class="col-md-6">
+      <div class="col-12">
+        <label class="mb-1" for="TipoServicio">Tipo de permiso</label>
+        <select [(ngModel)]="TipoServicio" name="TipoServicio" class="form-select">
+          <option value="">Seleccione un tipo de permiso</option>
+          <option value="Serie">Serie</option>
+          <option value="Motivo">Motivo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6" *ngIf="TipoServicio=='Serie'">
+      <div class="col-12" >
+        <label class="mb-1" for="serie">Seleccione una serie</label>
+        <select [(ngModel)]="serieNumero" name="serie" class="form-select">
+          <option value="">Seleccione una serie</option>
+          <option value="{{item.serie}}" *ngFor="let item of arraySerie">{{item.serie| slice : 0 : 4}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
+      <div class="col-12" >
+        <label class="mb-1" for="motivo">Seleccione un motivo</label>
+        <select [(ngModel)]="motivo" name="motivo" class="form-select">
+          <option value="">Seleccione un motivo</option>
+          <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
+        </select>
+      </div>
+    </div>
+    </div>
+
+    <a class="btn btn-success mt-2" (click)="AgregarPermisosEdicion()">Añadir permisos</a>
+  </div>
+
+
+
+
+    <h6 class="mb-3">Permisos activos</h6>
+
+    <div class="col-12">
+      <h6 class="text-danger text-center" *ngIf="RolesDEUSuarioNuevos.length == 0"> NO SE ASIGNARON PERMISOS</h6>
+      <table class="table table-bordered table-responsive" *ngIf="RolesDEUSuarioNuevos.length > 0">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Permiso</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of RolesDEUSuarioNuevos">
+            <td>{{item.tipo}}</td>
+            <td>{{item.valor}}</td>
+            <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermisoUpdate(item.tipo,item.valor)"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+      <button *ngIf="usuarioEditado!=undefined" class="btn btn-success" style="width: 90px;" form="vehicuref" (click)="ActualziarUsuario()">Actualziar</button>
+    </div>
   </div>
 </ng-template>

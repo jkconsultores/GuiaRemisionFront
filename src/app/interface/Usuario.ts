@@ -4,6 +4,7 @@ export interface USUARIO {
   contrasena: string;
   nombres: string | null;
   correoelectronico: string | null;
+  estado:boolean;
 }
 export interface UsuariosDTO {
   nombreusuario: string;
