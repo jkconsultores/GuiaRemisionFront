@@ -7,6 +7,8 @@ import { T_Vehiculo, VehiculoDTO } from '../interface/Vehiculos';
 import { AAA_TIPODOCUMENTO, urlANdTipo } from '../interface/aaa_TipoDocumento';
 import { MOTIVOS } from '../interface/Motivos';
 import { USUARIO, UsuariosDTO } from '../interface/Usuario';
+import { PermisoDTO, T_Permiso } from '../interface/Permiso';
+import { RespuestaDeLLaveValor } from '../interface/RespuestasGenericas';
 @Injectable({
   providedIn: 'root'
 })
@@ -127,6 +129,12 @@ export class ApiRestService implements OnInit{
   public deleteUsuario(id:number){
     return this.http.post(this.url+"Usuario/delete/"+id,null,this.auth.obtenerDatos());
   }
+  public actualziarContraseña(pass:RespuestaDeLLaveValor){
+    return this.http.post(this.url+"Usuario/CangePass",pass,this.auth.obtenerDatos());
+  }
+  public CambiarAccesoUsuario(pass:RespuestaDeLLaveValor){
+    return this.http.post(this.url+"Usuario/access",pass,this.auth.obtenerDatos());
+  }
   public agregarUsuario(usuario:UsuariosDTO){
     return this.http.post<USUARIO>(this.url+"Session/Register",usuario,this.auth.obtenerDatos())
   }
@@ -143,5 +151,17 @@ export class ApiRestService implements OnInit{
       "ruc": ruc,
       "nbalanza": nbalanza
     },this.auth.obtenerDatos())
+  }
+  public AgregarPermisos(permisos:PermisoDTO[]){
+    return this.http.post(this.url+'Roles',permisos,this.auth.obtenerDatos())
+  }
+  public ActualizarPermisos(permisos:PermisoDTO[]){
+    return this.http.post(this.url+'Roles/update',permisos,this.auth.obtenerDatos())
+  }
+  public ObtenerRolesDeUsuario(usuarioId:number){
+    return this.http.get<T_Permiso[]>(this.url+'Roles/'+usuarioId,this.auth.obtenerDatos())
+  }
+  public VerificarAccesoAUsuario(){
+    return this.http.get(this.url+"Usuario/AccesoAUsuarios",this.auth.obtenerDatos())
   }
 }
