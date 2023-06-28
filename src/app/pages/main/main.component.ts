@@ -919,7 +919,7 @@ export class MainComponent  {
         return Swal.fire({icon:'warning',title:'Ingrese una empresa!'})
     }
     Swal.fire({
-      title: 'Ingrese tres textos',
+      title: 'Ingrese los valores',
       html:
         '<input id="texto1" class="swal2-input" placeholder="N° Ticket">' +
         '<input id="texto2" class="swal2-input" placeholder="N° Balanza">',

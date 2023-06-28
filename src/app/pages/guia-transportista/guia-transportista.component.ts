@@ -672,11 +672,13 @@ extraerGuiaImportada(guia:GuiaImportada){
   }
   const totalPesobruto = this.selectedGuias.reduce((total, objeto) => {
     const pesobruto = parseFloat(objeto.pesoBruto);
-    return total + pesobruto;
+    return total + (isNaN(pesobruto) ? 0 : pesobruto);
   }, 0);
+
   const totalBultos = this.selectedGuias.reduce((total, objeto) => {
-    const pesobruto = parseFloat(objeto.numeroBultos);
-    return total + pesobruto;
+    const numeroBultos = objeto.numeroBultos;
+    const bultos = (typeof numeroBultos === 'number' || (typeof numeroBultos === 'string' && numeroBultos.trim() !== '')) ? parseFloat(numeroBultos) : 0;
+    return total + (isNaN(bultos) ? 0 : bultos);
   }, 0);
   this.motivoTraslado=guia.modalidadTraslado;
   this.descripcionMotivoTraslado=guia.descripcionMotivo;

@@ -61,7 +61,7 @@ export class LoginComponent {
       this.guard.UserSaved(res.usuario);
       // localStorage.setItem('token',res.token);
       localStorage.setItem('emp',this.usuario.empresa.toLowerCase());
-      return this.router.navigateByUrl('gre-transportista');
+      return this.router.navigateByUrl('main');
     } else {
       Swal.fire({
         title: 'Mensaje',
