@@ -401,6 +401,12 @@ export class MainComponent  {
     if ((this.destinatario.razonsocialadquiriente??"")=="") {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destinatario!' });
     }
+    if((this.destinatario.tipodocumentoadquiriente??"")==""){
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El destinatario no tiene un tipo de documento!' });
+    }
+    if((this.destinatario.numerodocumentoadquiriente??"")==""){
+      return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'El destinatario no tiene un número de documento!' });
+    }
     if ((this.destino.direcciondestino??"")=="") {
       return Swal.fire({ icon: 'warning', title: 'Faltan Campos', text: 'Seleccione un destino!' });
     }
@@ -947,15 +953,21 @@ export class MainComponent  {
     });
   }
   llenarBalanza(res:ImportarBalanza[]){
-      // this.placaChofer=res[0].placaVehiculo;
-      // this.chofer.nombre=res[0].nombreConductor;
-      // this.chofer.brevete=res[0].numeroLicencia;
+
+      if(this.vmodalidad=='02'&&((res[0].placaVehiculo??"")!=""||(res[0].nombreConductor??"")!=""||(res[0].numeroLicencia??"")!="")){
+        this.chofer={} as chofer;
+        this.placaChofer=res[0].placaVehiculo;
+        this.chofer.nombre=res[0].nombreConductor;
+        this.chofer.brevete=res[0].numeroLicencia;
+        this.chofer.numerodocumentochofer=res[0].numeroLicencia.substring(1);
+      }
 
       if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
+        this.destino={} as AAA_DESTINO;
         this.destinatario.numerodocumentoadquiriente=res[0].numeroDocumentoDestinatario;
         this.destinatario.razonsocialadquiriente=res[0].razonSocialDestinatario;
         this.destinatario.tipodocumentoadquiriente=res[0].tipoDocumentoDestinatario;
-        this.destino={} as AAA_DESTINO;
+
       }
       if(this.vmodalidad=='01'&&((res[0].numeroDocumentoTransportista??"")!=""||(res[0].razonSocialTransportista??"")!=""||(res[0].tipoDocumentoTransportista??"")!="")){
         this.transportista={} as transportista;
