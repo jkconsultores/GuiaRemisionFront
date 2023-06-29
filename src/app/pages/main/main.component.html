@@ -387,6 +387,16 @@
       </div>
     </div>
     <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <label style="width: 150px;">CHOFER</label>
+        </div>
+        <div class="col-9">
+          <div class="input-group mb-1">
+            <input type="text" [(ngModel)]="filterChofer" name="filterChofer" class="form-control">
+          </div>
+        </div>
+      </div>
       <div class="table-responsive" style="height: 400px;">
         <table class="table table-bordered table-hover">
           <thead>
@@ -400,7 +410,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of choferes " style="cursor: pointer;">
+            <tr *ngFor="let item of choferes| filter:filterChofer:['numerodocumentochofer','nombre','brevete']  " style="cursor: pointer;">
               <th scope="row" (click)="asignarChofer(item)">{{item.numerodocumentochofer}}</th>
               <td (click)="asignarChofer(item)">{{item.tipodocumentochofer}}</td>
               <td (click)="asignarChofer(item)">{{item.nombre+" "+item.apellido}}</td>
@@ -410,8 +420,6 @@
               (click)="borrarChofer(item.numerodocumentochofer);"><i
                 class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
             </tr>
-
-
           </tbody>
         </table>
       </div>
@@ -890,7 +898,7 @@
       </form>
 
       <button class="btn btn-success mt-3 mb-3" (click)="crearFilasUpdate()">Agregar Destino</button>
-      <div class="table table-responsive" *ngIf="destinatarioObject.destino.length!=0" style="max-height: 200px;">
+      <div class="table table-responsive" *ngIf="destinatarioObject.destinos.length!=0" style="max-height: 200px;">
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -901,7 +909,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of destinatarioObject.destino">
+            <tr *ngFor="let item of destinatarioObject.destinos">
               <th scope="row">{{item.ubigeodestino}}</th>
               <td>{{item.direcciondestino}}</td>
               <td>{{item.codigolocalanexo}}</td>
@@ -1464,6 +1472,16 @@
   </div>
 	</div>
 	<div class="modal-body">
+    <div class="row">
+      <div class="col-3">
+        <label style="width: 150px;">VEHICULO</label>
+      </div>
+      <div class="col-9">
+        <div class="input-group mb-1">
+          <input type="text" [(ngModel)]="filterVehiculo" name="filterVehiculo" class="form-control">
+        </div>
+      </div>
+    </div>
 		<form>
 			<div class="mb-3">
         <table class="table table-bordered table-hover">
@@ -1478,7 +1496,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of VehiculosActivos; let i = index" >
+            <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
@@ -1504,6 +1522,16 @@
   </div>
 	</div>
 	<div class="modal-body">
+    <div class="row">
+      <div class="col-3">
+        <label style="width: 150px;">VEHICULO</label>
+      </div>
+      <div class="col-9">
+        <div class="input-group mb-1">
+          <input type="text" [(ngModel)]="filterVehiculoSec" name="filterVehiculoSec" class="form-control">
+        </div>
+      </div>
+    </div>
 		<form>
 			<div class="mb-3">
         <table class="table table-bordered table-hover">
@@ -1518,7 +1546,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of VehiculosActivos; let i = index" >
+            <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculoSec:['placaVehiculo','marca']; let i = index" >
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
@@ -1545,7 +1573,7 @@
 			<div class="mb-3">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Placa de vehiculo <span style="color: red;">(*)</span></label>
-          <input type="text" ngModel name="placaVehiculoVehiculo" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)">
+          <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)">
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Modelo</label>
@@ -1621,6 +1649,16 @@
       </div>
     </div>
     <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <label style="width: 150px;">CHOFER</label>
+        </div>
+        <div class="col-9">
+          <div class="input-group mb-1">
+            <input type="text" [(ngModel)]="filterChoferSec" name="filterChoferSec" class="form-control">
+          </div>
+        </div>
+      </div>
       <div class="table-responsive" style="height: 400px;">
         <table class="table table-bordered table-hover">
           <thead>
@@ -1634,7 +1672,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of choferes " style="cursor: pointer;">
+            <tr *ngFor="let item of choferes | filter:filterChoferSec:['numerodocumentochofer','nombre','brevete'] " style="cursor: pointer;">
               <th scope="row" (click)="asignarChoferSec(item)">{{item.numerodocumentochofer}}</th>
               <td (click)="asignarChoferSec(item)">{{item.tipodocumentochofer}}</td>
               <td (click)="asignarChoferSec(item)">{{item.nombre+" "+item.apellido}}</td>

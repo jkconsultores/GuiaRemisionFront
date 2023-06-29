@@ -1,7 +1,7 @@
 export interface adquiriente {
   correo: String;
   departamentoadquiriente: String;
-  destino: any[];
+  destinos: any[];
   direccionadquiriente:string;
   distritoadquiriente:string;
   numerodocumentoadquiriente:string;

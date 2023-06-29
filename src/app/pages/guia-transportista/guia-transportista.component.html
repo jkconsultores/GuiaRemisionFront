@@ -348,7 +348,7 @@
           <div class="col-12 col-sm-8 col-md-9 mb-3">
             <div class="input-group mb-1">
               <input type="text"
-                [(ngModel)]="transportista.razonsocialtransportista"
+                [(ngModel)]="filterTransportista"
                 name="filterTransportista" placeholder="Seleccione un transportista" class="form-control">
               <div class="input-group-append">
                 <button class="btn btn-secondary"
@@ -1113,7 +1113,7 @@
       </form>
 
       <button class="btn btn-success" (click)="crearFilasUpdate()">Agregar Destino</button>
-      <div class="table table-responsive" *ngIf="destinatarioObject.destino.length!=0" style="max-height: 200px;">
+      <div class="table table-responsive" *ngIf="destinatarioObject.destinos.length!=0" style="max-height: 200px;">
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -1124,7 +1124,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of destinatarioObject.destino">
+            <tr *ngFor="let item of destinatarioObject.destinos">
               <th scope="row">{{item.ubigeodestino}}</th>
               <td>{{item.direcciondestino}}</td>
               <td>{{item.codigolocalanexo}}</td>

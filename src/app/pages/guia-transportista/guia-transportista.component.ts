@@ -414,7 +414,7 @@ export class GuiaTransportistaComponent  implements OnInit{
        direcciondestino: this.direccionDestinoUpdate,
        codigolocalanexo: this.codigolocalanexoUpdate
       }
-    this.destinatarioObject.destino.push(obj);
+    this.destinatarioObject.destinos.push(obj);
     this.ubigeoDestinoUpdate = '';
     this.direccionDestinoUpdate = '';
     this.codigolocalanexoUpdate = '';
@@ -432,6 +432,7 @@ export class GuiaTransportistaComponent  implements OnInit{
     })
   }
   EditarDestinatario(modal, contenido) {
+    console.log(contenido)
     this.destinatarioObject = contenido;
     this.abrirModal(modal);
   }
@@ -450,11 +451,11 @@ export class GuiaTransportistaComponent  implements OnInit{
     if (form.invalid) { return }
     if (form.submitted) {
       Swal.showLoading();
-      form.value.DESTINO = this.destinatarioObject.destino;
+      form.value.DESTINO = this.destinatarioObject.destinos;
       this.api.updateAdquiriente(form.value).subscribe((res: any) => {
         this.modalRef.close();
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
-        this.destinatarioObject.destino = [];
+        this.destinatarioObject.destinos = [];
         this.getTransportista();
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
@@ -467,8 +468,8 @@ export class GuiaTransportistaComponent  implements OnInit{
     this.destinos.splice(indice, 1);
   }
   borrarDestinoArrayUpdate(id) {
-    const indice = this.destinatarioObject.destino.findIndex((elemento) => elemento.id === id);
-    this.destinatarioObject.destino.splice(indice, 1);
+    const indice = this.destinatarioObject.destinos.findIndex((elemento) => elemento.id === id);
+    this.destinatarioObject.destinos.splice(indice, 1);
   }
   listarSerie(serie) {
     if(this.transportista.numerodocumentotransportista??""!=""){
