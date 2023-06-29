@@ -1,5 +1,5 @@
 import { producto } from './../../interface/producto';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
@@ -22,7 +22,7 @@ import { docRef } from 'src/app/interface/docRef';
   templateUrl: './guia-transportista.component.html',
   styleUrls: ['./guia-transportista.component.scss']
 })
-export class GuiaTransportistaComponent {
+export class GuiaTransportistaComponent  implements OnInit{
   pageProduct=0;
   transportista= {} as transportista;
   fecha_emision = this.fechaActual();
@@ -105,10 +105,24 @@ export class GuiaTransportistaComponent {
   observaciones = '';
   pesoBruto = '';
   Nrobultos = '';
+
+
   constructor(private modalService: NgbModal,public api: ApiRestService,public apiT:ApiTransportistaService){
     this.obtenerInfo();
   }
-
+  ngOnInit(): void {
+    let div1 = document.getElementById("botonesdeacceso");
+   let div2 = document.getElementById("secondarslot");
+   let div3 = document.getElementById("principalslot");
+    console.log(window.innerWidth)
+    if(window.innerWidth < 900){
+      div2.appendChild(div1);
+      div3.removeChild(div1);
+    }else{
+      div3.appendChild(div1);
+      div2.removeChild(div1);
+    }
+  }
   fechaActual() {
     const now = new Date();
     const year = now.getFullYear();
