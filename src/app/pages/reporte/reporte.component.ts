@@ -26,7 +26,6 @@ export class ReporteComponent {
   getSpe_despatch(desde,hasta) {
     Swal.showLoading();
     this.api.getSpe_despatch(desde,hasta).subscribe((res: any) => {
-      console.log(res.result)
       Swal.close();
       this.spe_despatch = res.result;
     });

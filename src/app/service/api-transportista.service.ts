@@ -36,4 +36,7 @@ export class ApiTransportistaService {
   public declararGuia(guia){
     return this.http.post(this.url+'GreTransportista',guia,this.auth.obtenerDatos())
   }
+  public getTransportista(){
+    return this.http.get(this.url+'AAA/getTransportista',this.auth.obtenerDatos());
+  }
 }

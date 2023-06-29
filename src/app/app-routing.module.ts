@@ -13,7 +13,7 @@ const routes: Routes = [
   {path:'main',component:MainComponent,canActivate:[AuthGuard]},
   {path:'',component:MainComponent,canActivate:[AuthGuard]},
   {path:'login',component:LoginComponent},
-  {path:'facturacion',component:FacturacionElectronicaComponent,canActivate:[AuthGuard]},
+/*   {path:'facturacion',component:FacturacionElectronicaComponent,canActivate:[AuthGuard]}, */
   {path:'reporte',component:ReporteComponent,canActivate:[AuthGuard]},
   {path:'gre-transportista',component:GuiaTransportistaComponent,canActivate:[AuthGuard]},
   {path:'reporte-transportistas',component:ReporteTransportistaComponent,canActivate:[AuthGuard]},

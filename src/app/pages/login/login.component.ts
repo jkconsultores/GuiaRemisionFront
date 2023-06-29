@@ -13,7 +13,7 @@ import { LoginServiceService } from 'src/app/service/login-service.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  constructor(public auth:LoginServiceService,public router:Router,private guard:AuthServiceService) { }
+  constructor(public api: ApiRestService,public auth:LoginServiceService,public router:Router,private guard:AuthServiceService) { }
 
   usuario = {
     nombreUsuario: '',
@@ -61,9 +61,20 @@ export class LoginComponent {
       this.guard.UserSaved(res.usuario);
       // localStorage.setItem('token',res.token);
       localStorage.setItem('emp',this.usuario.empresa.toLowerCase());
-      return this.router.navigateByUrl('main');
+      this.api.getMenu().subscribe((a:any)=>{
+        if((a??"")==""){
+           return Swal.fire({
+          title: 'Mensaje',
+          icon: 'warning',
+          text: 'Las rutas no han sido configuradas'
+        })
+        }
+        if(a.length>0){
+          return this.router.navigateByUrl(a[0].ruta);
+        }
+      })
     } else {
-      Swal.fire({
+      return Swal.fire({
         title: 'Mensaje',
         icon: 'warning',
         text: 'No se encontro ningun usuario'

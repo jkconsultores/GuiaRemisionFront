@@ -61,7 +61,7 @@ export class GuiaTransportistaComponent  implements OnInit{
   tipodocForm = '1';
   tipodocTrans = '6';
   tipodocChofer = '1';
-  correlativo = 0;
+  correlativo = 1;
     //destinatario
     destinatario={razonsocialadquiriente:''} as destinatario;
     //remitente
@@ -108,13 +108,12 @@ export class GuiaTransportistaComponent  implements OnInit{
 
 
   constructor(private modalService: NgbModal,public api: ApiRestService,public apiT:ApiTransportistaService){
-    this.obtenerInfo();
+      this.getTransportistaDefault();
   }
   ngOnInit(): void {
     let div1 = document.getElementById("botonesdeacceso");
    let div2 = document.getElementById("secondarslot");
    let div3 = document.getElementById("principalslot");
-    console.log(window.innerWidth)
     if(window.innerWidth < 900){
       div2.appendChild(div1);
       div3.removeChild(div1);
@@ -131,7 +130,6 @@ export class GuiaTransportistaComponent  implements OnInit{
     const hours = now.getHours() - 5;
     const minutes = now.getMinutes();
     const isoString = new Date(year, month, day, hours, minutes).toISOString().slice(0, -8);
-    console.log(isoString);
     return (isoString);
   }
   validarDecimal(event: KeyboardEvent) {
@@ -178,7 +176,6 @@ export class GuiaTransportistaComponent  implements OnInit{
      this.apiT.getSerie(transportista.numerodocumentotransportista).subscribe((res: any) => {
       this.arraySerie = res;
     });
-    console.log(this.transportista)
      this.modalService.dismissAll();
    }
    borrarTransportista(ndoc) {
@@ -195,10 +192,7 @@ export class GuiaTransportistaComponent  implements OnInit{
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.api.BorrarTransportista(ndoc).subscribe((res: any) => {
-          this.api.getTransportista().subscribe((res: any) => {
-            Swal.close();
-            this.transportistas = res;
-          });
+         this.getTransportista();
           this.limpiarTransportista();
         }, err => {
           if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
@@ -206,6 +200,28 @@ export class GuiaTransportistaComponent  implements OnInit{
         })
       }
     })
+  }
+  getTransportista(){
+    this.api.getTransportista().subscribe((res: any) => {
+      Swal.close();
+      this.transportistas = res;
+    });
+  }
+  getTransportistaDefault(){
+    this.api.getTransportista().subscribe((res: any) => {
+      Swal.close();
+      if((res??"")!=""&&res.length==1){
+        this.transportista=res[0];
+        this.apiT.getSerie(this.transportista.numerodocumentotransportista).subscribe((res: any) => {
+          this.arraySerie = res;
+          if((res??"")!=""&&res.length==1){
+            this.serieNumero=res[0].serie;
+          }
+
+        });
+      }
+      this.transportistas = res;
+    });
   }
   limpiarTransportista(){
     this.transportista={} as transportista;
@@ -219,18 +235,11 @@ export class GuiaTransportistaComponent  implements OnInit{
       this.api.crearTransportista(form.value).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
-        this.obtenerInfo();
+        this.getTransportista();
       }, error => {
         Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
       })
     }
-  }
-  obtenerInfo() {
-    Swal.showLoading();
-    this.api.getInfo().subscribe((res: any) => {
-      Swal.close();
-      this.transportistas = res['transportista'];
-    });
   }
   borrarOrigen(origen:origen) {
     Swal.showLoading();
@@ -287,7 +296,7 @@ export class GuiaTransportistaComponent  implements OnInit{
         this.api.getEmpresas().subscribe((res: any) => {
           this.tablaEmpresas = res;
         });
-        this.obtenerInfo();
+        this.getTransportista();
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -372,7 +381,7 @@ export class GuiaTransportistaComponent  implements OnInit{
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.destinos = [];
         this.modalRef.close();
-        this.obtenerInfo();
+        this.getTransportista();
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -446,7 +455,7 @@ export class GuiaTransportistaComponent  implements OnInit{
         this.modalRef.close();
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.destinatarioObject.destino = [];
-        this.obtenerInfo();
+        this.getTransportista();
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
@@ -638,7 +647,6 @@ asignarGuiasImportadas(){
   this.apiT.getImportarDetallesGuiasTransportista(nuevoArreglo).subscribe((a:any)=>{
       this.convertirFormatoProducto(a);
   })
-  console.log(this.selectedGuias);
   if(this.selectedGuias.length>0){
    this.extraerGuiaImportada(this.selectedGuias[0]);
   }

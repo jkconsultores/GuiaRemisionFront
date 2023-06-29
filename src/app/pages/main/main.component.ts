@@ -74,7 +74,7 @@ export class MainComponent  {
   tipodocForm = '1';
   tipodocTrans = '6';
   tipodocChofer = '1';
-  correlativo = 0;
+  correlativo = 1;
 
   //filtro inputs
   filterTransportista='';
@@ -486,7 +486,6 @@ export class MainComponent  {
 
   getChofer(){
     this.api.getChofer().subscribe((res:any)=>{
-      console.log(res);
       this.choferes=res;
     })
   }
@@ -762,10 +761,7 @@ export class MainComponent  {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         this.api.BorrarTransportista(ndoc).subscribe((res: any) => {
-          this.api.getTransportista().subscribe((res: any) => {
-            Swal.close();
-            this.transportistas = res;
-          });
+           this.getTransportista();
           this.transportista={} as transportista;
         }, err => {
           if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
@@ -773,6 +769,12 @@ export class MainComponent  {
         })
       }
     })
+  }
+  getTransportista(){
+    this.api.getTransportista().subscribe((res: any) => {
+      Swal.close();
+      this.transportistas = res;
+    });
   }
   borrarChofer(ndoc){
     Swal.showLoading();

@@ -2,6 +2,8 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ApiRestService } from 'src/app/service/api-rest.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { TMenuGre } from 'src/app/interface/TMenuGre';
+
 
 @Component({
   selector: 'app-navbar',
@@ -11,18 +13,18 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 export class NavbarComponent implements OnInit {
   public empresa:string|undefined;
   public usuario:string;
+  public menu:TMenuGre[]=[];
 
   modalRef: NgbModalRef;
 
   constructor(public rout:Router, public api:ApiRestService,private modalService: NgbModal){
     this.empresa = localStorage.getItem("usuario");
-    console.log(this.empresa);
   }
   ngOnInit(): void {
     this.api.VerificarAccesoAUsuario().subscribe((resp:any)=>{
       this.usuario=resp;
-      console.log(resp);
     });
+    this.getMenu();
   }
   CerrarSesion(){
     localStorage.removeItem('token');
@@ -34,5 +36,10 @@ export class NavbarComponent implements OnInit {
   }
   salir() {
     this.modalRef.close();
+  }
+  getMenu(){
+    this.api.getMenu().subscribe((res:any)=>{
+     this.menu=res
+    })
   }
 }

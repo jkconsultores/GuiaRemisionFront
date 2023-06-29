@@ -10,6 +10,9 @@
     text-align: left;
   }
 }
+.hidden{
+  display: none;
+}
 .scroll-color::-webkit-scrollbar {
   width: 8px; /* Ancho del scroll */
 }

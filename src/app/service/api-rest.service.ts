@@ -33,6 +33,9 @@ export class ApiRestService implements OnInit{
   // public getOrigenesByRuc(ndoc:string){
   //   return this.http.post(this.url+'GreTransportista/Origenes',[ndoc],this.auth.obtenerDatos())
   // }
+  public getMenu(){
+    return this.http.get(this.url+'MenuGre',this.auth.obtenerDatos());
+  }
   public updateAdquiriente(form){
     return this.http.post(this.url+'AAA/UpdateAdquiriente',form,this.auth.obtenerDatos())
   }
