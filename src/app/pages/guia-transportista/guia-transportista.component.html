@@ -147,7 +147,7 @@
         </div>
       </div>
       <div class="row col-12" id="principalslot">
-      <div class="col-md-8 col-lg-8 col-sm-6" >
+      <div class="col-md-8 col-lg-10 col-sm-8" >
         <div class="table-responsive scroll-color"
           style="flex: 65%;height:200px">
           <table class="table table-sm">
@@ -168,7 +168,7 @@
           </table>
         </div>
       </div>
-          <div class="col-lg-2" id="botonesdeacceso">
+          <div class="col-lg-2 col-md-4 col-sm-4" id="botonesdeacceso">
             <div class="col-12"> <button class="btn btn-light mb-1 w-100 "
               style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button></div>
             <div class="col-12 mt-3">
@@ -342,10 +342,10 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-3">
-            <label style="width: 150px;">TRANSPORTISTA</label>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;" >TRANSPORTISTA</label>
           </div>
-          <div class="col-9">
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
             <div class="input-group mb-1">
               <input type="text"
                 [(ngModel)]="transportista.razonsocialtransportista"
@@ -799,10 +799,10 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-3">
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
             <label style="width: 150px;">DESTINATARIO</label>
           </div>
-          <div class="col-9">
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
             <div class="input-group mb-1">
               <input type="text" [(ngModel)]="filterDestinatario" name="filterDestinatario" class="form-control">
               <div class="input-group-append">
@@ -1152,10 +1152,10 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-3">
-          <label style="width: 150px;">PTO SALIDA</label>
+        <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+          <label style="width: 100%;">PTO SALIDA</label>
         </div>
-        <div class="col-9">
+        <div class="col-12 col-sm-8 col-md-9 mb-3 ">
           <div class="input-group mb-1">
             <input type="text" [(ngModel)]="filterOrigen" name="filterOrigen" class="form-control">
             <div class="input-group-append">
@@ -1198,10 +1198,10 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-3">
-          <label style="width: 150px;">PTO LLEGADA</label>
+        <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+          <label style="width: 100%;">PTO LLEGADA</label>
         </div>
-        <div class="col-9">
+        <div class="col-12 col-sm-8 col-md-9 mb-3">
           <div class="input-group mb-1">
             <input type="text" name="filterDestino" [(ngModel)]="filterDestino" class="form-control">
             <!-- <div class="input-group-append">
