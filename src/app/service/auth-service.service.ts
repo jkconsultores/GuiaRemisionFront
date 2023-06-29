@@ -57,6 +57,12 @@ export class AuthServiceService {
     }
     return "";
   }
-
+  public ObtenerTokenUSuario(){
+    var datos = localStorage.getItem(this.Usuario);
+    if(datos!="" && datos!= undefined){
+      return localStorage.getItem(this.Usuario);
+    }
+    return "";
+  }
 }
 
