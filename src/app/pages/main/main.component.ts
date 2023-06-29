@@ -140,12 +140,20 @@ export class MainComponent  {
     this.api.getInfo().subscribe((res: any) => {
       Swal.close();
       this.empresas = res['empresas'];
+      if((res['empresas']??"")!=""&&res['empresas'].length==1)
+      {
+           this.remitente=res['empresas'][0];
+           this.getOrigenes();
+      }
+
       this.motivos = res['motivos'];
-      this.choferes = res['chofer'];
-      this.transportistas = res['transportista'];
-      this.destinatarios = res['adquiriente'];
+
+      if((res['origenes']??"")!=""&&res['origenes'].length==1)this.origen=res['origenes'][0];
+      this.tablaOrigenes=res['origenes'];
     });
     this.obtenerVehiculos();
+    this.getChofer()
+    this.getDestinatario();
   }
   fechaActual() {
     const now = new Date();
@@ -301,6 +309,15 @@ export class MainComponent  {
   asignarDestinatario(destinatario: destinatario) {
     this.modalService.dismissAll();
     this.destinatario = Object.assign({}, destinatario);
+    this.asignarDestinoDefault();
+  }
+  asignarDestinoDefault(){
+    this.api.getDestinosByRuc(this.destinatario.numerodocumentoadquiriente).subscribe((res:any)=>{
+      this.destinos=res;
+      if((res??"")!=""&&res.length==1){
+        this.destino=res[0];
+      }
+    })
   }
 
   cargarDestinos(){
@@ -314,13 +331,19 @@ export class MainComponent  {
         Swal.close();
       })
     }
-
+  }
+  getDestinatario(){
+    this.api.getDestinatario().subscribe((res:any)=>{
+      this.destinatarios=res;
+      if((res??"")!=""&&res.length==1){
+        this.destinatario=res[0]
+        this.asignarDestinoDefault();
+      }
+    })
   }
   asignarChofer(chofer:chofer) {
-    console.log(chofer)
     this.chofer=chofer;
     this.modalService.dismissAll();
-    console.log(this.chofer)
 
   }
   asignarChoferSec(choferSec:chofer) {
@@ -344,7 +367,11 @@ export class MainComponent  {
   asignarRemitente(remitente:AAA_EMPRESA){
     this.remitente=remitente;
     this.modalRef.close();
-    this.api.getOrigenes(remitente.numerodocumentoemisor,0).subscribe((res: any) => {
+
+  }
+  getOrigenes(){
+    Swal.showLoading();
+    this.api.getOrigenes(this.remitente.numerodocumentoemisor,0).subscribe((res: any) => {
       Swal.close();
       this.arraySerie = res['SERIE'];
       this.serieNumero = '';
@@ -455,6 +482,13 @@ export class MainComponent  {
     })
   }
   limpiarPantalla() {
+  }
+
+  getChofer(){
+    this.api.getChofer().subscribe((res:any)=>{
+      console.log(res);
+      this.choferes=res;
+    })
   }
   llenarGuia() {
     if(this.vmodalidad=='01'){
@@ -589,14 +623,7 @@ export class MainComponent  {
     });
   }
   listarOrigen(origen) {
-    if((this.remitente.numerodocumentoemisor??"")==''){
-      return Swal.fire({icon:'warning',title:'Ingrese una empresaa'});
-    }
-    this.api.getOrigenesByRuc(this.remitente.numerodocumentoemisor).subscribe((res:any)=>{
-      this.tablaOrigenes=res;
-    },err=>{},()=>{
-      this.abrirModal(origen);
-    })
+    this.abrirModal(origen);
   }
   crearOrigen(form) {
     if (form.invalid) { return }
@@ -953,7 +980,6 @@ export class MainComponent  {
     });
   }
   llenarBalanza(res:ImportarBalanza[]){
-
       if(this.vmodalidad=='02'&&((res[0].placaVehiculo??"")!=""||(res[0].nombreConductor??"")!=""||(res[0].numeroLicencia??"")!="")){
         this.chofer={} as chofer;
         this.placaChofer=res[0].placaVehiculo;
@@ -961,13 +987,11 @@ export class MainComponent  {
         this.chofer.brevete=res[0].numeroLicencia;
         this.chofer.numerodocumentochofer=res[0].numeroLicencia.substring(1);
       }
-
       if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
         this.destino={} as AAA_DESTINO;
         this.destinatario.numerodocumentoadquiriente=res[0].numeroDocumentoDestinatario;
         this.destinatario.razonsocialadquiriente=res[0].razonSocialDestinatario;
-        this.destinatario.tipodocumentoadquiriente=res[0].tipoDocumentoDestinatario;
-
+        this.destinatario.tipodocumentoadquiriente=(res[0].tipoDocumentoDestinatario??"")==""?this.validarAncho(res[0].numeroDocumentoDestinatario):"";
       }
       if(this.vmodalidad=='01'&&((res[0].numeroDocumentoTransportista??"")!=""||(res[0].razonSocialTransportista??"")!=""||(res[0].tipoDocumentoTransportista??"")!="")){
         this.transportista={} as transportista;
@@ -977,5 +1001,14 @@ export class MainComponent  {
       }
       var producto=[{codigo:'-',descripcion:res[0].descripcion,unidadmedida:'NIU',cantidad:res[0].cantidad.toString()}]
       this.listadoProductoDetalles=producto;
+  }
+  validarAncho(cadena: string): string {
+    if (cadena.length === 8) {
+      return "1";
+    } else if (cadena.length === 11) {
+      return "6";
+    } else {
+      return ""
+    }
   }
 }

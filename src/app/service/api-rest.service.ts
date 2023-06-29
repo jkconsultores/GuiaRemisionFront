@@ -30,10 +30,9 @@ export class ApiRestService implements OnInit{
   public crearAdquiriente(form){
     return this.http.post(this.url+'AAA',form,this.auth.obtenerDatos())
   }
-  public getOrigenesByRuc(ndoc:string){
-    return this.http.post(this.url+'GreTransportista/Origenes',[ndoc],this.auth.obtenerDatos())
-  }
-
+  // public getOrigenesByRuc(ndoc:string){
+  //   return this.http.post(this.url+'GreTransportista/Origenes',[ndoc],this.auth.obtenerDatos())
+  // }
   public updateAdquiriente(form){
     return this.http.post(this.url+'AAA/UpdateAdquiriente',form,this.auth.obtenerDatos())
   }
@@ -48,6 +47,9 @@ export class ApiRestService implements OnInit{
   }
   public getProductos(){
     return this.http.get(this.url+'Producto',this.auth.obtenerDatos());
+  }
+  public getDestinatario(){
+    return this.http.get(this.url+'GreTransportista/Destinatario',this.auth.obtenerDatos())
   }
   //obtener origenes para mostrar en el select
   public getOrigenes(id,local){
@@ -101,6 +103,9 @@ export class ApiRestService implements OnInit{
   }
   public getTransportista(){
     return this.http.get(this.url+'AAA/getTransportista',this.auth.obtenerDatos());
+  }
+  public getChofer(){
+    return this.http.get(this.url+'AAA/Obtener/todos/choferes',this.auth.obtenerDatos());
   }
   public BorrarChofer(ndoc){
     return this.http.get(this.url+'AAA/BorrarChofer/'+ndoc,this.auth.obtenerDatos());
