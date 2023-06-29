@@ -247,7 +247,7 @@ export class MainComponent  {
         brevete:valueform.BREVETE,
         nombre:valueform.NOMBRE,
         numerodocumentochofer: valueform.numerodocumentochofer,
-        placavehiculo: valueform.PLACAVEHICULO,
+        placavehiculo: '',
         tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
       } ;
       this.api.crearChofer(chofer).subscribe((res: any) => {
@@ -367,7 +367,7 @@ export class MainComponent  {
   asignarRemitente(remitente:AAA_EMPRESA){
     this.remitente=remitente;
     this.modalRef.close();
-
+    this.getOrigenes();
   }
   getOrigenes(){
     Swal.showLoading();
