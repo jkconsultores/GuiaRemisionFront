@@ -146,6 +146,62 @@
           </div>
         </div>
       </div>
+       <div class="col-md-6 col-lg-4 col-sm-6 mt-1 mb-1 col-12">
+        <div class="row">
+          <div class="col-md-6 col-lg-5">
+            <label class="w-100">CHOFER 1</label></div>
+          <div class="col-md-6 col-lg-7">
+            <div class="input-group mb-1">
+              <input type="text" class="form-control"  readonly [(ngModel)]="chofer.nombre">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(Chofer);">...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-12">
+        <div class="row">
+          <div class="col-md-6 col-lg-3"><label class="w-100 center">PLACA 1
+              <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-6 col-lg-9">
+            <div class="input-group mb-1">
+              <input type="text" [(ngModel)]="placaChofer" readonly class="form-control">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(Vehiculos)">...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4 col-sm-6 mt-1 mb-1 col-12">
+        <div class="row">
+          <div class="col-md-6 col-lg-5">
+            <label class="w-100">CHOFER 2</label></div>
+          <div class="col-md-6 col-lg-7">
+            <div class="input-group mb-1">
+              <input type="text" class="form-control" placeholder="Opcional" readonly [(ngModel)]="choferSec.nombre">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(ChoferSec)">...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-12">
+        <div class="row">
+          <div class="col-md-6 col-lg-3"><label class="w-100 center">PLACA 2
+              <b style="color: red;">(*)</b></label></div>
+          <div class="col-md-6 col-lg-9">
+            <div class="input-group mb-1">
+              <input type="text" [(ngModel)]="placaCarreta" placeholder="Opcional" readonly class="form-control">
+              <div class="input-group-append">
+                <button class="input-group-text" (click)="abrirModal(Carrera)">...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row col-12" id="principalslot">
       <div class="col-md-8 col-lg-10 col-sm-8" >
         <div class="table-responsive scroll-color"
@@ -1299,12 +1355,326 @@
         </div>
       </div>
       <div class="card-footer" style="text-align: right;">
-        <button class="btn btn-danger me-2" style="width: 120px;">
-            Salir
-        </button>
-        <button class="btn btn-success" style="width: 120px;">
+        <button class="btn btn-success" style="width: 120px;" (click)="cerrarModal()">
             Aceptar
         </button>
       </div>
+    </div>
+  </ng-template>
+  <ng-template #Chofer>
+    <div class="card">
+      <div class="card-header text-center">
+        <div class="container">
+          <h5>CHOFER &nbsp; &nbsp;</h5>
+          <button class="btn btn-secondary" (click)="abrirModal(CrudChofer)">+</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-3">
+            <label style="width: 150px;">CHOFER</label>
+          </div>
+          <div class="col-9">
+            <div class="input-group mb-1">
+              <input type="text" [(ngModel)]="filterChofer" name="filterChofer" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc</th>
+                <th scope="col">Tipo Doc</th>
+                <th scope="col">Razon social</th>
+                <th scope="col">Brevete</th>
+                <th scope="col">Placa</th>
+                <th scope="col" style="text-align: center;">Opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of choferes| filter:filterChofer:['numerodocumentochofer','nombre','brevete']  " style="cursor: pointer;">
+                <th scope="row" (click)="asignarChofer(item)">{{item.numerodocumentochofer}}</th>
+                <td (click)="asignarChofer(item)">{{item.tipodocumentochofer}}</td>
+                <td (click)="asignarChofer(item)">{{item.nombre+" "+item.apellido}}</td>
+                <td (click)="asignarChofer(item)">{{item.brevete}}</td>
+                <td (click)="asignarChofer(item)">{{item.placavehiculo}}</td>
+                <td style="text-align: center;cursor: pointer;"
+                (click)="borrarChofer(item.numerodocumentochofer);"><i
+                  class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #CrudChofer>
+    <div class="card">
+      <div class="card-header">
+        <h5>Registrar Chofer</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="crearChofer(chofer)" #chofer="ngForm" id="chofer">
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+              <h6 for="input" class="w-100 col-form-label"><a style="color: red;">(*)</a> N° Doc:</h6>
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-9">
+              <input type="text" ngModel class="form-control" maxlength="11"
+                [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['numerodocumentochofer'].errors}"
+                name="numerodocumentochofer" placeholder="Ingrese el numero de documento" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6  for="input" class="w-100 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
+              Doc:</h6>
+              </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-9">
+              <select ngModel [(ngModel)]="tipodocChofer" class="form-select" name="TIPODOCUMENTOCHOFER" required>
+                <option value="1">DNI</option>
+                <option value="4">CARNET DE EXTRANJERIA</option>
+                <option value="6">RUC</option>
+                <option value="7">PASAPORTE</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6 for="input" class="w-100 col-form-label" ><a style="color: red;">(*)</a>
+              Nombre:</h6>
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['NOMBRE'].errors}" name="NOMBRE"
+                placeholder="Ingrese el nombre" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+              <h6 for="input" class="w-100 col-form-label" ><a style="color: red;">(*)</a>
+              Apellido:</h6>
+              </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['APELLIDO'].errors}" name="APELLIDO"
+                placeholder="Ingrese la razón social" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+              <h6 for="input" class="w-100 col-form-label"><a style="color: red;">(*)</a>
+              Brevete:</h6>
+              </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-9">
+              <input type="text" ngModel class="form-control"
+                [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['BREVETE'].errors}" name="BREVETE"
+                placeholder="Ingrese el Brevete" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <!--   <div class="col-12 col-sm-4 col-md-4 col-lg-3 d-flex align-items-center">
+            <h6 for="input" class="w-100 col-form-label"><a style="color: red;">(*)</a>
+              Placa:</h6>
+              </div> -->
+            <div class="col-12 col-sm-8 col-md-8 col-lg-9">
+              <input type="hidden" ngModel class="form-control"
+                [ngClass]="{'is-invalid': chofer.submitted&&chofer.controls['PLACAVEHICULO'].errors}" name="PLACAVEHICULO"
+                placeholder="Ingrese la placa del vehiculo">
+            </div>
+          </div>
+        </form>
+        <div class="row mt-2">
+          <div style="text-align: right;">
+            <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+            <button class="btn btn-success" style="width: 90px;" form="chofer" type="submit">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #Vehiculos let-modal>
+    <div class="modal-header">
+      <div class="container">
+      <h5>Vehiculos &nbsp; &nbsp;</h5>
+      <button class="btn btn-secondary" (click)="abrirModal(CrudVehiculos)">+</button>
+    </div>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-3">
+          <label style="width: 150px;">VEHICULO</label>
+        </div>
+        <div class="col-9">
+          <div class="input-group mb-1">
+            <input type="text" [(ngModel)]="filterVehiculo" name="filterVehiculo" class="form-control">
+          </div>
+        </div>
+      </div>
+      <form>
+        <div class="mb-3">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Marca</th>
+                <th>Color</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
+                <th>
+                  <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                   -->
+                  <button class="btn btn-danger ms-2" (click)="eliminarUnVehiculo(item.id,item.placaVehiculo)"><i class="bi bi-trash3 text-white"></i></button>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #Carrera let-modal>
+    <div class="modal-header">
+      <div class="container">
+      <h5>Vehiculos &nbsp; &nbsp;</h5>
+      <button class="btn btn-secondary" (click)="abrirModal(CrudVehiculos)">+</button>
+    </div>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-3">
+          <label style="width: 150px;">VEHICULO</label>
+        </div>
+        <div class="col-9">
+          <div class="input-group mb-1">
+            <input type="text" [(ngModel)]="filterVehiculoSec" name="filterVehiculoSec" class="form-control">
+          </div>
+        </div>
+      </div>
+      <form>
+        <div class="mb-3">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Marca</th>
+                <th>Color</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculoSec:['placaVehiculo','marca']; let i = index" >
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
+                <th>
+                  <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
+                  -->
+                  <button class="btn btn-danger ms-2" (click)="eliminarUnVehiculo(item.id,item.placaVehiculo)"><i class="bi bi-trash3 text-white"></i></button>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #ChoferSec>
+    <div class="card">
+      <div class="card-header text-center">
+        <div class="container">
+          <h5>CHOFER &nbsp; &nbsp;</h5>
+          <button class="btn btn-secondary" (click)="abrirModal(CrudChofer)">+</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-3">
+            <label style="width: 150px;">CHOFER</label>
+          </div>
+          <div class="col-9">
+            <div class="input-group mb-1">
+              <input type="text" [(ngModel)]="filterChoferSec" name="filterChoferSec" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc</th>
+                <th scope="col">Tipo Doc</th>
+                <th scope="col">Razon social</th>
+                <th scope="col">Brevete</th>
+                <th scope="col">Placa</th>
+                <th scope="col" style="text-align: center;">Opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of choferes | filter:filterChoferSec:['numerodocumentochofer','nombre','brevete'] " style="cursor: pointer;">
+                <th scope="row" (click)="asignarChoferSec(item)">{{item.numerodocumentochofer}}</th>
+                <td (click)="asignarChoferSec(item)">{{item.tipodocumentochofer}}</td>
+                <td (click)="asignarChoferSec(item)">{{item.nombre+" "+item.apellido}}</td>
+                <td (click)="asignarChoferSec(item)">{{item.brevete}}</td>
+                <td (click)="asignarChoferSec(item)">{{item.placavehiculo}}</td>
+                <td style="text-align: center;cursor: pointer;"
+                (click)="borrarChofer(item.numerodocumentochofer);"><i
+                  class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
+              </tr>
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #CrudVehiculos let-modal>
+    <div class="modal-header">
+      <h5>Agregar nuevo vehiculo</h5>
+    </div>
+    <div class="modal-body">
+      <form class="margen-modal" (ngSubmit)="agregarVehiculo(vehicuref)" #vehicuref="ngForm" id="vehicuref">
+        <div class="mb-3">
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Placa de vehiculo <span style="color: red;">(*)</span></label>
+            <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Modelo</label>
+            <input type="text" ngModel name="modeloVehiculo" class="form-control" placeholder="Ingrese un modelo (opcional)">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Color</label>
+            <input type="text" ngModel name="colorVehiculo" class="form-control"  placeholder="Ingrese el color del vehiculo (opcional)">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Marca</label>
+            <input type="text" ngModel name="marcaVehiculo" class="form-control" placeholder="Ingrese la marca del vehiculo (opcional)">
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+              (click)='salir()'>Salir</button>
+            <button class="btn btn-success" style="width: 90px;" form="vehicuref"
+              type="submit">Aceptar</button>
     </div>
   </ng-template>
