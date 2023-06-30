@@ -227,4 +227,13 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       });
     });
   }
+  reemplazarMotivo(tipo: string, valor: string): string {
+    if (tipo === "Motivo") {
+      const index = this.arrayMotivo.findIndex((dato) => dato.id.toString() === valor);
+      if (index !== -1) {
+        return this.arrayMotivo[index].descripcion;
+      }
+    }
+    return valor;
+  }
 }
