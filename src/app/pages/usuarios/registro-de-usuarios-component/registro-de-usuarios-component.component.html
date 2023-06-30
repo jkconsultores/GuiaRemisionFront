@@ -83,17 +83,20 @@
             placeholder="Ingrese el nombre del usuario (obligatorio)">
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Contraseña</label>
+          <label for="exampleFormControlInput1" class="form-label">Contraseña<span
+            style="color: red;">(*)</span></label>
           <input type="password" ngModel name="contraseñaUsuario" class="form-control"
             placeholder="Ingrese una contraseña (obligatorio)">
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+          <label for="exampleFormControlInput1" class="form-label">Nombres<span
+            style="color: red;">(*)</span></label>
           <input type="text" ngModel name="nombreUsuario" class="form-control"
             placeholder="Ingrese el nombre completo (obligatorio)">
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Correo electronico</label>
+          <label for="exampleFormControlInput1" class="form-label">Correo electronico<span
+            style="color: red;">(*)</span></label>
           <input type="email" ngModel name="correoUsuario" class="form-control"
             placeholder="Ingrese un correo electronico (obligatorio)">
         </div>
@@ -154,7 +157,7 @@
               <tbody>
                 <tr *ngFor="let item of permisos">
                   <td>{{item.tipo}}</td>
-                  <td>{{item.valor}}</td>
+                  <td>{{reemplazarMotivo(item.tipo,item.valor)}}</td>
                   <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermiso(item.tipo,item.valor)"></i></td>
                 </tr>
               </tbody>
@@ -233,7 +236,7 @@
         <tbody>
           <tr *ngFor="let item of RolesDEUSuarioNuevos">
             <td>{{item.tipo}}</td>
-            <td>{{item.valor}}</td>
+            <td>{{reemplazarMotivo(item.tipo,item.valor)}}</td>
             <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermisoUpdate(item.tipo,item.valor)"></i></td>
           </tr>
         </tbody>
