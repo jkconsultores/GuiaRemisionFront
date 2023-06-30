@@ -539,7 +539,7 @@
           <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
             Local anexo:</label>
           <div class="col-sm-9">
-            <input type="text" [(ngModel)]="codigolocalanexo" name="codiglocalanexo" class="form-control">
+            <input type="text" maxlength="4" [(ngModel)]="codigolocalanexo" name="codiglocalanexo" class="form-control">
           </div>
         </div>
       </form>
@@ -1176,7 +1176,7 @@
           <div class="col-sm-9">
             <input type="text" ngModel class="form-control"
               [ngClass]="{'is-invalid': origen.submitted&&origen.controls['codigolocalanexo'].errors}"
-              name="codigolocalanexo" placeholder="Ingrese el codigo local anexo" required>
+              name="codigolocalanexo" maxlength="4" placeholder="Ingrese el codigo local anexo" required>
           </div>
         </div>
       </form>

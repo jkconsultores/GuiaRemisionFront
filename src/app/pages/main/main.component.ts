@@ -135,6 +135,7 @@ export class MainComponent  {
 
   constructor(public api: ApiRestService, private modalService: NgbModal, public rout: Router,private Serviceapi:ApiRestService) {
     this.obtenerInfo();
+    this.getTransportista();
   }
   EditarDestinatario(modal, contenido) {
     this.destinatarioObject = contenido;
@@ -241,8 +242,12 @@ export class MainComponent  {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
         this.obtenerInfo();
-      }, error => {
-        Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+      }, err => {
+        console.log(err)
+        if (err.error.error.mensaje) { Swal.fire({ icon: 'warning', text: err.error.error.mensaje }); }else{
+          Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+        }
+
       })
     }
   }
