@@ -1,3 +1,4 @@
+import { chofer } from './../../interface/choferSec';
 import { producto } from './../../interface/producto';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -17,6 +18,7 @@ import { GuiaImportada } from 'src/app/interface/GuiaImportada';
 import { GuiaImportadaDetalle } from 'src/app/interface/GuiaImportadaDetalle';
 import { docRef } from 'src/app/interface/docRef';
 import { camposOpcionales } from '../../interface/camposOpcionales';
+import { T_Vehiculo, VehiculoDTO } from 'src/app/interface/Vehiculos';
 
 @Component({
   selector: 'app-guia-transportista',
@@ -36,14 +38,19 @@ export class GuiaTransportistaComponent  implements OnInit{
   filtroGuia='';
   cabecera={}
 
-    //producto modal------------------------------------------
-    codigoProd = '';
-    cantidadProd = '1';
-    medidaProd = 'NIU';
-    descripcionProd=''
+  //producto modal------------------------------------------
+  codigoProd = '';
+  cantidadProd = '1';
+  medidaProd = 'NIU';
+  descripcionProd=''
+  //datos adicionales chofer placas
+  placaChofer = '';
+  placaCarreta = '';
+  modeloCarreta='';
+  marcaVehiculo='';
 
-    //campos opcionales
-    camposOpcionales={almacen:'',referencia:'',servicio:'',ticket:'',tipo:''} as camposOpcionales;
+  //campos opcionales
+  camposOpcionales={almacen:'',referencia:'',servicio:'',ticket:'',tipo:''} as camposOpcionales;
 
   //filtro inputs
   filterTransportista='';
@@ -51,6 +58,10 @@ export class GuiaTransportistaComponent  implements OnInit{
   filterDestinatario='';
   filterProducto='';
   filterDestino='';
+  filterChofer='';
+  filterChoferSec='';
+  filterVehiculo='';
+  filterVehiculoSec=''
   //tablas
   tablaEmpresas = [];
   tablaOrigenes = [];
@@ -66,7 +77,7 @@ export class GuiaTransportistaComponent  implements OnInit{
   destinatarios=[];
   transportistas=[];
   empresas = [];
-  chofer = [];
+  choferes = [];
   selectedGuias:GuiaImportada[]=[]
   // variable para formulario crud destinatario select tipo doc
   tipodocForm = '1';
@@ -81,6 +92,11 @@ export class GuiaTransportistaComponent  implements OnInit{
     origen = {} as origen;
     //destino
     destino={} as AAA_DESTINO;
+  //chofer
+  chofer={nombre:''} as chofer;
+  //chofersec
+  choferSec={nombre:''} as chofer;
+  public VehiculosActivos:T_Vehiculo[]=[];
 
   pais = 'PE';
   tipodocEmp = '6';
@@ -99,7 +115,6 @@ export class GuiaTransportistaComponent  implements OnInit{
   descripcionMotivoTraslado='';
   modalidadTraslado='';
   unidadMedidaPesoBruto='';
- choferSec={nombreConductorSec1:''} as choferSec1
 
  ubigeoDestinoUpdate = '';
  direccionDestinoUpdate = '';
@@ -118,8 +133,10 @@ export class GuiaTransportistaComponent  implements OnInit{
   Nrobultos = '';
 
 
-  constructor(private modalService: NgbModal,public api: ApiRestService,public apiT:ApiTransportistaService){
+  constructor(private modalService: NgbModal,public api: ApiRestService,public apiT:ApiTransportistaService,){
       this.getTransportistaDefault();
+      this.getChofer()
+      this.obtenerVehiculos();
   }
   ngOnInit(): void {
     let div1 = document.getElementById("botonesdeacceso");
@@ -599,17 +616,17 @@ export class GuiaTransportistaComponent  implements OnInit{
       descripcionMotivoTraslado: this.descripcionMotivoTraslado,
       indTransbordoProgramado: '',
       pesoBrutoTotalBienes: parseFloat(this.pesoBruto).toString(),
-      unidadMedidaPesoBruto: this.unidadMedidaPesoBruto,
+      unidadMedidaPesoBruto: this.medida,
       modalidadTraslado: this.modalidadTraslado, //01 publico 02 privado
       fechaInicioTraslado: this.fecha_traslado,
-      numeroRucTransportista: this.transportista.numerodocumentotransportista,
-      tipoDocumentoTransportista: this.transportista.tipodocumentotransportista,
-      razonSocialTransportista: this.transportista.razonsocialtransportista,
-      numeroDocumentoConductor: "",
-      tipoDocumentoConductor: "",
-      numeroPlacaVehiculoPrin: "", //conductor chofer
+      numeroRucTransportista: (this.transportista.numerodocumentotransportista??"")==""?"":this.transportista.numerodocumentotransportista,
+      tipoDocumentoTransportista: (this.transportista.tipodocumentotransportista??"")==""?"":this.transportista.tipodocumentotransportista,
+      razonSocialTransportista: (this.transportista.razonsocialtransportista??"")==""?"":this.transportista.razonsocialtransportista,
+      numeroDocumentoConductor: (this.chofer.numerodocumentochofer??"")==""?"":this.chofer.numerodocumentochofer,
+      tipoDocumentoConductor: (this.chofer.tipodocumentochofer??"")==""?"":this.chofer.tipodocumentochofer,
+      numeroPlacaVehiculoPrin: this.placaChofer, //conductor chofer
       numeroBultos: this.Nrobultos,
-      ubigeoPtoLLegada: this.destino.ubigeodestino, //destino
+      ubigeoPtoLLegada: this.destino.ubigeodestino??"", //destino
       codigoPtollegada: this.destino.codigolocalanexo??"",
       codigoPtoPartida: this.origen.codigolocalanexo??"",
       direccionPtoLLegada: this.destino.direcciondestino, //destino
@@ -618,20 +635,20 @@ export class GuiaTransportistaComponent  implements OnInit{
       horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
       numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
-      nombreConductor: "",
-      apellidoConductor: "",
-      numeroLicencia: "", //chofer
+      nombreConductor: (this.chofer.nombre??"")==""?"":this.chofer.nombre,
+      apellidoConductor: (this.chofer.apellido??"")==""?"":this.chofer.apellido,
+      numeroLicencia: (this.chofer.brevete??"")==""?"":this.chofer.brevete, //chofer
       spE_DESPATCH_ITEM: this.listadoProductoDetalles,
       SPE_DESPATCH_DOCRELACIONADO:this.documentosReferenciados,
-      numeroDocumentoConductorSec1:this.choferSec.numeroDocumentoConductorSec1,
-      tipoDocumentoConductorSec1:this.choferSec.tipoDocumentoConductorSec1,
-      nombreConductorSec1:this.choferSec.nombreConductorSec1,
-      apellidoConductorSec1 :this.choferSec.apellidoConductorSec1,
-      numeroLicenciaSec1:this.choferSec.numeroLicenciaSec1,
+      numeroDocumentoConductorSec1:this.choferSec.numerodocumentochofer,
+      tipoDocumentoConductorSec1:this.choferSec.tipodocumentochofer,
+      nombreConductorSec1:(this.choferSec.nombre??"")==""?"":this.choferSec.nombre,
+      apellidoConductorSec1 :(this.choferSec.apellido??"")==""?"":this.choferSec.apellido,
+      numeroLicenciaSec1:(this.choferSec.brevete??"")==""?"":this.choferSec.brevete,
       camposOpcionales1: (this.camposOpcionales??null),
-      textoAuxiliar250_1:"",//placa carreta
-      textoAuxiliar250_3:"",//modelo carreta,
-      textoAuxiliar250_2:"" // modelo del vehiculo
+      textoAuxiliar250_1:this.placaCarreta,//placa carreta
+      textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
+      textoAuxiliar250_2:this.marcaVehiculo // modelo del vehiculo
     }
     return obj;
   }
@@ -721,10 +738,7 @@ extraerGuiaImportada(guia:GuiaImportada){
   this.modalidadTraslado=guia.modalidadTraslado;
   this.unidadMedidaPesoBruto=guia.unidadMedidaPeso;
   this.pesoBruto=totalPesobruto.toString()??"0";
-  this.Nrobultos=totalBultos.toString()??"0";
-  this.fecha_emision=(guia.fechaEmision+"T"+guia.horaEmision).substring(0,16);
-  this.horaEmision=guia.horaEmision;
-  this.fecha_traslado=guia.fechaEntregaBienes;
+  this.Nrobultos=totalBultos.toString()??"";
   this.medida=guia.unidadMedidaPeso;
   this.convertirFormatoDocFef();
 }
@@ -746,5 +760,121 @@ asignarProducto() {
   }
   let objeto:producto={cantidad:this.cantidadProd.toString(),codigo:this.codigoProd.toString(),descripcion:this.descripcionProd.toString(),unidadmedida:this.medidaProd.toString()};
   this.listadoProductoDetalles.push(objeto);
+}
+asignarChofer(chofer:chofer) {
+  this.chofer=chofer;
+  this.modalService.dismissAll();
+}
+asignarChoferSec(choferSec:chofer) {
+  this.choferSec=choferSec;
+  this.modalService.dismissAll();
+}
+borrarChofer(ndoc){
+  Swal.showLoading();
+  Swal.fire({
+    icon:'warning',
+    title: 'Estás seguro?',
+    text: 'El Chofer con el N° Doc ' + ndoc + ' se eliminará',
+    showCancelButton: true,
+    confirmButtonText: 'Eliminar',
+    confirmButtonColor:'red',
+    cancelButtonText: 'Salir'
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      this.api.BorrarChofer(ndoc).subscribe((res: any) => {
+         this.getChofer();
+         this.chofer={} as chofer;
+      }, err => {
+        if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
+        else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
+      })
+    }
+  })
+}
+getChofer(){
+  this.api.getChofer().subscribe((res:any)=>{
+    this.choferes=res;
+  })
+}
+asignarVehiculo(placa,marca){
+  this.marcaVehiculo=marca;
+  this.placaChofer=placa;
+  this.modalRef.close();
+}
+asignarCarreta(placa,marca){
+  this.placaCarreta=placa;
+  this.modeloCarreta=marca;
+  this.modalRef.close();
+}
+crearChofer(form: NgForm) {
+  if (form.invalid) {
+    return
+  }
+  if (form.submitted) {
+    Swal.showLoading();
+    let valueform = form.value;
+    let chofer:chofer ={
+      apellido : valueform.APELLIDO,
+      brevete:valueform.BREVETE,
+      nombre:valueform.NOMBRE,
+      numerodocumentochofer: valueform.numerodocumentochofer,
+      placavehiculo: '',
+      tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
+    } ;
+    this.api.crearChofer(chofer).subscribe((res: any) => {
+      Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+      this.modalRef.close();
+      this.getChofer();
+    }, error => {
+      if (error.error) { Swal.fire({ icon: 'warning', text: error.error }); }
+      else{
+        Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+      }
+    })
+  }
+}
+eliminarUnVehiculo(idVehiculo:number, placa:string){
+  Swal.fire({
+    text:"Estas seguro de eliminar el vehiculo",
+    icon:"warning",
+    title:"Eliminar el vehiculo con placa: "+placa,
+    showCancelButton: true,
+    confirmButtonText: 'Eliminar vehiculo',
+    cancelButtonText:"cancelar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.api.BorrarVehiculos(idVehiculo).subscribe(resp=>{
+        Swal.fire('Eliminado!', '', 'success')
+        this.obtenerVehiculos();
+      },error=>{
+        Swal.fire('No se pudo eliminar el vehiculo', '', 'error')
+      })
+    }
+  })
+}
+obtenerVehiculos(){
+  this.api.getVehiculos().subscribe((resp:any)=>{
+    this.VehiculosActivos=resp;
+  })
+}
+onKeyPress(event: KeyboardEvent): void {
+  if (event.key === '-' ) {
+    event.preventDefault(); // Evita que se ingrese el guion
+  }
+}
+agregarVehiculo(ref: NgForm){
+  let vehiculo:VehiculoDTO={
+    color:ref.value.colorVehiculo,
+    marca:ref.value.marcaVehiculo,
+    modelo:ref.value.modeloVehiculo,
+    placaVehiculo:ref.value.placaVehiculoVehiculo,
+  };
+  this.api.AgregarVehiculo(vehiculo).subscribe((resp:any)=>{
+    this.VehiculosActivos.push(resp);
+
+    Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
+      this.modalRef.close();
+  })
 }
 }

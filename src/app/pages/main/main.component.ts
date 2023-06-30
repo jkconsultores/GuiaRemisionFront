@@ -360,7 +360,6 @@ export class MainComponent  {
   asignarChofer(chofer:chofer) {
     this.chofer=chofer;
     this.modalService.dismissAll();
-
   }
   asignarChoferSec(choferSec:chofer) {
     this.choferSec=choferSec;
@@ -529,7 +528,7 @@ export class MainComponent  {
       descripcionMotivoTraslado: motivo[1],
       indTransbordoProgramado: '',
       pesoBrutoTotalBienes: parseFloat(this.pesoBruto).toString(),
-      unidadMedidaPesoBruto: this.medidaGRE,
+      unidadMedidaPesoBruto: this.medida,
       modalidadTraslado: this.vmodalidad, //01 publico 02 privado
       fechaInicioTraslado: this.fecha_traslado,
       numeroRucTransportista: (this.transportista.numerodocumentotransportista??"")==""?"":this.transportista.numerodocumentotransportista,
