@@ -612,12 +612,12 @@ export class GuiaTransportistaComponent  implements OnInit{
       numeroDocumentoDestinatario: this.destinatario.numerodocumentoadquiriente,
       tipoDocumentoDestinatario: this.destinatario.tipodocumentoadquiriente,
       razonSocialDestinatario: this.destinatario.razonsocialadquiriente,
-      motivoTraslado: this.motivoTraslado,
+      motivoTraslado: '',//this.motivoTraslado,
       descripcionMotivoTraslado: this.descripcionMotivoTraslado,
       indTransbordoProgramado: '',
       pesoBrutoTotalBienes: parseFloat(this.pesoBruto).toString(),
       unidadMedidaPesoBruto: this.medida,
-      modalidadTraslado: this.modalidadTraslado, //01 publico 02 privado
+      modalidadTraslado: '',//this.modalidadTraslado, //01 publico 02 privado
       fechaInicioTraslado: this.fecha_traslado,
       numeroRucTransportista: (this.transportista.numerodocumentotransportista??"")==""?"":this.transportista.numerodocumentotransportista,
       tipoDocumentoTransportista: (this.transportista.tipodocumentotransportista??"")==""?"":this.transportista.tipodocumentotransportista,
