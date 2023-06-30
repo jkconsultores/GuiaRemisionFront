@@ -82,6 +82,10 @@ export class MainComponent  {
   filterDestinatario='';
   filterProducto='';
   filterDestino='';
+  filterChofer='';
+  filterChoferSec='';
+  filterVehiculo='';
+  filterVehiculoSec=''
   //-------------------------------------------------------------
   pageProduct = 0;
   vmotivo = '';
@@ -128,8 +132,10 @@ export class MainComponent  {
   public VehiculosActivos:T_Vehiculo[]=[];
   public DestinoSeelct:AAA_DESTINO | undefined;
   public DestinoAUSar:AAA_DESTINO[] =[];
+
   constructor(public api: ApiRestService, private modalService: NgbModal, public rout: Router,private Serviceapi:ApiRestService) {
     this.obtenerInfo();
+    this.getTransportista();
   }
   EditarDestinatario(modal, contenido) {
     this.destinatarioObject = contenido;
@@ -204,15 +210,21 @@ export class MainComponent  {
       })
     }
   }
+
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === '-' ) {
+      event.preventDefault(); // Evita que se ingrese el guion
+    }
+  }
   updateAdquiriente(form: NgForm) {
     if (form.invalid) { return }
     if (form.submitted) {
       Swal.showLoading();
-      form.value.DESTINO = this.destinatarioObject.destino;
+      form.value.DESTINO = this.destinatarioObject.destinos;
       this.api.updateAdquiriente(form.value).subscribe((res: any) => {
         this.modalRef.close();
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
-        this.destinatarioObject.destino = [];
+        this.destinatarioObject.destinos = [];
         this.obtenerInfo();
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
@@ -230,8 +242,12 @@ export class MainComponent  {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
         this.obtenerInfo();
-      }, error => {
-        Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+      }, err => {
+        console.log(err)
+        if (err.error.error.mensaje) { Swal.fire({ icon: 'warning', text: err.error.error.mensaje }); }else{
+          Swal.fire({ icon: 'error', title: 'Hubo un error en crear el registro' })
+        }
+
       })
     }
   }
@@ -247,7 +263,7 @@ export class MainComponent  {
         brevete:valueform.BREVETE,
         nombre:valueform.NOMBRE,
         numerodocumentochofer: valueform.numerodocumentochofer,
-        placavehiculo: valueform.PLACAVEHICULO,
+        placavehiculo: '',
         tipodocumentochofer:valueform.TIPODOCUMENTOCHOFER
       } ;
       this.api.crearChofer(chofer).subscribe((res: any) => {
@@ -288,7 +304,7 @@ export class MainComponent  {
        direcciondestino: this.direccionDestinoUpdate,
        codigolocalanexo: this.codigolocalanexoUpdate
       }
-    this.destinatarioObject.destino.push(obj);
+    this.destinatarioObject.destinos.push(obj);
     this.ubigeoDestinoUpdate = '';
     this.direccionDestinoUpdate = '';
     this.codigolocalanexoUpdate = '';
@@ -303,8 +319,8 @@ export class MainComponent  {
     this.destinos.splice(indice, 1);
   }
   borrarDestinoArrayUpdate(id) {
-    const indice = this.destinatarioObject.destino.findIndex((elemento) => elemento.id === id);
-    this.destinatarioObject.destino.splice(indice, 1);
+    const indice = this.destinatarioObject.destinos.findIndex((elemento) => elemento.id === id);
+    this.destinatarioObject.destinos.splice(indice, 1);
   }
   asignarDestinatario(destinatario: destinatario) {
     this.modalService.dismissAll();
@@ -367,7 +383,7 @@ export class MainComponent  {
   asignarRemitente(remitente:AAA_EMPRESA){
     this.remitente=remitente;
     this.modalRef.close();
-
+    this.getOrigenes();
   }
   getOrigenes(){
     Swal.showLoading();

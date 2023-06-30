@@ -169,8 +169,14 @@
         </div>
       </div>
           <div class="col-lg-2 col-md-4 col-sm-4" id="botonesdeacceso">
-            <div class="col-12"> <button class="btn btn-light mb-1 w-100 "
-              style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button></div>
+            <div class="col-12">
+              <button class="btn btn-light mb-1 w-100 "
+              style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-light mb-1 w-100"
+              style="height: 80px;" (click)="abrirModal(Opcionales)">Campos Adicionales</button>
+            </div>
             <div class="col-12 mt-3">
               <button class="btn btn-primary mb-1 w-100 " style="height: 80px;" (click)="declararGuia()"
               >Declarar</button>
@@ -185,12 +191,22 @@
               <tr>
                 <th scope="col" style="width: 120px;">Codigo</th>
                 <th scope="col">Cantidad</th>
-                <th scope="col">Um</th>
+                <th scope="col">Unidad Medida</th>
                 <th scope="col" style="width: 400px;">Descripcion</th>
                 <th scope="col">opt</th>
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><input class="form-control" [(ngModel)]="codigoProd" type="text"></td>
+                <td><input class="form-control" [(ngModel)]="cantidadProd" type="text"></td>
+                <td><input class="form-control" [(ngModel)]="medidaProd" type="text"></td>
+                <td><input class="form-control" [(ngModel)]="descripcionProd" type="text"></td>
+                <td>
+
+                  <i class="fas fa-plus-circle" (click)="asignarProducto()" style="color: rgb(0, 125, 250);cursor: pointer;font-size: 32px;"></i>
+                </td>
+              </tr>
               <tr *ngFor="let item of listadoProductoDetalles| paginate: {id:'product', itemsPerPage: 10, currentPage: pageProduct } ;  let i = index">
                 <td>{{item.codigo}}</td>
                 <td>{{item.cantidad}}</td>
@@ -348,7 +364,7 @@
           <div class="col-12 col-sm-8 col-md-9 mb-3">
             <div class="input-group mb-1">
               <input type="text"
-                [(ngModel)]="transportista.razonsocialtransportista"
+                [(ngModel)]="filterTransportista"
                 name="filterTransportista" placeholder="Seleccione un transportista" class="form-control">
               <div class="input-group-append">
                 <button class="btn btn-secondary"
@@ -991,243 +1007,304 @@
       </div>
     </div>
   </div>
-</ng-template>
-<ng-template #UpdateDestinatario>
-  <div class="card">
-    <div class="card-header">
-      <h5>Update Destinatario</h5>
-    </div>
-    <div class="card-body">
-      <form (ngSubmit)="updateAdquiriente(f)" #f="ngForm" id="destinatario">
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> N°
-            Doc:</label>
-          <div class="col-sm-3">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.numerodocumentoadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['numerodocumentoadquiriente'].errors}"
-              name="numerodocumentoadquiriente" placeholder="Ingrese el numero de documento adquiriente" required>
+  </ng-template>
+  <ng-template #UpdateDestinatario>
+    <div class="card">
+      <div class="card-header">
+        <h5>Update Destinatario</h5>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="updateAdquiriente(f)" #f="ngForm" id="destinatario">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> N°
+              Doc:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.numerodocumentoadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['numerodocumentoadquiriente'].errors}"
+                name="numerodocumentoadquiriente" placeholder="Ingrese el numero de documento adquiriente" required>
+            </div>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
+              Doc:</label>
+            <div class="col-sm-3">
+              <select ngModel [(ngModel)]="destinatarioObject.tipodocumentoadquiriente" class="form-select"
+                name="tipodocumentoadquiriente" required>
+                <option value="1">DNI</option>
+                <option value="4">CARNET DE EXTRANJERIA</option>
+                <option value="6">RUC</option>
+                <option value="7">PASAPORTE</option>
+              </select>
+            </div>
           </div>
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Tipo
-            Doc:</label>
-          <div class="col-sm-3">
-            <select ngModel [(ngModel)]="destinatarioObject.tipodocumentoadquiriente" class="form-select"
-              name="tipodocumentoadquiriente" required>
-              <option value="1">DNI</option>
-              <option value="4">CARNET DE EXTRANJERIA</option>
-              <option value="6">RUC</option>
-              <option value="7">PASAPORTE</option>
-            </select>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Razon
+              Social:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.razonsocialadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['razonsocialadquiriente'].errors}"
+                name="razonsocialadquiriente" placeholder="Ingrese la razón social" required>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a> Razon
-            Social:</label>
-          <div class="col-sm-9">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.razonsocialadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['razonsocialadquiriente'].errors}"
-              name="razonsocialadquiriente" placeholder="Ingrese la razón social" required>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"> correo:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.correo" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['correo'].errors}" name="correo"
+                placeholder="Ingrese el correo">
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"> correo:</label>
-          <div class="col-sm-9">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.correo" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['correo'].errors}" name="correo"
-              placeholder="Ingrese el correo">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Dirección:</label>
+            <div class="col-sm-9">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.direccionadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['direccionadquiriente'].errors}"
+                name="direccionadquiriente" placeholder="Ingrese la dirección" required>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Dirección:</label>
-          <div class="col-sm-9">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.direccionadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['direccionadquiriente'].errors}"
-              name="direccionadquiriente" placeholder="Ingrese la dirección" required>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Ubigeo:</label>
+            <div class="col-sm-3">
+              <input type="text" [(ngModel)]="destinatarioObject.ubigeoadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['ubigeoadquiriente'].errors}" name="ubigeoadquiriente"
+                placeholder="Ingrese el ubigeo" [maxLength]="6"  required>
+            </div>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+              Distrito:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.distritoadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['distritoadquiriente'].errors}"
+                name="distritoadquiriente" placeholder="Ingrese el distrito">
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Ubigeo:</label>
-          <div class="col-sm-3">
-            <input type="text" [(ngModel)]="destinatarioObject.ubigeoadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['ubigeoadquiriente'].errors}" name="ubigeoadquiriente"
-              placeholder="Ingrese el ubigeo" [maxLength]="6"  required>
-          </div>
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
-            Distrito:</label>
-          <div class="col-sm-3">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.distritoadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['distritoadquiriente'].errors}"
-              name="distritoadquiriente" placeholder="Ingrese el distrito">
-          </div>
-        </div>
 
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
-            Provincia:</label>
-          <div class="col-sm-3">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.provinciaadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['provinciaadquiriente'].errors}"
-              name="provinciaadquiriente" placeholder="Ingrese la provincia">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+              Provincia:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.provinciaadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['provinciaadquiriente'].errors}"
+                name="provinciaadquiriente" placeholder="Ingrese la provincia">
+            </div>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+              Departamento:</label>
+            <div class="col-sm-3">
+              <input type="text" ngModel [(ngModel)]="destinatarioObject.departamentoadquiriente" class="form-control"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['departamentoadquiriente'].errors}"
+                name="departamentoadquiriente" placeholder="Ingrese el departamento">
+            </div>
           </div>
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
-            Departamento:</label>
-          <div class="col-sm-3">
-            <input type="text" ngModel [(ngModel)]="destinatarioObject.departamentoadquiriente" class="form-control"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['departamentoadquiriente'].errors}"
-              name="departamentoadquiriente" placeholder="Ingrese el departamento">
+          <div class="form-group row" hidden>
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Pais:</label>
+            <div class="col-sm-9">
+              <input type="text" readonly ngModel [(ngModel)]="pais" class="form-control" [(ngModel)]="pais"
+                [ngClass]="{'is-invalid': f.submitted&&f.controls['PAISADQUIRIENTE'].errors}" name="PAISADQUIRIENTE"
+                placeholder="Ingrese el Pais">
+            </div>
           </div>
-        </div>
-        <div class="form-group row" hidden>
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Pais:</label>
-          <div class="col-sm-9">
-            <input type="text" readonly ngModel [(ngModel)]="pais" class="form-control" [(ngModel)]="pais"
-              [ngClass]="{'is-invalid': f.submitted&&f.controls['PAISADQUIRIENTE'].errors}" name="PAISADQUIRIENTE"
-              placeholder="Ingrese el Pais">
+          <hr>
+          <span><b>Destino</b></span>
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Ubigeo:</label>
+            <div class="col-sm-9">
+              <input type="text" [(ngModel)]="ubigeoDestinoUpdate" [maxlength]="6" name="ubigeodestinoupdate" class="form-control">
+            </div>
           </div>
-        </div>
-        <hr>
-        <span><b>Destino</b></span>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Ubigeo:</label>
-          <div class="col-sm-9">
-            <input type="text" [(ngModel)]="ubigeoDestinoUpdate" [maxlength]="6" name="ubigeodestinoupdate" class="form-control">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
+              Dirección:</label>
+            <div class="col-sm-9">
+              <input type="text" [(ngModel)]="direccionDestinoUpdate" name="direccionDestinoUpdate" class="form-control">
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;"><a style="color: red;">(*)</a>
-            Dirección:</label>
-          <div class="col-sm-9">
-            <input type="text" [(ngModel)]="direccionDestinoUpdate" name="direccionDestinoUpdate" class="form-control">
+          <div class="form-group row">
+            <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
+              Local Anexo:</label>
+            <div class="col-sm-9">
+              <input type="text" maxlength="4" [(ngModel)]="codigolocalanexoUpdate" name="codigolocalanexoUpdate" class="form-control">
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="input" class="col-sm-2 col-form-label" style="width: 160px;">
-            Local Anexo:</label>
-          <div class="col-sm-9">
-            <input type="text" maxlength="4" [(ngModel)]="codigolocalanexoUpdate" name="codigolocalanexoUpdate" class="form-control">
-          </div>
-        </div>
-      </form>
+        </form>
 
-      <button class="btn btn-success" (click)="crearFilasUpdate()">Agregar Destino</button>
-      <div class="table table-responsive" *ngIf="destinatarioObject.destino.length!=0" style="max-height: 200px;">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Ubigeo</th>
-              <th scope="col">Dirección</th>
-              <th scope="col">Cod. local Anexo</th>
-              <th scope="col">opt</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of destinatarioObject.destino">
-              <th scope="row">{{item.ubigeodestino}}</th>
-              <td>{{item.direcciondestino}}</td>
-              <td>{{item.codigolocalanexo}}</td>
-              <td><i class="fa-solid fa-trash" style="color: red;cursor: pointer;"
-                  (click)="borrarDestinoArrayUpdate(item.id)"></i></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="row mt-5">
-        <div style="text-align: right;">
-          <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
-          <button class="btn btn-success" style="width: 90px;" form="destinatario" type="submit">Aceptar</button>
+        <button class="btn btn-success" (click)="crearFilasUpdate()">Agregar Destino</button>
+        <div class="table table-responsive" *ngIf="destinatarioObject.destinos.length!=0" style="max-height: 200px;">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Ubigeo</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Cod. local Anexo</th>
+                <th scope="col">opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of destinatarioObject.destinos">
+                <th scope="row">{{item.ubigeodestino}}</th>
+                <td>{{item.direcciondestino}}</td>
+                <td>{{item.codigolocalanexo}}</td>
+                <td><i class="fa-solid fa-trash" style="color: red;cursor: pointer;"
+                    (click)="borrarDestinoArrayUpdate(item.id)"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row mt-5">
+          <div style="text-align: right;">
+            <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
+            <button class="btn btn-success" style="width: 90px;" form="destinatario" type="submit">Aceptar</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</ng-template>
-<ng-template #Origen>
-  <div class="card">
-    <div class="card-header">
-      <div class="container">
-        <h5>PTO SALIDA &nbsp; &nbsp;</h5>
+  </ng-template>
+  <ng-template #Origen>
+    <div class="card">
+      <div class="card-header">
+        <div class="container">
+          <h5>PTO SALIDA &nbsp; &nbsp;</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">PTO SALIDA</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3 ">
+            <div class="input-group mb-1">
+              <input type="text" [(ngModel)]="filterOrigen" name="filterOrigen" class="form-control">
+              <div class="input-group-append">
+                <button class="btn btn-secondary" (click)="abrirModal(CrudOrigen)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc Emisor</th>
+                <th scope="col">Ubigeo</th>
+                <th scope="col">Dirección</th>
+                <th scope="col" style="text-align: center;">Opt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tablaOrigenes|filter:filterOrigen:['numerodocumentoemisor','ubigeoorigen','direccionorigen']">
+                <th scope="row" (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.numerodocumentoemisor}}</th>
+                <td (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.ubigeoorigen}}</td>
+                <td (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.direccionorigen}}</td>
+                <td style="text-align: center;cursor: pointer;"
+                  (click)="borrarOrigen(item);"><i
+                    class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
-          <label style="width: 100%;">PTO SALIDA</label>
+  </ng-template>
+  <ng-template #Destino>
+    <div class="card">
+      <div class="card-header">
+        <div class="container">
+          <h5>PTO LLEGADA &nbsp; &nbsp;</h5>
         </div>
-        <div class="col-12 col-sm-8 col-md-9 mb-3 ">
-          <div class="input-group mb-1">
-            <input type="text" [(ngModel)]="filterOrigen" name="filterOrigen" class="form-control">
-            <div class="input-group-append">
-              <button class="btn btn-secondary" (click)="abrirModal(CrudOrigen)">+</button>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">PTO LLEGADA</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="filterDestino" class="form-control">
+              <!-- <div class="input-group-append">
+                <button class="btn btn-secondary" (click)="abrirModal(CrudOrigen)">+</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive" style="height: 400px;">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">N° Doc Emisor</th>
+                <th scope="col">Ubigeo</th>
+                <th scope="col">Dirección</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of destinos|filter:filterDestino:['numerodocumentoadquiriente','ubigeodestino','direcciondestino']">
+                <th scope="row" (click)="asignarDestino(item)" style="cursor: pointer;">{{item.numerodocumentoadquiriente}}</th>
+                <td (click)="asignarDestino(item)" style="cursor: pointer;">{{item.ubigeodestino}}</td>
+                <td (click)="asignarDestino(item)" style="cursor: pointer;">{{item.direcciondestino}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #Opcionales>
+    <div class="card">
+      <div class="card-header">
+        <div class="container">
+          <h5>Campos Opcionales &nbsp; &nbsp;</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">TIPO:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="camposOpcionales.tipo" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">ALMACEN:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="camposOpcionales.almacen" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">REFERENCIA:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="camposOpcionales.referencia" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">SERVICIO:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="camposOpcionales.servicio" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">TICKET:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="camposOpcionales.ticket" class="form-control">
             </div>
           </div>
         </div>
       </div>
-      <div class="table-responsive" style="height: 400px;">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">N° Doc Emisor</th>
-              <th scope="col">Ubigeo</th>
-              <th scope="col">Dirección</th>
-              <th scope="col" style="text-align: center;">Opt</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of tablaOrigenes|filter:filterOrigen:['numerodocumentoemisor','ubigeoorigen','direccionorigen']">
-              <th scope="row" (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.numerodocumentoemisor}}</th>
-              <td (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.ubigeoorigen}}</td>
-              <td (click)="asignarOrigen(item)" style="cursor: pointer;">{{item.direccionorigen}}</td>
-              <td style="text-align: center;cursor: pointer;"
-                (click)="borrarOrigen(item);"><i
-                  class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card-footer" style="text-align: right;">
+        <button class="btn btn-danger me-2" style="width: 120px;">
+            Salir
+        </button>
+        <button class="btn btn-success" style="width: 120px;">
+            Aceptar
+        </button>
       </div>
     </div>
-  </div>
-</ng-template>
-<ng-template #Destino>
-  <div class="card">
-    <div class="card-header">
-      <div class="container">
-        <h5>PTO LLEGADA &nbsp; &nbsp;</h5>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
-          <label style="width: 100%;">PTO LLEGADA</label>
-        </div>
-        <div class="col-12 col-sm-8 col-md-9 mb-3">
-          <div class="input-group mb-1">
-            <input type="text" name="filterDestino" [(ngModel)]="filterDestino" class="form-control">
-            <!-- <div class="input-group-append">
-              <button class="btn btn-secondary" (click)="abrirModal(CrudOrigen)">+</button>
-            </div> -->
-          </div>
-        </div>
-      </div>
-      <div class="table-responsive" style="height: 400px;">
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">N° Doc Emisor</th>
-              <th scope="col">Ubigeo</th>
-              <th scope="col">Dirección</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of destinos|filter:filterDestino:['numerodocumentoadquiriente','ubigeodestino','direcciondestino']">
-              <th scope="row" (click)="asignarDestino(item)" style="cursor: pointer;">{{item.numerodocumentoadquiriente}}</th>
-              <td (click)="asignarDestino(item)" style="cursor: pointer;">{{item.ubigeodestino}}</td>
-              <td (click)="asignarDestino(item)" style="cursor: pointer;">{{item.direcciondestino}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</ng-template>
+  </ng-template>

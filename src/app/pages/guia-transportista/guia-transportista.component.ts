@@ -16,6 +16,7 @@ import { AAA_DESTINO } from 'src/app/interface/destino';
 import { GuiaImportada } from 'src/app/interface/GuiaImportada';
 import { GuiaImportadaDetalle } from 'src/app/interface/GuiaImportadaDetalle';
 import { docRef } from 'src/app/interface/docRef';
+import { camposOpcionales } from '../../interface/camposOpcionales';
 
 @Component({
   selector: 'app-guia-transportista',
@@ -27,12 +28,22 @@ export class GuiaTransportistaComponent  implements OnInit{
   transportista= {} as transportista;
   fecha_emision = this.fechaActual();
   fecha_traslado = this.fechaActual().substring(0, 10);
+  horaEmision = new Date(this.fecha_emision).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   desde=this.fechaActual();
   hasta=this.fechaActual();
   pageGuia=0;
   pageProductGuia=0;
   filtroGuia='';
   cabecera={}
+
+    //producto modal------------------------------------------
+    codigoProd = '';
+    cantidadProd = '1';
+    medidaProd = 'NIU';
+    descripcionProd=''
+
+    //campos opcionales
+    camposOpcionales={almacen:'',referencia:'',servicio:'',ticket:'',tipo:''} as camposOpcionales;
 
   //filtro inputs
   filterTransportista='';
@@ -414,7 +425,7 @@ export class GuiaTransportistaComponent  implements OnInit{
        direcciondestino: this.direccionDestinoUpdate,
        codigolocalanexo: this.codigolocalanexoUpdate
       }
-    this.destinatarioObject.destino.push(obj);
+    this.destinatarioObject.destinos.push(obj);
     this.ubigeoDestinoUpdate = '';
     this.direccionDestinoUpdate = '';
     this.codigolocalanexoUpdate = '';
@@ -432,6 +443,7 @@ export class GuiaTransportistaComponent  implements OnInit{
     })
   }
   EditarDestinatario(modal, contenido) {
+    console.log(contenido)
     this.destinatarioObject = contenido;
     this.abrirModal(modal);
   }
@@ -450,11 +462,11 @@ export class GuiaTransportistaComponent  implements OnInit{
     if (form.invalid) { return }
     if (form.submitted) {
       Swal.showLoading();
-      form.value.DESTINO = this.destinatarioObject.destino;
+      form.value.DESTINO = this.destinatarioObject.destinos;
       this.api.updateAdquiriente(form.value).subscribe((res: any) => {
         this.modalRef.close();
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
-        this.destinatarioObject.destino = [];
+        this.destinatarioObject.destinos = [];
         this.getTransportista();
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
@@ -467,8 +479,8 @@ export class GuiaTransportistaComponent  implements OnInit{
     this.destinos.splice(indice, 1);
   }
   borrarDestinoArrayUpdate(id) {
-    const indice = this.destinatarioObject.destino.findIndex((elemento) => elemento.id === id);
-    this.destinatarioObject.destino.splice(indice, 1);
+    const indice = this.destinatarioObject.destinos.findIndex((elemento) => elemento.id === id);
+    this.destinatarioObject.destinos.splice(indice, 1);
   }
   listarSerie(serie) {
     if(this.transportista.numerodocumentotransportista??""!=""){
@@ -603,7 +615,7 @@ export class GuiaTransportistaComponent  implements OnInit{
       direccionPtoLLegada: this.destino.direcciondestino, //destino
       ubigeoPtoPartida: this.destino.ubigeodestino, //origen
       direccionPtoPartida: this.origen.direccionorigen, //origen
-      // horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
+      horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
       numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
       nombreConductor: "",
@@ -616,6 +628,7 @@ export class GuiaTransportistaComponent  implements OnInit{
       nombreConductorSec1:this.choferSec.nombreConductorSec1,
       apellidoConductorSec1 :this.choferSec.apellidoConductorSec1,
       numeroLicenciaSec1:this.choferSec.numeroLicenciaSec1,
+      camposOpcionales1: (this.camposOpcionales??null),
       textoAuxiliar250_1:"",//placa carreta
       textoAuxiliar250_3:"",//modelo carreta,
       textoAuxiliar250_2:"" // modelo del vehiculo
@@ -710,6 +723,7 @@ extraerGuiaImportada(guia:GuiaImportada){
   this.pesoBruto=totalPesobruto.toString()??"0";
   this.Nrobultos=totalBultos.toString()??"0";
   this.fecha_emision=(guia.fechaEmision+"T"+guia.horaEmision).substring(0,16);
+  this.horaEmision=guia.horaEmision;
   this.fecha_traslado=guia.fechaEntregaBienes;
   this.medida=guia.unidadMedidaPeso;
   this.convertirFormatoDocFef();
@@ -725,5 +739,12 @@ convertirFormatoDocFef(){
       tipoDocumentoEmisorDocRel:element.tipoDocumentoRemitente
     })
   })
+}
+asignarProducto() {
+  if((this.codigoProd??"")==""||(this.cantidadProd??"")==""||(this.medidaProd??"")==""||(this.descripcionProd??"")==""){
+    return Swal.fire({icon:'warning',title:'Complete los campos!'});
+  }
+  let objeto:producto={cantidad:this.cantidadProd.toString(),codigo:this.codigoProd.toString(),descripcion:this.descripcionProd.toString(),unidadmedida:this.medidaProd.toString()};
+  this.listadoProductoDetalles.push(objeto);
 }
 }

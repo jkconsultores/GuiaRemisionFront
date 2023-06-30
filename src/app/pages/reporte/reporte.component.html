@@ -51,7 +51,7 @@
             <th style="min-width: 100px;">Serie</th>
             <th>Estado</th>
             <th>fecha de Emision</th>
-            <th>Correo</th>
+            <th>Usuario</th>
             <th>N° Doc Adquiriente</th>
             <th>Tipo Doc Adquiriente</th>
             <th>Adquiriente</th>
@@ -72,7 +72,7 @@
                 <span class="badge text-bg-danger" *ngIf="item.bl_estadoRegistro=='E'">Error</span>
                 <span class="badge text-bg-success" *ngIf="item.bl_estadoRegistro=='L'">Enviado</span>
               <td>{{item.fechaEmisionGuia}}</td>
-              <td>{{item.correoDestinatario}}</td>
+              <td>{{item.nombreusuario}}</td>
               <td>{{item.numeroDocumentoDestinatario}}</td>
               <td>{{item.tipoDocumentoDestinatario}}</td>
               <td>{{item.razonSocialDestinatario}}</td>
