@@ -1000,15 +1000,29 @@ export class MainComponent  {
       if(this.vmodalidad=='02'&&((res[0].placaVehiculo??"")!=""||(res[0].nombreConductor??"")!=""||(res[0].numeroLicencia??"")!="")){
         this.chofer={} as chofer;
         this.placaChofer=res[0].placaVehiculo;
-        this.chofer.nombre=res[0].nombreConductor;
+        const palabras = res[0].nombreConductor.split(" ");
+          let apellido = "";
+          let nombre = "";
+
+          if (palabras.length >= 2) {
+            apellido = palabras[0] + " " + palabras[1];
+            nombre = palabras.slice(2).join(" ");
+          } else if (palabras.length === 1) {
+            apellido = palabras[0];
+          }
+        this.chofer.nombre=nombre??"";
         this.chofer.brevete=res[0].numeroLicencia;
         this.chofer.numerodocumentochofer=res[0].numeroLicencia.substring(1);
+        this.chofer.tipodocumentochofer=(res[0].tipoDocumentoDestinatario??"6");
+        this.chofer.apellido=apellido??"";
+        console.log(this.chofer)
       }
       if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
         this.destino={} as AAA_DESTINO;
         this.destinatario.numerodocumentoadquiriente=res[0].numeroDocumentoDestinatario;
         this.destinatario.razonsocialadquiriente=res[0].razonSocialDestinatario;
         this.destinatario.tipodocumentoadquiriente=(res[0].tipoDocumentoDestinatario??"")==""?this.validarAncho(res[0].numeroDocumentoDestinatario):"";
+        this.asignarDestinoDefault();
       }
       if(this.vmodalidad=='01'&&((res[0].numeroDocumentoTransportista??"")!=""||(res[0].razonSocialTransportista??"")!=""||(res[0].tipoDocumentoTransportista??"")!="")){
         this.transportista={} as transportista;
@@ -1016,7 +1030,7 @@ export class MainComponent  {
         this.transportista.razonsocialtransportista=res[0].razonSocialTransportista;
         this.transportista.tipodocumentotransportista=res[0].tipoDocumentoTransportista;
       }
-      var producto=[{codigo:'-',descripcion:res[0].descripcion,unidadmedida:'NIU',cantidad:res[0].cantidad.toString()}]
+      var producto=[{codigo:'-',descripcion:res[0].descripcion,unidadmedida:'KGM',cantidad:res[0].cantidad.toString()}]
       this.listadoProductoDetalles=producto;
   }
   validarAncho(cadena: string): string {
