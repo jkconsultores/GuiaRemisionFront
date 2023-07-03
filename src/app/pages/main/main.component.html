@@ -291,7 +291,7 @@
           <div class="input-group mb-1">
             <input type="text" [(ngModel)]="filterDestinatario" name="filterDestinatario" class="form-control">
             <div class="input-group-append">
-              <button class="input-group-text" (click)="abrirModal(CrudDestinatario)">+</button>
+              <button class="input-group-text" (click)="abrirModal(CrudDestinatario);limpiarDestinos();">+</button>
             </div>
           </div>
         </div>

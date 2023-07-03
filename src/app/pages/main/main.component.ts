@@ -375,6 +375,9 @@ export class MainComponent  {
     this.selectedRow = row;
     this.objetoProducto = { codigo: codigo, descripcion: descripcion, unidadmedida: unidadmedida }
   }
+  limpiarDestinos(){
+    this.destinos = [];
+  }
   asignarRemitente(remitente:AAA_EMPRESA){
     this.remitente=remitente;
     this.modalRef.close();
