@@ -24,6 +24,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
   correoUsuario='';
   nombreUserUsuario='';
   contraseñaUsuario='';
+  filterUsuario='';
   TipoServicio='Serie';
   nombreUsuario='';
   passchange:RespuestaDeLLaveValor|undefined;

@@ -898,12 +898,13 @@ export class MainComponent  {
   }
   EditarUnVehiculo(vehiculo:T_Vehiculo){
   }
-  asignarVehiculo(placa,marca){
+  asignarVehiculo(placa,marca,mtc){
     this.marcaVehiculo=marca;
     this.placaChofer=placa;
+    this.transportista.numeroregistromtc=mtc;
     this.modalRef.close();
   }
-  asignarCarreta(placa,marca){
+  asignarCarreta(placa,marca,mtc){
     this.placaCarreta=placa;
     this.modeloCarreta=marca;
     this.modalRef.close();
@@ -1044,7 +1045,7 @@ export class MainComponent  {
     this.api.getOrigenes(this.remitente.numerodocumentoemisor,0).subscribe((res: any) => {
       Swal.close();
       this.origen={numerodocumentoemisor:''} as origen;
-      this.origenes=res['ORIGEN']
+      this.tablaOrigenes=res['ORIGEN']
       if((res['ORIGEN']??"")!=""&&res['ORIGEN'].length==1){
           this.origen=res['ORIGEN'][0];
       }

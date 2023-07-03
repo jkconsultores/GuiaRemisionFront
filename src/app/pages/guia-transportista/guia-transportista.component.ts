@@ -19,6 +19,7 @@ import { GuiaImportadaDetalle } from 'src/app/interface/GuiaImportadaDetalle';
 import { docRef } from 'src/app/interface/docRef';
 import { camposOpcionales } from '../../interface/camposOpcionales';
 import { T_Vehiculo, VehiculoDTO } from 'src/app/interface/Vehiculos';
+import { transporteTerceario } from '../../interface/transporteTerceario';
 
 @Component({
   selector: 'app-guia-transportista',
@@ -84,18 +85,20 @@ export class GuiaTransportistaComponent  implements OnInit{
   tipodocTrans = '6';
   tipodocChofer = '1';
   correlativo = 1;
-    //destinatario
-    destinatario={razonsocialadquiriente:''} as destinatario;
-    //remitente
-    remitente={razonsocialemisor:''} as AAA_EMPRESA;
-    //origen
-    origen = {} as origen;
-    //destino
-    destino={} as AAA_DESTINO;
+  //destinatario
+  destinatario={razonsocialadquiriente:''} as destinatario;
+  //remitente
+  remitente={razonsocialemisor:''} as AAA_EMPRESA;
+  //origen
+  origen = {} as origen;
+  //destino
+  destino={} as AAA_DESTINO;
   //chofer
   chofer={nombre:''} as chofer;
   //chofersec
   choferSec={nombre:''} as chofer;
+  //transporteTerceario
+  transporteTerceario={indTransporteSubcontratado:true,numeroDocSubcontratista:'',razonSocialSubcontratista:'',tipoDocumentoSubcontratista:'6'} as transporteTerceario;
   public VehiculosActivos:T_Vehiculo[]=[];
 
   pais = 'PE';
@@ -648,7 +651,8 @@ export class GuiaTransportistaComponent  implements OnInit{
       camposOpcionales1: (this.camposOpcionales??null),
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
-      textoAuxiliar250_2:this.marcaVehiculo // modelo del vehiculo
+      textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
+      datosDeTrasporteTercerizado:((this.transporteTerceario.razonSocialSubcontratista??"")=="")||((this.transporteTerceario.numeroDocSubcontratista??"")=="")?null:this.transporteTerceario
     }
     return obj;
   }
@@ -797,12 +801,13 @@ getChofer(){
     this.choferes=res;
   })
 }
-asignarVehiculo(placa,marca){
+asignarVehiculo(placa,marca,mtc){
   this.marcaVehiculo=marca;
   this.placaChofer=placa;
+  this.transportista.numeroregistromtc=mtc;
   this.modalRef.close();
 }
-asignarCarreta(placa,marca){
+asignarCarreta(placa,marca,mtc){
   this.placaCarreta=placa;
   this.modeloCarreta=marca;
   this.modalRef.close();
@@ -877,4 +882,5 @@ agregarVehiculo(ref: NgForm){
       this.modalRef.close();
   })
 }
+
 }

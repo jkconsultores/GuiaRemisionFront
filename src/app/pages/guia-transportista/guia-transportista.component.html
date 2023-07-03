@@ -203,7 +203,7 @@
         </div>
       </div>
       <div class="row col-12" id="principalslot">
-      <div class="col-md-8 col-lg-10 col-sm-8" >
+      <div class="col-md-8 col-lg-8 col-sm-8" >
         <div class="table-responsive scroll-color"
           style="flex: 65%;height:200px">
           <table class="table table-sm">
@@ -224,16 +224,25 @@
           </table>
         </div>
       </div>
-          <div class="col-lg-2 col-md-4 col-sm-4" id="botonesdeacceso">
-            <div class="col-12">
+          <div class="row col-lg-4 col-md-4 col-sm-4" id="botonesdeacceso">
+            <div class="col-6">
               <button class="btn btn-light mb-1 w-100 "
               style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button>
             </div>
-            <div class="col-12">
+            <div class="col-6">
+                <button (click)="abrirModal(TransporteTerceario)" style="height: 80px;" type="button" class="btn btn-light w-100  position-relative">
+                  Documentos Ref.
+                  <span class="position-absolute top-0  translate-middle badge rounded-pill bg-danger">
+                    {{documentosReferenciados.length}}
+                    <span class="visually-hidden">Total de documentos</span>
+                  </span>
+                </button>
+            </div>
+            <div class="col-6">
               <button class="btn btn-light mb-1 w-100"
               style="height: 80px;" (click)="abrirModal(Opcionales)">Campos Adicionales</button>
             </div>
-            <div class="col-12 mt-3">
+            <div class="col-6">
               <button class="btn btn-primary mb-1 w-100 " style="height: 80px;" (click)="declararGuia()"
               >Declarar</button>
           </div>
@@ -1527,11 +1536,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
-                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
-                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
-                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
-                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
-                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
+                <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
                 <th>
                   <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
                    -->
@@ -1577,11 +1586,11 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculoSec:['placaVehiculo','marca']; let i = index" >
-                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
-                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
-                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
-                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
-                <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
+                <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
                 <th>
                   <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
                   -->
@@ -1676,5 +1685,53 @@
               (click)='salir()'>Salir</button>
             <button class="btn btn-success" style="width: 90px;" form="vehicuref"
               type="submit">Aceptar</button>
+    </div>
+  </ng-template>
+  <ng-template #TransporteTerceario>
+    <div class="card">
+      <div class="card-header">
+        <div class="container">
+          <h5>Transporte Terceario &nbsp; &nbsp;</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">Razón Social:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="transporteTerceario.razonSocialSubcontratista" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">Tipo Documento:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <select [(ngModel)]="transporteTerceario.tipoDocumentoSubcontratista"  class="form-select" name="tipoDocumentoDocRel">
+                <option value="1">DNI</option>
+                <option value="4">CARNET DE EXTRANJERIA</option>
+                <option value="6" >RUC</option>
+                <option value="7">PASAPORTE</option>
+            </select>
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 col-md-3 mb-3 d-flex  align-items-center">
+            <label style="width: 100%;">N° Doc:</label>
+          </div>
+          <div class="col-12 col-sm-8 col-md-9 mb-3">
+            <div class="input-group mb-1">
+              <input type="text" name="filterDestino" [(ngModel)]="transporteTerceario.numeroDocSubcontratista" class="form-control">
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="card-footer" style="text-align: right;">
+        <button class="btn btn-success" style="width: 120px;" (click)="cerrarModal()">
+            Aceptar
+        </button>
+      </div>
     </div>
   </ng-template>

@@ -1497,11 +1497,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
-              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
-              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
-              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
-              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
-              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
               <th>
                 <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
                  -->
@@ -1547,11 +1547,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculoSec:['placaVehiculo','marca']; let i = index" >
-              <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{i+1}}</th>
-              <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
-              <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.modelo}}</th>
-              <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.marca}}</th>
-              <th (click)="asignarCarreta(item.placaVehiculo,item.marca)" style="cursor: pointer;">{{item.color}}</th>
+              <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
+              <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+              <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
+              <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
+              <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
               <th>
                 <!-- <button class="btn btn-primary" (click)="EditarUnVehiculo(item)"><i class="bi bi-pencil-square text-white"></i></button>
                 -->
