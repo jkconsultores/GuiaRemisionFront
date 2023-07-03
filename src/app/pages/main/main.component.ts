@@ -66,7 +66,7 @@ export class MainComponent  {
   motivos = [];
   //tablas
   tablaEmpresas = [];
-  tablaOrigenes = [];
+  tablaOrigenes:origen[] = [];
   tablaSeries:serie[] = [];
   arraySerie = [];
 
@@ -149,13 +149,9 @@ export class MainComponent  {
       if((res['empresas']??"")!=""&&res['empresas'].length==1)
       {
            this.remitente=res['empresas'][0];
-           this.getOrigenes();
+           this.getOrigenDefault();
       }
-
       this.motivos = res['motivos'];
-
-      if((res['origenes']??"")!=""&&res['origenes'].length==1)this.origen=res['origenes'][0];
-      this.tablaOrigenes=res['origenes'];
     });
     this.obtenerVehiculos();
     this.getChofer()
@@ -389,7 +385,10 @@ export class MainComponent  {
     this.api.getOrigenes(this.remitente.numerodocumentoemisor,0).subscribe((res: any) => {
       Swal.close();
       this.arraySerie = res['SERIE'];
+      this.origen={numerodocumentoemisor:''} as origen;
       this.serieNumero = '';
+      this.tablaOrigenes=res['ORIGEN'];
+      console.log(this.tablaOrigenes)
     }, error => {
       Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
     })
@@ -646,9 +645,7 @@ export class MainComponent  {
       this.api.CrearOrigen(form.value).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.modalRef.close();
-        this.api.getOrigen().subscribe((res: any) => {
-          this.tablaOrigenes = res;
-        });
+        this.getOrigenDefault();
         this.remitente={} as AAA_EMPRESA;
       }, err => {
         if (err.error.detail) { Swal.fire({ icon: 'warning', text: err.error.detail }); }
@@ -1003,7 +1000,6 @@ export class MainComponent  {
         const palabras = res[0].nombreConductor.split(" ");
           let apellido = "";
           let nombre = "";
-
           if (palabras.length >= 2) {
             apellido = palabras[0] + " " + palabras[1];
             nombre = palabras.slice(2).join(" ");
@@ -1015,7 +1011,6 @@ export class MainComponent  {
         this.chofer.numerodocumentochofer=res[0].numeroLicencia.substring(1);
         this.chofer.tipodocumentochofer=(res[0].tipoDocumentoDestinatario??"6");
         this.chofer.apellido=apellido??"";
-        console.log(this.chofer)
       }
       if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
         this.destino={} as AAA_DESTINO;
@@ -1041,5 +1036,17 @@ export class MainComponent  {
     } else {
       return ""
     }
+  }
+  getOrigenDefault(){
+    this.api.getOrigenes(this.remitente.numerodocumentoemisor,0).subscribe((res: any) => {
+      Swal.close();
+      this.origen={numerodocumentoemisor:''} as origen;
+      this.origenes=res['ORIGEN']
+      if((res['ORIGEN']??"")!=""&&res['ORIGEN'].length==1){
+          this.origen=res['ORIGEN'][0];
+      }
+    }, error => {
+      Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
+    })
   }
 }
