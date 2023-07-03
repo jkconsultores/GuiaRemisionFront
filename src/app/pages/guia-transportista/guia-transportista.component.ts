@@ -50,6 +50,10 @@ export class GuiaTransportistaComponent  implements OnInit{
   modeloCarreta='';
   marcaVehiculo='';
 
+    //mtc
+    tarjetaUnicaCirculacionPrin='';
+    tarjetaUnicaCirculacionSec1='';
+
   //campos opcionales
   camposOpcionales={almacen:'',referencia:'',servicio:'',ticket:'',tipo:''} as camposOpcionales;
 
@@ -637,7 +641,7 @@ export class GuiaTransportistaComponent  implements OnInit{
       direccionPtoPartida: this.origen.direccionorigen, //origen
       horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
-      numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
+      numeroRegistroMTC: "",//puede estar en blanco
       nombreConductor: (this.chofer.nombre??"")==""?"":this.chofer.nombre,
       apellidoConductor: (this.chofer.apellido??"")==""?"":this.chofer.apellido,
       numeroLicencia: (this.chofer.brevete??"")==""?"":this.chofer.brevete, //chofer
@@ -652,7 +656,9 @@ export class GuiaTransportistaComponent  implements OnInit{
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
       textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
-      datosDeTrasporteTercerizado:((this.transporteTerceario.razonSocialSubcontratista??"")=="")||((this.transporteTerceario.numeroDocSubcontratista??"")=="")?null:this.transporteTerceario
+      datosDeTrasporteTercerizado:((this.transporteTerceario.razonSocialSubcontratista??"")=="")||((this.transporteTerceario.numeroDocSubcontratista??"")=="")?null:this.transporteTerceario,
+      tarjetaUnicaCirculacionPrin:this.tarjetaUnicaCirculacionPrin??"",
+      tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??""
     }
     return obj;
   }
@@ -804,12 +810,13 @@ getChofer(){
 asignarVehiculo(placa,marca,mtc){
   this.marcaVehiculo=marca;
   this.placaChofer=placa;
-  this.transportista.numeroregistromtc=mtc;
+  this.tarjetaUnicaCirculacionPrin=mtc;
   this.modalRef.close();
 }
 asignarCarreta(placa,marca,mtc){
   this.placaCarreta=placa;
   this.modeloCarreta=marca;
+  this.tarjetaUnicaCirculacionSec1=mtc;
   this.modalRef.close();
 }
 crearChofer(form: NgForm) {

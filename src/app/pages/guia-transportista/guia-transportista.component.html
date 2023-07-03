@@ -230,13 +230,8 @@
               style="height: 80px;" (click)="abrirModalEvitarCerrar(referenciados);importarGuias()">Importar GRE</button>
             </div>
             <div class="col-6">
-                <button (click)="abrirModal(TransporteTerceario)" style="height: 80px;" type="button" class="btn btn-light w-100  position-relative">
-                  Documentos Ref.
-                  <span class="position-absolute top-0  translate-middle badge rounded-pill bg-danger">
-                    {{documentosReferenciados.length}}
-                    <span class="visually-hidden">Total de documentos</span>
-                  </span>
-                </button>
+              <button class="btn btn-light mb-1 w-100 "
+              style="height: 80px;" (click)="abrirModal(TransporteTerceario)">Transp. Tercearios</button>
             </div>
             <div class="col-6">
               <button class="btn btn-light mb-1 w-100"
@@ -1528,6 +1523,7 @@
               <tr>
                 <th>N°</th>
                 <th>Placa</th>
+                <th>Mtc</th>
                 <th>Modelo</th>
                 <th>Marca</th>
                 <th>Color</th>
@@ -1538,6 +1534,7 @@
               <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
                 <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
                 <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+                <th>{{item.mtc}}</th>
                 <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
                 <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
                 <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
@@ -1578,6 +1575,7 @@
               <tr>
                 <th>N°</th>
                 <th>Placa</th>
+                <th>Mtc</th>
                 <th>Modelo</th>
                 <th>Marca</th>
                 <th>Color</th>
@@ -1588,6 +1586,7 @@
               <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculoSec:['placaVehiculo','marca']; let i = index" >
                 <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
                 <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+                <th>{{item.mtc}}</th>
                 <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
                 <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
                 <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>

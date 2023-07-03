@@ -76,6 +76,10 @@ export class MainComponent  {
   tipodocChofer = '1';
   correlativo = 1;
 
+  //mtc
+  tarjetaUnicaCirculacionPrin='';
+  tarjetaUnicaCirculacionSec1='';
+
   //filtro inputs
   filterTransportista='';
   filterOrigen='';
@@ -561,7 +565,9 @@ export class MainComponent  {
       numeroLicenciaSec1:(this.choferSec.brevete??"")==""?"":this.choferSec.brevete,
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
-      textoAuxiliar250_2:this.marcaVehiculo // modelo del vehiculo
+      textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
+      tarjetaUnicaCirculacionPrin:this.tarjetaUnicaCirculacionPrin??"",
+      tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??""
     }
     return obj;
   }
@@ -901,12 +907,13 @@ export class MainComponent  {
   asignarVehiculo(placa,marca,mtc){
     this.marcaVehiculo=marca;
     this.placaChofer=placa;
-    this.transportista.numeroregistromtc=mtc;
+    this.tarjetaUnicaCirculacionPrin=mtc;
     this.modalRef.close();
   }
   asignarCarreta(placa,marca,mtc){
     this.placaCarreta=placa;
     this.modeloCarreta=marca;
+    this.tarjetaUnicaCirculacionSec1=mtc;
     this.modalRef.close();
   }
   onFileChange(event: any, modal: any) {

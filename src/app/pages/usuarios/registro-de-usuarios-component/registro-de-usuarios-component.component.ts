@@ -89,6 +89,9 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
     }
   }
   AgregarUsuario(ref: NgForm){
+    if (ref.invalid) {
+      return
+    }
     let user:UsuariosDTO={
       contrasena:ref.value.contraseñaUsuario,
       correoelectronico:ref.value.correoUsuario,

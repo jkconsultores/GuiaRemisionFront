@@ -26,6 +26,7 @@
           <thead>
             <tr>
               <th class="text-center"></th>
+              <th class="text-center">N°</th>
               <th class="text-center">Nombre</th>
               <th class="text-center">Nombre de usuario</th>
               <th class="text-center">Correo</th>
@@ -38,6 +39,7 @@
               <td><div class="avatar bg-warning avatar-lg me-3">
                 <span class="avatar-content">{{item.nombreusuario | slice:0:2}}</span>
               </div></td>
+              <td>{{i}}</td>
               <td><h6>{{item.nombres}}</h6></td>
               <td><h6>{{item.nombreusuario}}</h6></td>
               <td><h6>{{item.correoelectronico}}</h6></td>
@@ -89,23 +91,22 @@
           <label for="exampleFormControlInput1" class="form-label">Nombre de usuario <span
               style="color: red;">(*)</span></label>
           <input type="text" ngModel name="nombreUserUsuario" class="form-control"
-            placeholder="Ingrese el nombre del usuario (obligatorio)">
+            placeholder="Ingrese el nombre del usuario (obligatorio)" required>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Contraseña<span
             style="color: red;">(*)</span></label>
           <input type="password" ngModel name="contraseñaUsuario" class="form-control"
-            placeholder="Ingrese una contraseña (obligatorio)">
+            placeholder="Ingrese una contraseña (obligatorio)" required>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Nombres<span
             style="color: red;">(*)</span></label>
           <input type="text" ngModel name="nombreUsuario" class="form-control"
-            placeholder="Ingrese el nombre completo (obligatorio)">
+            placeholder="Ingrese el nombre completo (obligatorio)" required>
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Correo electronico<span
-            style="color: red;">(*)</span></label>
+          <label for="exampleFormControlInput1" class="form-label">Correo electronico</label>
           <input type="email" ngModel name="correoUsuario" class="form-control"
             placeholder="Ingrese un correo electronico (obligatorio)">
         </div>
