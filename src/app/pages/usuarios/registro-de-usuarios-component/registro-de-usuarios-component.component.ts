@@ -54,6 +54,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalTemplate, { size: 'lg' });
   }
   editaRoles(ModalTemplate,usuarioId:number){
+    this.RolesDEUSuarioNuevos=[];
     this.usuarioEditado = usuarioId;
     this.modalRef = this.modalService.open(ModalTemplate, { size: 'lg' });
     this.api.ObtenerRolesDeUsuario(usuarioId).subscribe((resp:any)=>{
