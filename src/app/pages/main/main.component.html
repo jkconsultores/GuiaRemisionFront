@@ -1489,6 +1489,7 @@
             <tr>
               <th>N°</th>
               <th>Placa</th>
+              <th>Mtc</th>
               <th>Modelo</th>
               <th>Marca</th>
               <th>Color</th>
@@ -1499,6 +1500,7 @@
             <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
+              <th>{{item.mtc}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
@@ -1575,7 +1577,11 @@
 			<div class="mb-3">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Placa de vehiculo <span style="color: red;">(*)</span></label>
-          <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)">
+          <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Mtc <span style="color: red;">(*)</span></label>
+          <input type="text" ngModel name="mtc" (keydown)="onKeyPress($event)" [maxlength]="13" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Modelo</label>

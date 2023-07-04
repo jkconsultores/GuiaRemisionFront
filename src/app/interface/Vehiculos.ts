@@ -12,4 +12,5 @@ export interface VehiculoDTO {
   modelo: string;
   color: string;
   marca: string;
+  mtc:string;
 }

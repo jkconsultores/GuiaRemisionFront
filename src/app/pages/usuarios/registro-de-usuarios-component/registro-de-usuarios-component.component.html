@@ -39,7 +39,7 @@
               <td><div class="avatar bg-warning avatar-lg me-3">
                 <span class="avatar-content">{{item.nombreusuario | slice:0:2}}</span>
               </div></td>
-              <td>{{i}}</td>
+              <td>{{i+1}}</td>
               <td><h6>{{item.nombres}}</h6></td>
               <td><h6>{{item.nombreusuario}}</h6></td>
               <td><h6>{{item.correoelectronico}}</h6></td>
@@ -135,7 +135,6 @@
               </select>
             </div>
           </div>
-
           <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
             <div class="col-12" >
               <label class="mb-1" for="motivo">Seleccione un motivo</label>
@@ -146,14 +145,11 @@
             </div>
           </div>
           </div>
-
           <a class="btn btn-success mt-2" (click)="AgregarPermisos()">Añadir permisos</a>
         </div>
-
         <div class="row mt-3">
           <hr>
           <h6>Permisos activos</h6>
-
           <div class="col-12">
             <h6 class="text-danger text-center" *ngIf="permisos.length == 0"> NO SE ASIGNARON PERMISOS</h6>
             <table class="table table-bordered table-responsive" *ngIf="permisos.length > 0">
@@ -174,7 +170,6 @@
             </table>
           </div>
         </div>
-
       </div>
     </form>
   </div>
@@ -183,7 +178,6 @@
     <button class="btn btn-success" style="width: 90px;" form="vehicuref" type="submit">Aceptar</button>
   </div>
 </ng-template>
-
 
 <!-- //editar roles de usaurio Cambiar series-->
 <ng-template #EditarRoles let-modal>
@@ -227,9 +221,6 @@
 
     <a class="btn btn-success mt-2" (click)="AgregarPermisosEdicion()">Añadir permisos</a>
   </div>
-
-
-
 
     <h6 class="mb-3">Permisos activos</h6>
 

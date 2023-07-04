@@ -1661,7 +1661,11 @@
         <div class="mb-3">
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Placa de vehiculo <span style="color: red;">(*)</span></label>
-            <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)">
+            <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Mtc <span style="color: red;">(*)</span></label>
+            <input type="text" ngModel name="mtc" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
           </div>
           <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Modelo</label>

@@ -881,6 +881,7 @@ agregarVehiculo(ref: NgForm){
     marca:ref.value.marcaVehiculo,
     modelo:ref.value.modeloVehiculo,
     placaVehiculo:ref.value.placaVehiculoVehiculo,
+    mtc:ref.value.mtc
   };
   this.api.AgregarVehiculo(vehiculo).subscribe((resp:any)=>{
     this.VehiculosActivos.push(resp);

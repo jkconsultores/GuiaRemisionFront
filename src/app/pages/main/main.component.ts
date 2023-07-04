@@ -894,6 +894,7 @@ export class MainComponent  {
       marca:ref.value.marcaVehiculo,
       modelo:ref.value.modeloVehiculo,
       placaVehiculo:ref.value.placaVehiculoVehiculo,
+      mtc:ref.value.mtc
     };
     this.Serviceapi.AgregarVehiculo(vehiculo).subscribe((resp:any)=>{
       this.VehiculosActivos.push(resp);
