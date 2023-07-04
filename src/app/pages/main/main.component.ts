@@ -552,7 +552,7 @@ export class MainComponent  {
       direccionPtoPartida: this.origen.direccionorigen, //origen
       horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
-      numeroRegistroMTC: this.transportista.numeroregistromtc??"",//puede estar en blanco
+      numeroRegistroMTC: "",//puede estar en blanco
       nombreConductor: (this.chofer.nombre??"")==""?"":this.chofer.nombre,
       apellidoConductor: (this.chofer.apellido??"")==""?"":this.chofer.apellido,
       numeroLicencia: (this.chofer.brevete??"")==""?"":this.chofer.brevete, //chofer
@@ -566,7 +566,7 @@ export class MainComponent  {
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
       textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
-      tarjetaUnicaCirculacionPrin:this.tarjetaUnicaCirculacionPrin??"",
+      tarjetaUnicaCirculacionPrin:this.vmodalidad=='01'?(this.transportista.mtc??""):this.tarjetaUnicaCirculacionPrin??"",
       tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??""
     }
     return obj;
