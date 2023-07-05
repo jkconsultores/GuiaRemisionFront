@@ -572,7 +572,7 @@ export class MainComponent  {
       textoAuxiliar250_1:this.placaCarreta,//placa carreta
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
       textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
-      tarjetaUnicaCirculacionPrin:this.vmodalidad=='01'?(this.transportista.mtc??""):this.tarjetaUnicaCirculacionPrin??"",
+      tarjetaUnicaCirculacionPrin:this.tarjetaUnicaCirculacionPrin??"",
       tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??"",
       codigoPuerto:(this.Aeropuerto.codigoPuerto??"")==""?null:this.Aeropuerto.codigoPuerto,
       codigoAeropuerto:(this.Aeropuerto.codigoAeropuerto??"")==""?null:this.Aeropuerto.codigoAeropuerto,
@@ -917,13 +917,13 @@ export class MainComponent  {
   asignarVehiculo(placa,marca,mtc){
     this.marcaVehiculo=marca;
     this.placaChofer=placa;
-    this.tarjetaUnicaCirculacionPrin=mtc;
+/*     this.tarjetaUnicaCirculacionPrin=mtc; */
     this.modalRef.close();
   }
   asignarCarreta(placa,marca,mtc){
     this.placaCarreta=placa;
     this.modeloCarreta=marca;
-    this.tarjetaUnicaCirculacionSec1=mtc;
+/*     this.tarjetaUnicaCirculacionSec1=mtc; */
     this.modalRef.close();
   }
   onFileChange(event: any, modal: any) {

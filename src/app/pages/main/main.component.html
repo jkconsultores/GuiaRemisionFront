@@ -181,7 +181,7 @@
         </div>
         <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="vmodalidad!='01'">
         <div class="row">
-          <div class="col-md-6 col-lg-4 m-0 row mb-1">
+          <div class="col-md-6 col-lg-3 m-0 row mb-1">
             <div class="d-flex align-items-center bd-highlight">
               <div class="flex-grow-0 bd-highlight pe-2"><label>CHOFER 1</label></div>
               <div class="flex-fill bd-highlight"><div class="input-group mb-1">
@@ -201,7 +201,7 @@
               </div></div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4 m-0 row mb-1">
+          <div class="col-md-6 col-lg-3 m-0 row mb-1">
             <div class="d-flex align-items-center bd-highlight">
               <div class="flex-grow-0 bd-highlight  pe-2"><label>PLACA 1</label></div>
               <div class="flex-fill bd-highlight"><div class="input-group mb-1">
@@ -223,7 +223,23 @@
           </div>
         </div>
         </div>
-        <div class="col-md-12 col-lg-4 m-0 row mb-1">
+        <div class="col-md-6 col-lg-3 m-0 row mb-1">
+          <div class="d-flex align-items-center bd-highlight">
+            <div class="flex-grow-0 bd-highlight  pe-2"><label>T. Circulación 1</label></div>
+            <div class="flex-fill bd-highlight"><div class="input-group mb-1">
+              <input type="text" [(ngModel)]="tarjetaUnicaCirculacionPrin" maxlength="15" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center bd-highlight">
+          <div class="flex-grow-0 bd-highlight  pe-2"><label>T. Circulación 2</label></div>
+          <div class="flex-fill bd-highlight"><div class="input-group mb-1">
+            <input type="text" [(ngModel)]="tarjetaUnicaCirculacionSec1" maxlength="15" placeholder="Opcional" class="form-control">
+          </div>
+        </div>
+      </div>
+      </div>
+        <div class="col-md-12 col-lg-3 m-0 row mb-1">
           <div class="d-flex align-items-center bd-highlight">
             <div class="flex-grow-0 bd-highlight pe-2"><label style="white-space: nowrap;">CARCAR EXCEL</label></div>
             <div class="flex-fill bd-highlight"><input #fileInput type="file" class="form-control" accept=".xls, .xlsx" (change)="onFileChange($event, ProductoExcel)">
@@ -263,15 +279,15 @@
 
           </div>
           <div class="row col-4 col-lg-2 d-flex align-items-start ps-3 bd-highlight">
-            <div class="col-6 mb-2">
+            <div class="col-12 mb-2">
               <button class="btn btn-light" (click)="obtenerProductos(Producto);" style="width: 100%;height: 80px;">Agregar Detalle</button>
             </div>
-            <div class="col-6">
+           <!--  <div class="col-6">
               <button class="btn btn-light" (click)="abrirModal(AeropuertoModal);" style="width: 100%;height: 80px;">Agregar Aeropuerto</button>
-            </div>
-          <div class="col-12 mb-2">
+            </div> -->
+      <!--     <div class="col-12 mb-2">
               <button class="btn btn-info" style="height: 80px;width: 100%;" (click)="importarBalanza()">Importar Balanza</button>
-            </div>
+            </div> -->
             <div class="col-12">
               <button class="btn btn-primary" style="height: 80px;width: 100%;" (click)="declararGuia()">Declarar</button>
             </div>
