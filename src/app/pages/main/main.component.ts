@@ -16,6 +16,7 @@ import { AAA_EMPRESA } from 'src/app/interface/Empresa';
 import { origen } from 'src/app/interface/origen';
 import { serie } from 'src/app/interface/serie';
 import { chofer } from 'src/app/interface/choferSec';
+import { Aeropuerto } from '../../interface/Aeropuerto';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -39,6 +40,8 @@ export class MainComponent  {
   choferSec={nombre:''} as chofer;
   //destinatario
   destinatarioObject: adquiriente;
+  //aeropuerto
+   Aeropuerto={nombrePuertoAeropuerto:'',codigoAeropuerto:'',codigoPuerto:''} as Aeropuerto;
   //detalles guia pag
   pageProductGuia=1;
   //carga excel
@@ -517,6 +520,9 @@ export class MainComponent  {
     }else{
       this.transportista={} as transportista;
     }
+    if(this.Aeropuerto.codigoAeropuerto==''||this.Aeropuerto.codigoPuerto==''||this.Aeropuerto.nombrePuertoAeropuerto==''){
+    this.Aeropuerto={codigoAeropuerto:'',codigoPuerto:'',nombrePuertoAeropuerto:''} as Aeropuerto;
+    }
     var motivo=this.vmotivo.split("-");
     var obj = {
       tipoDocumentoRemitente: this.remitente.tipodocumentoemisor,
@@ -567,7 +573,10 @@ export class MainComponent  {
       textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
       textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
       tarjetaUnicaCirculacionPrin:this.vmodalidad=='01'?(this.transportista.mtc??""):this.tarjetaUnicaCirculacionPrin??"",
-      tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??""
+      tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??"",
+      codigoPuerto:(this.Aeropuerto.codigoPuerto??"")==""?null:this.Aeropuerto.codigoPuerto,
+      codigoAeropuerto:(this.Aeropuerto.codigoAeropuerto??"")==""?null:this.Aeropuerto.codigoAeropuerto,
+      nombrePuertoAeropuerto:(this.Aeropuerto.nombrePuertoAeropuerto??"")==""?null:this.Aeropuerto.nombrePuertoAeropuerto
     }
     return obj;
   }
@@ -1021,7 +1030,7 @@ export class MainComponent  {
         this.chofer.nombre=nombre??"";
         this.chofer.brevete=res[0].numeroLicencia;
         this.chofer.numerodocumentochofer=res[0].numeroLicencia.substring(1);
-        this.chofer.tipodocumentochofer=(res[0].tipoDocumentoDestinatario??"6");
+        this.chofer.tipodocumentochofer=(res[0].numeroLicencia??"")!=""?this.validarAncho(res[0].numeroLicencia):"1";
         this.chofer.apellido=apellido??"";
       }
       if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
@@ -1060,5 +1069,17 @@ export class MainComponent  {
     }, error => {
       Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' });
     })
+  }
+  cerrarModal(){
+    this.modalRef.close();
+  }
+  validarAeropuerto(){
+   if((this.Aeropuerto.codigoAeropuerto??"")==""||(this.Aeropuerto.codigoPuerto??"")==""||(this.Aeropuerto.nombrePuertoAeropuerto??"")==""){
+      return Swal.fire({icon:'warning',title:'Todos los campos son obligatorios'});
+   }
+   this.cerrarModal();
+  }
+  limpiarAeropuerto(){
+    this.Aeropuerto={nombrePuertoAeropuerto:'',codigoAeropuerto:'',codigoPuerto:''} as Aeropuerto;
   }
 }
