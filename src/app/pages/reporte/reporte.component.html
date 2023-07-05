@@ -84,6 +84,7 @@
                 <span class="badge text-bg-primary" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/AC_03'" (click)="MostrarEstado(item.bl_mensajeSunat)">ACEPTADO</span>
                 <span class="badge text-bg-warning" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/PE_02'" (click)="MostrarEstado(item.bl_mensajeSunat)">EN PROCESO</span>
                 <span class="badge text-bg-warning" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/PE_09'" (click)="MostrarEstado(item.bl_mensajeSunat)">EN PROCESO</span>
+                <span class="badge text-bg-warning" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/ED_06'" (click)="MostrarEstado(item.bl_mensajeSunat)">EN PROCESO</span>
                 <span class="badge text-bg-danger" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED'" (click)="MostrarEstado(item.bl_mensajeSunat)">ERROR LOCAL</span>
                 <span class="badge text-bg-danger" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/AN_04'" (click)="MostrarEstado(item.bl_mensajeSunat)">ANULADO</span>
                 <span class="badge text-bg-danger" style="cursor: pointer" *ngIf="item.bl_estadoProceso=='SIGNED/RC_05'" (click)="MostrarEstado(item.bl_mensajeSunat)">RECHAZADO</span>

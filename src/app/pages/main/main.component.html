@@ -1508,7 +1508,7 @@
             <tr>
               <th>N°</th>
               <th>Placa</th>
-              <th>Mtc</th>
+              <th>T. Circulación</th>
               <th>Modelo</th>
               <th>Marca</th>
               <th>Color</th>
@@ -1519,7 +1519,7 @@
             <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculo:['placaVehiculo','marca']; let i = index" >
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
-              <th>{{item.mtc}}</th>
+              <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.mtc}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
               <th (click)="asignarVehiculo(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
@@ -1571,7 +1571,7 @@
             <tr *ngFor="let item of VehiculosActivos| filter:filterVehiculoSec:['placaVehiculo','marca']; let i = index" >
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{i+1}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.placaVehiculo}}</th>
-              <th>{{item.mtc}}</th>
+              <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.mtc}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.modelo}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.marca}}</th>
               <th (click)="asignarCarreta(item.placaVehiculo,item.marca,item.mtc)" style="cursor: pointer;">{{item.color}}</th>
@@ -1599,8 +1599,8 @@
           <input type="text" ngModel name="placaVehiculoVehiculo" (keydown)="onKeyPress($event)" [maxlength]="6" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Mtc <span style="color: red;">(*)</span></label>
-          <input type="text" ngModel name="mtc" (keydown)="onKeyPress($event)" [maxlength]="13" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
+          <label for="exampleFormControlInput1" class="form-label">Tarjeta Unica Circulación<span style="color: red;">(*)</span></label>
+          <input type="text" ngModel name="mtc" (keydown)="onKeyPress($event)" [maxlength]="15" class="form-control"  placeholder="Ingrese la placa del vehiculo (obligatorio)" required>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Modelo</label>
@@ -1763,7 +1763,7 @@
   <div class="card">
     <div class="card-header">
       <div class="container">
-        <h5>Campos Adicionales &nbsp; &nbsp;</h5>
+        <h5>Campos Importación/Exportación &nbsp; &nbsp;</h5>
       </div>
     </div>
     <div class="card-body">

@@ -917,13 +917,13 @@ export class MainComponent  {
   asignarVehiculo(placa,marca,mtc){
     this.marcaVehiculo=marca;
     this.placaChofer=placa;
-/*     this.tarjetaUnicaCirculacionPrin=mtc; */
+    this.tarjetaUnicaCirculacionPrin=mtc;
     this.modalRef.close();
   }
   asignarCarreta(placa,marca,mtc){
     this.placaCarreta=placa;
     this.modeloCarreta=marca;
-/*     this.tarjetaUnicaCirculacionSec1=mtc; */
+    this.tarjetaUnicaCirculacionSec1=mtc;
     this.modalRef.close();
   }
   onFileChange(event: any, modal: any) {
