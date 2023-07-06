@@ -208,6 +208,7 @@ export class MainComponent  {
     if (form.submitted) {
       Swal.showLoading();
       form.value.destino = this.destinos;
+      form.value.numerodocumentoadquiriente=form.value.numerodocumentoadquiriente.replace(/\s/g, "")
       this.api.crearAdquiriente(form.value).subscribe((res: any) => {
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
         this.destinos = [];
@@ -230,6 +231,7 @@ export class MainComponent  {
     if (form.submitted) {
       Swal.showLoading();
       form.value.DESTINO = this.destinatarioObject.destinos;
+      form.value.numerodocumentoadquirient=form.value.numerodocumentoadquiriente.replace(/\s/g, "")
       this.api.updateAdquiriente(form.value).subscribe((res: any) => {
         this.modalRef.close();
         Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
@@ -564,7 +566,7 @@ export class MainComponent  {
       direccionPtoPartida: this.origen.direccionorigen, //origen
       horaEmisionGuia: this.horaEmision, //solo hora!! hh:mm:ss
       fechaEntregaBienes: this.fecha_traslado, //fecha de entrega solo DATE
-      numeroRegistroMTC: "",//puede estar en blanco
+      numeroRegistroMTC: this.transportista.numeroregistromtc,
       nombreConductor: (this.chofer.nombre??"")==""?"":this.chofer.nombre,
       apellidoConductor: (this.chofer.apellido??"")==""?"":this.chofer.apellido,
       numeroLicencia: (this.chofer.brevete??"")==""?"":this.chofer.brevete, //chofer
@@ -1065,8 +1067,10 @@ export class MainComponent  {
     }
   }
   getOrigenDefault(){
+
     this.api.getOrigenes(this.remitente.numerodocumentoemisor,0).subscribe((res: any) => {
       Swal.close();
+      this.arraySerie = res['SERIE'];
       this.origen={numerodocumentoemisor:''} as origen;
       this.tablaOrigenes=res['ORIGEN']
       if((res['ORIGEN']??"")!=""&&res['ORIGEN'].length==1){

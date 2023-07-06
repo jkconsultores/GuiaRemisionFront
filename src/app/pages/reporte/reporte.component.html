@@ -93,7 +93,7 @@
               <td>
                 <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_url_pdf,(item.serieNumeroGuia+'.pdf'),'application/json')" class="bi bi-file-earmark-pdf me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
                 <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_url_cdr,(item.serieNumeroGuia+'.cdr'),'application/cdr')" class="bi bi-file-earmark-medical me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
-                <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_xml_rsp,(item.serieNumeroGuia+'.xml'),'application/xml')" class="bi bi-filetype-xml me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
+                <i *ngIf="item.bl_url_pdf!=undefined" (click)="descargarPdf(item.bl_url_ubl,(item.serieNumeroGuia+'.xml'),'application/xml')" class="bi bi-filetype-xml me-3" style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;" ></i>
               <i (click)="abrirModal(DetallesSpe,item.serieNumeroGuia)" class="fa-sharp fa-solid fa-circle-info"
                   style="font-size: 25px;color: rgb(3, 133, 255);cursor: pointer;"></i></td>
             </tr>

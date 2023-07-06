@@ -159,7 +159,7 @@
       <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12" *ngIf="vmodalidad!='02'">
           <div class="row">
-            <div class="col-md-12 col-lg-6 m-0 row mb-1">
+            <div class="col-md-12 col-lg-4 m-0 row mb-1">
               <div class="d-flex align-items-center bd-highlight">
                 <div class="flex-grow-0 bd-highlight pe-2"><label>TRANSPORTISTA</label></div>
                 <div class="flex-fill bd-highlight"><div class="input-group mb-1">
@@ -170,7 +170,15 @@
                 </div></div>
               </div>
             </div>
-          <div class="col-md-12 col-lg-6 m-0 row mb-1">
+            <div class="col-md-12 col-lg-4 m-0 row mb-1">
+              <div class="d-flex align-items-center bd-highlight">
+                <div class="flex-grow-0 bd-highlight pe-2"><label>MTC</label></div>
+                <div class="flex-fill bd-highlight"><div class="input-group mb-1">
+                  <input type="text" class="form-control" [(ngModel)]="transportista.numeroregistromtc">
+                </div></div>
+              </div>
+            </div>
+          <div class="col-md-12 col-lg-4 m-0 row mb-1">
             <div class="d-flex align-items-center bd-highlight">
               <div class="flex-grow-0 bd-highlight pe-3"><label style="white-space: nowrap;">CARCAR EXCEL</label></div>
               <div class="flex-fill bd-highlight"><input #fileInput type="file" class="form-control" accept=".xls, .xlsx" (change)="onFileChange($event, ProductoExcel)">
@@ -1272,7 +1280,7 @@
               <th scope="col">Descripción</th>
               <th scope="col">Serie</th>
               <th scope="col">Correlativo</th>
-              <th scope="col">Opt</th>
+              <th scope="col" *ngIf="usuario=='1'">Opt</th>
             </tr>
           </thead>
           <tbody>
