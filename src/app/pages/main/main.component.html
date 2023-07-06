@@ -1259,7 +1259,7 @@
     <div class="card-header">
       <div class="container">
         <h5>SERIE &nbsp; &nbsp;</h5>
-        <button class="btn btn-secondary" (click)="abrirModal(CrudSerie)">+</button>
+        <button class="btn btn-secondary" *ngIf="usuario=='1'" (click)="abrirModal(CrudSerie)">+</button>
       </div>
     </div>
     <div class="card-body">
@@ -1282,7 +1282,7 @@
               <td>{{item.descripcion}}</td>
               <td>{{item.serie}}</td>
               <td>{{item.correlativo}}</td>
-              <td style="text-align: center;cursor: pointer;"
+              <td style="text-align: center;cursor: pointer;" *ngIf="usuario=='1'"
                 (click)="borrarSerie(item.numerodocumentoemisor,item.serie)"><i
                   class="fa-solid fa-trash"
                   style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>

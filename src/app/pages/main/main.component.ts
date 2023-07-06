@@ -140,9 +140,15 @@ export class MainComponent  {
   public DestinoSeelct:AAA_DESTINO | undefined;
   public DestinoAUSar:AAA_DESTINO[] =[];
 
+  //permisos
+  public usuario:string;
+
   constructor(public api: ApiRestService, private modalService: NgbModal, public rout: Router,private Serviceapi:ApiRestService) {
     this.obtenerInfo();
     this.getTransportista();
+    this.api.VerificarAccesoAUsuario().subscribe((resp:any)=>{
+      this.usuario=resp;
+    });
   }
   EditarDestinatario(modal, contenido) {
     this.destinatarioObject = contenido;
