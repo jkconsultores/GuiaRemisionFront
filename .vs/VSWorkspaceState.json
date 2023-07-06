@@ -5,7 +5,9 @@
     "\\src\\app",
     "\\src\\app\\pages",
     "\\src\\app\\pages\\navbar",
-    "\\src\\app\\pages\\reporte"
+    "\\src\\app\\pages\\reporte",
+    "\\src\\app\\pages\\usuarios",
+    "\\src\\app\\pages\\usuarios\\registro-de-usuarios-component"
   ],
   "PreviewInSolutionExplorer": false
 }
