@@ -172,4 +172,7 @@ export class ApiRestService implements OnInit{
   public VerificarAccesoAUsuario(){
     return this.http.get(this.url+"Usuario/AccesoAUsuarios",this.auth.obtenerDatos())
   }
+  public getCamposAdicionales(){
+    return this.http.get(this.url+'Adicionales',this.auth.obtenerDatos())
+  }
 }

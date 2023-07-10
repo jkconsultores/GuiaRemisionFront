@@ -39,7 +39,8 @@ export class LoginComponent {
     this.auth.login(formulario).subscribe((res:any) => {
     this.validarUsuario(res);
     }, err => {
-      Swal.fire({ icon: 'warning', text: 'hubo un error en la conexion al servidor' });
+      if (err.error.message) { Swal.fire({ icon: 'warning', text: err.error.message }); }
+      else { Swal.fire({ icon: 'warning', text: 'Hubo un error al crear el registro' }); }
     });
 
   }
@@ -72,12 +73,6 @@ export class LoginComponent {
         if(a.length>0){
           return this.router.navigateByUrl(a[0].ruta);
         }
-      })
-    } else {
-      return Swal.fire({
-        title: 'Mensaje',
-        icon: 'warning',
-        text: 'No se encontro ningun usuario'
       })
     }
   }

@@ -17,6 +17,7 @@ import { origen } from 'src/app/interface/origen';
 import { serie } from 'src/app/interface/serie';
 import { chofer } from 'src/app/interface/choferSec';
 import { Aeropuerto } from '../../interface/Aeropuerto';
+import { adicional } from 'src/app/interface/Adicional';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -67,6 +68,8 @@ export class MainComponent  {
   empresas = [];
   choferes = [];
   motivos = [];
+  camposAdicionalesModal: adicional[] = [];
+  camposAdicionales:any={};
   //tablas
   tablaEmpresas = [];
   tablaOrigenes:origen[] = [];
@@ -149,6 +152,12 @@ export class MainComponent  {
     this.api.VerificarAccesoAUsuario().subscribe((resp:any)=>{
       this.usuario=resp;
     });
+    this.getCamposAdicionales();
+  }
+  getCamposAdicionales(){
+    this.api.getCamposAdicionales().subscribe((a:any)=>{
+      this.camposAdicionalesModal=a;
+    })
   }
   EditarDestinatario(modal, contenido) {
     this.destinatarioObject = contenido;
@@ -586,7 +595,9 @@ export class MainComponent  {
       codigoAeropuerto:(this.Aeropuerto.codigoAeropuerto??"")==""?null:this.Aeropuerto.codigoAeropuerto,
       nombrePuertoAeropuerto:(this.Aeropuerto.nombrePuertoAeropuerto??"")==""?null:this.Aeropuerto.nombrePuertoAeropuerto
     }
-    return obj;
+    const copiaGuia = { ...obj };
+    var resultado = { ...copiaGuia, ...this.camposAdicionales }; // Fusionando el objeto1 copiado con objeto2
+    return resultado;
   }
   crearProducto(producto: NgForm) {
     if (producto.invalid) {
@@ -678,7 +689,6 @@ export class MainComponent  {
         else { Swal.fire({ icon: 'warning', text: 'Hubo un error en la conexión' }); }
       })
     }
-
   }
   listarSerie(serie) {
     Swal.showLoading()
@@ -1055,6 +1065,7 @@ export class MainComponent  {
         this.transportista.tipodocumentotransportista=res[0].tipoDocumentoTransportista;
       }
       var producto=[{codigo:'-',descripcion:res[0].descripcion,unidadmedida:'KGM',cantidad:res[0].cantidad.toString()}]
+      this.pesoBruto=res[0].cantidad.toString();
       this.listadoProductoDetalles=producto;
   }
   validarAncho(cadena: string): string {
@@ -1091,5 +1102,14 @@ export class MainComponent  {
   }
   limpiarAeropuerto(){
     this.Aeropuerto={nombrePuertoAeropuerto:'',codigoAeropuerto:'',codigoPuerto:''} as Aeropuerto;
+  }
+  asignarAdicionales(){
+    var cont=4;
+    this.camposAdicionalesModal.forEach((element:adicional) => {
+      this.camposAdicionales['textoAuxiliar250_'+cont]=element.valor;
+      this.camposAdicionales['codigoAuxiliar250_'+cont]=element.codigoAuxiliar;
+      cont++
+    });
+    this.modalRef.close();
   }
 }
