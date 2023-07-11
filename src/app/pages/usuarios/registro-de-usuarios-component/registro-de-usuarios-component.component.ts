@@ -84,8 +84,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       valor=this.motivo
       numeroDocumento = ""
     }
-    console.log(valor)
-    if(valor!=""&&valor!=undefined){
+    if(valor!="" && valor!=undefined){
     if(!this.RolesDEUSuario.some(x=>x.tipo==this.TipoServicio && x.valor==valor && x.numeroDocumentoEmisor==numeroDocumento)){
       this.RolesDEUSuarioNuevos.push({
         estado:true,
@@ -161,7 +160,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
     else{
       valor=this.motivo
     }
-    if(valor!=""){
+    if(valor!="" && valor!=undefined){
     if(!this.permisos.some(x=>x.tipo==this.TipoServicio && x.valor==valor && x.numeroDocumentoEmisor==numeroDocumento)){
       this.permisos.push({
         estado:true,
