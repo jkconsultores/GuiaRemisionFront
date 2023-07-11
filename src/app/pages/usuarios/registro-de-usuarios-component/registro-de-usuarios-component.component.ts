@@ -6,6 +6,7 @@ import { PermisoDTO, T_Permiso } from 'src/app/interface/Permiso';
 import { RespuestaDeLLaveValor } from 'src/app/interface/RespuestasGenericas';
 import { USUARIO, UsuariosDTO } from 'src/app/interface/Usuario';
 import { AAA_TIPODOCUMENTO } from 'src/app/interface/aaa_TipoDocumento';
+import { T_UsuarioEmpresaDTO } from 'src/app/interface/usuarioEmpresa';
 import { ApiRestService } from 'src/app/service/api-rest.service';
 import Swal from 'sweetalert2';
 
@@ -18,6 +19,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
   modalRef: NgbModalRef;
   arraySerie:AAA_TIPODOCUMENTO[] = [];
   arrayMotivo:MOTIVOS[]=[];
+  empresas:any=[];
   serieNumero = '';
   motivo = '';
   usuarios:USUARIO[]=[];
@@ -46,6 +48,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
     this.api.getMotivos().subscribe((resp:any)=>{
       this.arrayMotivo=resp;
     })
+    this.getEmpresas();
   }
   obtenerUsuarios(){
     this.api.getUsuarios().subscribe((resp:any)=>{
@@ -105,13 +108,20 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       correoelectronico:ref.value.correoUsuario,
       nombres:ref.value.nombreUsuario,
       nombreusuario:ref.value.nombreUserUsuario,
-      rol:Boolean(this.rol)
+      rol:JSON.parse(this.rol)
     }
+    var empresasSeleccionadas=this.empresas.filter(elemento => elemento.seleccionado);
+    var usuarioEmpresa=[] as T_UsuarioEmpresaDTO[];
+
     this.api.agregarUsuario(user).subscribe((resp:any)=>{
       this.usuarios.push(resp);
       this.permisos.forEach((permiso) => {
         permiso.idUsuario = resp.usuarioid;
       });
+      empresasSeleccionadas.forEach(element => {
+        usuarioEmpresa.push({idUsuario:resp.usuarioid,rucEmpresa:element.numerodocumentoemisor,estado:true})
+      });
+      this.agregarRelacionEmpresas(usuarioEmpresa);
       this.api.AgregarPermisos(this.permisos).subscribe((resp:any)=>{
         this.modalRef.close();
       })
@@ -254,5 +264,18 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       }
     }
     return valor;
+  }
+  getEmpresas(){
+    this.api.getEmpresas().subscribe((a:any)=>{
+      a.forEach(element => {
+        element['seleccionado']=false;
+      });
+      this.empresas=a;
+    })
+  }
+  agregarRelacionEmpresas(relacion){
+    this.api.AgregarRelacionEmpresas(relacion).subscribe(a=>{
+      console.log(a)
+    })
   }
 }

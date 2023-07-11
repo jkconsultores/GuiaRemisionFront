@@ -1,3 +1,4 @@
+import { clonacion } from './../../interface/clonacion';
 import { chofer } from './../../interface/choferSec';
 import { producto } from './../../interface/producto';
 import { Component, OnInit } from '@angular/core';
@@ -710,7 +711,6 @@ convertirFormatoProducto(array:any){
   });
 }
 extraerGuiaImportada(guia:GuiaImportada){
-
   this.remitente={
     razonsocialemisor:guia.razonSocialRemitente,
     numerodocumentoemisor:guia.numeroDocumentoRemitente,
@@ -885,16 +885,16 @@ agregarVehiculo(ref: NgForm){
   };
   this.api.AgregarVehiculo(vehiculo).subscribe((resp:any)=>{
     this.VehiculosActivos.push(resp);
-
     Swal.fire({ icon: 'success', title: 'Se creó con éxito' })
       this.modalRef.close();
   })
 }
 clonarGuia(f:NgForm){
   Swal.showLoading();
-  this.apiT.getGuiaDuplicada(f.value.serie,f.value.ruc).subscribe(a=>{
+  this.apiT.getGuiaDuplicada(f.value.serie,f.value.ruc).subscribe((a:any)=>{
     Swal.close()
-    console.log(a)
+   var clonacion:clonacion=a;
+   console.log(clonacion.cabecera)
   }, error => {
     if (error.error) { Swal.fire({ icon: 'warning', text: error.error.message }); }
     else{

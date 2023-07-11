@@ -20,3 +20,9 @@ a{
   align-items: center;
   justify-content: center;
 }
+.texto-limitado {
+  width: 100px; /* El ancho máximo disponible */
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  overflow: hidden; /* Oculta cualquier contenido que desborde del contenedor */
+  text-overflow: ellipsis; /* Agrega tres puntos suspensivos al final del texto desbordado */
+}

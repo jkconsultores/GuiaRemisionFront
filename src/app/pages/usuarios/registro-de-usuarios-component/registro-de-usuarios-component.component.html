@@ -6,7 +6,8 @@
         <div class="col-sm-8">
           <h4>Gestion de usuarios</h4>
         </div>
-        <div class="col-sm-4"><button class="btn btn-primary float-end" (click)="abrirModal(CrudVehiculos)">Agregar
+        <div class="col-sm-4"><button class="btn btn-primary float-end"
+            (click)="abrirModal(CrudVehiculos)">Agregar
             usuario</button></div>
       </div>
     </div>
@@ -18,7 +19,8 @@
           </div>
           <div class="col-10">
             <div class="input-group mb-1">
-              <input type="text" [(ngModel)]="filterUsuario" name="filterUsuario" class="form-control">
+              <input type="text" [(ngModel)]="filterUsuario"
+                name="filterUsuario" class="form-control">
             </div>
           </div>
         </div>
@@ -36,24 +38,31 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of usuarios| filter:filterUsuario:['nombreusuario'];let i = index">
+            <tr
+              *ngFor="let item of usuarios| filter:filterUsuario:['nombreusuario'];let i = index">
               <td><div class="avatar bg-warning avatar-lg me-3">
-                <span class="avatar-content">{{item.nombreusuario | slice:0:2}}</span>
-              </div></td>
+                  <span class="avatar-content">{{item.nombreusuario |
+                    slice:0:2}}</span>
+                </div></td>
               <td>{{i+1}}</td>
               <td><h6>{{item.nombres}}</h6></td>
               <td><h6>{{item.nombreusuario}}</h6></td>
               <td><h6>{{item.correoelectronico}}</h6></td>
               <td *ngIf="item.estado">Permitido</td>
               <td *ngIf="!item.estado">Denegado</td>
-              <td >{{item.rol==true?"Administrador":"Usuario"}}</td>
-              <td><button class="btn btn-light me-2" (click)="editaRoles(EditarRoles,item.usuarioid)" ><img src="../../../assets/usuario.png" width="36px"></button>
-                <button class="btn btn-danger ms-2" (click)="eliminarUsuario(item.usuarioid)"><img
+              <td>{{item.rol==true?"Administrador":"Usuario"}}</td>
+              <td><button class="btn btn-light me-2"
+                  (click)="editaRoles(EditarRoles,item.usuarioid)"><img
+                    src="../../../assets/usuario.png" width="36px"></button>
+                <button class="btn btn-danger ms-2"
+                  (click)="eliminarUsuario(item.usuarioid)"><img
                     src="../../../assets/borrar-usuario.png" width="36px"></button>
-                    <!-- <button class="btn btn-primary ms-2" (click)="abrirModal(item.usuarioid)"><img
+                <!-- <button class="btn btn-primary ms-2" (click)="abrirModal(item.usuarioid)"><img
                        width="36px"></button> -->
-                <button class="btn btn-primary ms-2" (click)="cambiarPass(item)" ><i class="bi bi-shield-lock-fill" style="font-size: 25px"></i></button>
-                <button class="btn btn-secondary ms-2" (click)="DarDeBaja(item)" ><i class="bi bi-person-fill-x" style="font-size: 25px"></i></button></td>
+                <button class="btn btn-primary ms-2" (click)="cambiarPass(item)"><i
+                    class="bi bi-shield-lock-fill" style="font-size: 25px"></i></button>
+                <button class="btn btn-secondary ms-2" (click)="DarDeBaja(item)"><i
+                    class="bi bi-person-fill-x" style="font-size: 25px"></i></button></td>
             </tr>
           </tbody>
         </table>
@@ -87,82 +96,112 @@
     <h5>Agregar nuevo usuario</h5>
   </div>
   <div class="modal-body">
-    <form class="margen-modal" (ngSubmit)="AgregarUsuario(vehicuref)" #vehicuref="ngForm" id="vehicuref">
+    <form class="margen-modal" (ngSubmit)="AgregarUsuario(vehicuref)"
+      #vehicuref="ngForm" id="vehicuref">
       <div class="mb-3">
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Nombre de usuario <span
+          <label for="exampleFormControlInput1" class="form-label">Nombre de
+            usuario <span
               style="color: red;">(*)</span></label>
-          <input type="text" ngModel name="nombreUserUsuario" class="form-control"
+          <input type="text" ngModel name="nombreUserUsuario"
+            class="form-control"
             placeholder="Ingrese el nombre del usuario (obligatorio)" required>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Contraseña<span
-            style="color: red;">(*)</span></label>
-          <input type="password" ngModel name="contraseñaUsuario" class="form-control"
+              style="color: red;">(*)</span></label>
+          <input type="password" ngModel name="contraseñaUsuario"
+            class="form-control"
             placeholder="Ingrese una contraseña (obligatorio)" required>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Nombres<span
-            style="color: red;">(*)</span></label>
+              style="color: red;">(*)</span></label>
           <input type="text" ngModel name="nombreUsuario" class="form-control"
             placeholder="Ingrese el nombre completo (obligatorio)" required>
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Rol de usuario<span
-            style="color: red;">(*)</span></label>
-            <select [(ngModel)]="rol" name="rol" class="form-select">
-              <option value="">Seleccione un rol para el usuario</option>
-              <option value="false">Usuario</option>
-              <option value="true">Administrador</option>
-            </select>
+          <label for="exampleFormControlInput1" class="form-label">Rol de
+            usuario<span
+              style="color: red;">(*)</span></label>
+          <select [(ngModel)]="rol" name="rol" class="form-select">
+            <option value>Seleccione un rol para el usuario</option>
+            <option value="false">Usuario</option>
+            <option value="true">Administrador</option>
+          </select>
         </div>
         <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Correo electronico</label>
+          <label for="exampleFormControlInput1" class="form-label">Correo
+            electronico</label>
           <input type="email" ngModel name="correoUsuario" class="form-control"
             placeholder="Ingrese un correo electronico (obligatorio)">
         </div>
         <hr>
-         <h6>Agregar permisos</h6>
+        <h6>Agregar Empresas</h6>
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-4" *ngFor="let item of empresas">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" [name]="'flexCheckDefault' + item.numerodocumentoemisor" [(ngModel)]="item.seleccionado"
+                  [id]="'flexCheckDefault' + item.numerodocumentoemisor">
+                <label class="form-check-label"
+                  [for]="'flexCheckDefault' + item.numerodocumentoemisor">
+                  <b>{{ item.nombreempresa }}</b>({{item.numerodocumentoemisor}})
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <hr>
+        <h6>Agregar permisos</h6>
         <div class="col-md-12">
           <div class="row mb-2">
             <div class="col-md-6">
-            <div class="col-12">
-              <label class="mb-1" for="TipoServicio">Tipo de permiso</label>
-              <select [(ngModel)]="TipoServicio" name="TipoServicio" class="form-select">
-                <option value="">Seleccione un tipo de permiso</option>
-                <option value="Serie">Serie</option>
-                <option value="Motivo">Motivo</option>
-              </select>
+              <div class="col-12">
+                <label class="mb-1" for="TipoServicio">Tipo de permiso</label>
+                <select [(ngModel)]="TipoServicio" name="TipoServicio"
+                  class="form-select">
+                  <option value>Seleccione un tipo de permiso</option>
+                  <option value="Serie">Serie</option>
+                  <option value="Motivo">Motivo</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <div class="col-md-6" *ngIf="TipoServicio=='Serie'">
-            <div class="col-12" >
-              <label class="mb-1" for="serie">Seleccione una serie</label>
-              <select [(ngModel)]="serieNumero" name="serie" class="form-select">
-                <option value="">Seleccione una serie</option>
-                <option value="{{item.numerodocumentoemisor}}-{{item.serie}}" *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}} - serie: {{item.serie| slice : 0 : 4}} </option>
-              </select>
+            <div class="col-md-6" *ngIf="TipoServicio=='Serie'">
+              <div class="col-12">
+                <label class="mb-1" for="serie">Seleccione una serie</label>
+                <select [(ngModel)]="serieNumero" name="serie"
+                  class="form-select">
+                  <option value>Seleccione una serie</option>
+                  <option value="{{item.numerodocumentoemisor}}-{{item.serie}}"
+                    *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}}
+                    - serie: {{item.serie| slice : 0 : 4}} </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
+              <div class="col-12">
+                <label class="mb-1" for="motivo">Seleccione un motivo</label>
+                <select [(ngModel)]="motivo" name="motivo" class="form-select">
+                  <option value>Seleccione un motivo</option>
+                  <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
+                </select>
+              </div>
             </div>
           </div>
-          <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
-            <div class="col-12" >
-              <label class="mb-1" for="motivo">Seleccione un motivo</label>
-              <select [(ngModel)]="motivo" name="motivo" class="form-select">
-                <option value="">Seleccione un motivo</option>
-                <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
-              </select>
-            </div>
-          </div>
-          </div>
-          <a class="btn btn-success mt-2" (click)="AgregarPermisos()">Añadir permisos</a>
+          <a class="btn btn-success mt-2" (click)="AgregarPermisos()">Añadir
+            permisos</a>
         </div>
         <div class="row mt-3">
           <hr>
           <h6>Permisos activos</h6>
           <div class="col-12">
-            <h6 class="text-danger text-center" *ngIf="permisos.length == 0"> NO SE ASIGNARON PERMISOS</h6>
-            <table class="table table-bordered table-responsive" *ngIf="permisos.length > 0">
+            <h6 class="text-danger text-center" *ngIf="permisos.length == 0"> NO
+              SE ASIGNARON PERMISOS</h6>
+            <table class="table table-bordered table-responsive"
+              *ngIf="permisos.length > 0">
               <thead>
                 <tr>
                   <th>Tipo</th>
@@ -176,7 +215,8 @@
                   <td>{{item.tipo}}</td>
                   <td>{{reemplazarMotivo(item.tipo,item.valor)}}</td>
                   <td>{{item.numeroDocumentoEmisor}}</td>
-                  <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermiso(item.tipo,item.valor)"></i></td>
+                  <td><i class="bi bi-trash3 text-white btn btn-danger "
+                      (click)="retirarPermiso(item.tipo,item.valor)"></i></td>
                 </tr>
               </tbody>
             </table>
@@ -186,8 +226,10 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
-    <button class="btn btn-success" style="width: 90px;" form="vehicuref" type="submit">Aceptar</button>
+    <button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+      (click)='salir()'>Salir</button>
+    <button class="btn btn-success" style="width: 90px;" form="vehicuref"
+      type="submit">Aceptar</button>
   </div>
 </ng-template>
 
@@ -195,50 +237,56 @@
 <ng-template #EditarRoles let-modal>
 
   <div class="row p-3">
-  <h6>Agregar permisos</h6>
-  <div class="col-md-12 mb-3">
+    <h6>Agregar permisos</h6>
+    <div class="col-md-12 mb-3">
 
-    <div class="row mb-2">
-      <div class="col-md-6">
-      <div class="col-12">
-        <label class="mb-1" for="TipoServicio">Tipo de permiso</label>
-        <select [(ngModel)]="TipoServicio" name="TipoServicio" class="form-select">
-          <option value="">Seleccione un tipo de permiso</option>
-          <option value="Serie">Serie</option>
-          <option value="Motivo">Motivo</option>
-        </select>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <div class="col-12">
+            <label class="mb-1" for="TipoServicio">Tipo de permiso</label>
+            <select [(ngModel)]="TipoServicio" name="TipoServicio"
+              class="form-select">
+              <option value>Seleccione un tipo de permiso</option>
+              <option value="Serie">Serie</option>
+              <option value="Motivo">Motivo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="TipoServicio=='Serie'">
+          <div class="col-12">
+            <label class="mb-1" for="serie">Seleccione una serie</label>
+            <select [(ngModel)]="serieNumero" name="serie" class="form-select">
+              <option value>Seleccione una serie</option>
+              <option value="{{item.numerodocumentoemisor}}-{{item.serie}}"
+                *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}}
+                - Serie:{{item.serie| slice : 0 : 4}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
+          <div class="col-12">
+            <label class="mb-1" for="motivo">Seleccione un motivo</label>
+            <select [(ngModel)]="motivo" name="motivo" class="form-select">
+              <option value>Seleccione un motivo</option>
+              <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
+            </select>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="col-md-6" *ngIf="TipoServicio=='Serie'">
-      <div class="col-12" >
-        <label class="mb-1" for="serie">Seleccione una serie</label>
-        <select [(ngModel)]="serieNumero" name="serie" class="form-select">
-          <option value="">Seleccione una serie</option>
-          <option value="{{item.numerodocumentoemisor}}-{{item.serie}}" *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}} - Serie:{{item.serie| slice : 0 : 4}}</option>
-        </select>
-      </div>
+      <a class="btn btn-success mt-2" (click)="AgregarPermisosEdicion()">Añadir
+        permisos</a>
     </div>
-
-    <div class="col-md-6" *ngIf="TipoServicio=='Motivo'">
-      <div class="col-12" >
-        <label class="mb-1" for="motivo">Seleccione un motivo</label>
-        <select [(ngModel)]="motivo" name="motivo" class="form-select">
-          <option value="">Seleccione un motivo</option>
-          <option value="{{item.id}}" *ngFor="let item of arrayMotivo">{{item.descripcion}}</option>
-        </select>
-      </div>
-    </div>
-    </div>
-
-    <a class="btn btn-success mt-2" (click)="AgregarPermisosEdicion()">Añadir permisos</a>
-  </div>
 
     <h6 class="mb-3">Permisos activos</h6>
 
     <div class="col-12">
-      <h6 class="text-danger text-center" *ngIf="RolesDEUSuarioNuevos.length == 0"> NO SE ASIGNARON PERMISOS</h6>
-      <table class="table table-bordered table-responsive" *ngIf="RolesDEUSuarioNuevos.length > 0">
+      <h6 class="text-danger text-center"
+        *ngIf="RolesDEUSuarioNuevos.length == 0"> NO SE ASIGNARON PERMISOS</h6>
+      <table class="table table-bordered table-responsive"
+        *ngIf="RolesDEUSuarioNuevos.length > 0">
         <thead>
           <tr>
             <th>Tipo</th>
@@ -252,14 +300,17 @@
             <td>{{item.tipo}}</td>
             <td>{{reemplazarMotivo(item.tipo,item.valor)}}</td>
             <td>{{item.numeroDocumentoEmisor}}</td>
-            <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermisoUpdate(item.tipo,item.valor)"></i></td>
+            <td><i class="bi bi-trash3 text-white btn btn-danger "
+                (click)="retirarPermisoUpdate(item.tipo,item.valor)"></i></td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-danger" style="width: 80px;margin-right: 5px;" (click)='salir()'>Salir</button>
-      <button *ngIf="usuarioEditado!=undefined" class="btn btn-success" style="width: 90px;" form="vehicuref" (click)="ActualziarUsuario()">Actualizar</button>
+      <button class="btn btn-danger" style="width: 80px;margin-right: 5px;"
+        (click)='salir()'>Salir</button>
+      <button *ngIf="usuarioEditado!=undefined" class="btn btn-success"
+        style="width: 90px;" form="vehicuref" (click)="ActualziarUsuario()">Actualizar</button>
     </div>
   </div>
 </ng-template>

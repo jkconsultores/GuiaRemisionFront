@@ -175,4 +175,7 @@ export class ApiRestService implements OnInit{
   public getCamposAdicionales(){
     return this.http.get(this.url+'Adicionales',this.auth.obtenerDatos())
   }
+  public AgregarRelacionEmpresas(body){
+    return this.http.post(this.url+'Usuario/Agregar/Relacion/empresa',body,this.auth.obtenerDatos());
+  }
 }
