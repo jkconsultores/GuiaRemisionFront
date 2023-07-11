@@ -84,7 +84,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       valor=this.motivo
       numeroDocumento = ""
     }
-    if(!this.RolesDEUSuario.some(x=>x.tipo==this.TipoServicio && x.valor==valor)){
+    if(!this.RolesDEUSuario.some(x=>x.tipo==this.TipoServicio && x.valor==valor && x.numeroDocumentoEmisor==numeroDocumento)){
       this.RolesDEUSuarioNuevos.push({
         estado:true,
         idUsuario:0,
