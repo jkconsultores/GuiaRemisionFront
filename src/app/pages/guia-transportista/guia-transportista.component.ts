@@ -98,9 +98,9 @@ export class GuiaTransportistaComponent  implements OnInit{
   //destino
   destino={} as AAA_DESTINO;
   //chofer
-  chofer={nombre:''} as chofer;
+  chofer={nombre:'',apellido:''} as chofer;
   //chofersec
-  choferSec={nombre:''} as chofer;
+  choferSec={nombre:'',apellido:''} as chofer;
   //transporteTerceario
   transporteTerceario={indTransporteSubcontratado:true,numeroDocSubcontratista:'',razonSocialSubcontratista:'',tipoDocumentoSubcontratista:'6'} as transporteTerceario;
   public VehiculosActivos:T_Vehiculo[]=[];
