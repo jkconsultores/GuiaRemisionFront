@@ -106,6 +106,15 @@
             placeholder="Ingrese el nombre completo (obligatorio)" required>
         </div>
         <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Rol de usuario<span
+            style="color: red;">(*)</span></label>
+            <select [(ngModel)]="rol" name="rol" class="form-select">
+              <option value="">Seleccione un rol para el usuario</option>
+              <option value="false">Usuario</option>
+              <option value="true">Administrador</option>
+            </select>
+        </div>
+        <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Correo electronico</label>
           <input type="email" ngModel name="correoUsuario" class="form-control"
             placeholder="Ingrese un correo electronico (obligatorio)">

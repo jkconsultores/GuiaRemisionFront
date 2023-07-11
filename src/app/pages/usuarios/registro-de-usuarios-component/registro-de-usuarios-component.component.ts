@@ -23,6 +23,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
   usuarios:USUARIO[]=[];
   correoUsuario='';
   nombreUserUsuario='';
+  rol:string="false";
   contraseñaUsuario='';
   filterUsuario='';
   TipoServicio='Serie';
@@ -101,7 +102,8 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       contrasena:ref.value.contraseñaUsuario,
       correoelectronico:ref.value.correoUsuario,
       nombres:ref.value.nombreUsuario,
-      nombreusuario:ref.value.nombreUserUsuario
+      nombreusuario:ref.value.nombreUserUsuario,
+      rol:Boolean(this.rol)
     }
     this.api.agregarUsuario(user).subscribe((resp:any)=>{
       this.usuarios.push(resp);
