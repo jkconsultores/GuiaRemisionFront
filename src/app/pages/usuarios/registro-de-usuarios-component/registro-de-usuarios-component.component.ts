@@ -84,6 +84,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       valor=this.motivo
       numeroDocumento = ""
     }
+    if(valor!=""){
     if(!this.RolesDEUSuario.some(x=>x.tipo==this.TipoServicio && x.valor==valor && x.numeroDocumentoEmisor==numeroDocumento)){
       this.RolesDEUSuarioNuevos.push({
         estado:true,
@@ -93,6 +94,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
         numeroDocumentoEmisor:numeroDocumento
       })
     }
+  }
   }
   AgregarUsuario(ref: NgForm){
     if (ref.invalid) {
@@ -158,6 +160,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
     else{
       valor=this.motivo
     }
+    if(valor!=""){
     if(!this.permisos.some(x=>x.tipo==this.TipoServicio && x.valor==valor && x.numeroDocumentoEmisor==numeroDocumento)){
       this.permisos.push({
         estado:true,
@@ -167,6 +170,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
         numeroDocumentoEmisor:numeroDocumento
       })
     }
+  }
   }
   retirarPermiso(tipo:string,valor:string){
     this.permisos = this.permisos.filter((permiso) => {
