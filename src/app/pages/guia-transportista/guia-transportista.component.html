@@ -168,8 +168,7 @@
             <label class="w-100">CHOFER 1</label></div>
           <div class="col-md-6 col-lg-7">
             <div class="input-group mb-1">
-              <input type="text" class="form-control" readonly
-                [(ngModel)]="chofer.nombre">
+              <i class="form-control">{{chofer.nombre+" "+chofer.apellido}}</i>
               <div class="input-group-append">
                 <button class="input-group-text" (click)="abrirModal(Chofer);">...</button>
               </div>
@@ -198,8 +197,9 @@
             <label class="w-100">CHOFER 2</label></div>
           <div class="col-md-6 col-lg-7">
             <div class="input-group mb-1">
-              <input type="text" class="form-control" placeholder="Opcional"
-                readonly [(ngModel)]="choferSec.nombre">
+              <i class="form-control" >
+                {{choferSec.nombre+" "+choferSec.apellido}}
+              </i>
               <div class="input-group-append">
                 <button class="input-group-text" (click)="abrirModal(ChoferSec)">...</button>
               </div>
