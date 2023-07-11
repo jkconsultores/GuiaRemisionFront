@@ -3,6 +3,7 @@ export interface PermisoDTO {
   tipo: string;
   valor: string;
   estado: boolean;
+  numeroDocumentoEmisor:string;
 }
 export interface T_Permiso {
   id: number;
@@ -10,4 +11,5 @@ export interface T_Permiso {
   tipo: string;
   valor: string;
   estado: boolean;
+  numeroDocumentoEmisor:string;
 }
