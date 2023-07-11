@@ -1028,7 +1028,7 @@
               <th scope="col">Distrito</th>
               <th scope="col">Provincia</th>
               <th scope="col">Razón Comercial</th>
-              <th scope="col">Opt</th>
+              <th scope="col" *ngIf="usuario=='1'">Opt</th>
             </tr>
           </thead>
           <tbody>
@@ -1042,7 +1042,7 @@
               <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.distritoemisor}}</td>
               <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.provinciaemisor}}</td>
               <td (click)="asignarRemitente(item)" style="cursor: pointer;">{{item.razoncomercialemisor}}</td>
-              <td style="text-align: center;cursor: pointer;" (click)="borrarEmpresa(item.numerodocumentoemisor);"><i
+              <td style="text-align: center;cursor: pointer;" (click)="borrarEmpresa(item.numerodocumentoemisor);" *ngIf="usuario=='1'"><i
                   class="fa-solid fa-trash" style="font-size: 20px;color: rgb(255, 0, 0);"></i></td>
             </tr>
           </tbody>

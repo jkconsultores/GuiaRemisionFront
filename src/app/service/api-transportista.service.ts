@@ -39,4 +39,7 @@ export class ApiTransportistaService {
   public getTransportista(){
     return this.http.get(this.url+'AAA/getTransportista',this.auth.obtenerDatos());
   }
+  public getGuiaDuplicada(serie,ruc){
+    return this.http.get(this.url+'Spe_Despatch/DuplicarGuia/'+serie+'/'+ruc,this.auth.obtenerDatos())
+  }
 }

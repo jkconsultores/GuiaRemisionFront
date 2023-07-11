@@ -890,5 +890,16 @@ agregarVehiculo(ref: NgForm){
       this.modalRef.close();
   })
 }
-
+clonarGuia(f:NgForm){
+  Swal.showLoading();
+  this.apiT.getGuiaDuplicada(f.value.serie,f.value.ruc).subscribe(a=>{
+    Swal.close()
+    console.log(a)
+  }, error => {
+    if (error.error) { Swal.fire({ icon: 'warning', text: error.error.message }); }
+    else{
+      Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' })
+    }
+  })
+}
 }

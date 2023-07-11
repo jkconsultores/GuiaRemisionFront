@@ -1104,7 +1104,7 @@ export class MainComponent  {
     this.Aeropuerto={nombrePuertoAeropuerto:'',codigoAeropuerto:'',codigoPuerto:''} as Aeropuerto;
   }
   asignarAdicionales(){
-    var cont=4;
+    var cont=5;
     this.camposAdicionalesModal.forEach((element:adicional) => {
       this.camposAdicionales['textoAuxiliar250_'+cont]=element.valor;
       this.camposAdicionales['codigoAuxiliar250_'+cont]=element.codigoAuxiliar;

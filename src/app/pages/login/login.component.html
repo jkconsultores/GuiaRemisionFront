@@ -15,12 +15,12 @@
           </div>
          <div class="form-outline mb-4">
           <label>Usuario:</label>
-           <input type="text" name="nombreUsuario" [(ngModel)]="usuario.nombreUsuario" class="form-control" placeholder="Ingrese el usuario" [ngClass]="{'is-invalid':f.submitted&&f.controls['nombreUsuario'].errors}" required minlength="4"/>
+           <input type="text" name="nombreUsuario" [(ngModel)]="usuario.nombreUsuario" class="form-control" placeholder="Ingrese el usuario" [ngClass]="{'is-invalid':f.submitted&&f.controls['nombreUsuario'].errors}" required minlength="2"/>
            <span *ngIf="f.submitted&&f.controls['nombreUsuario'].errors" class="help-inline" style="color: red;">Ingrese 4 letras como minimo</span>
           </div>
          <label>Password:</label>
          <div class="form-outline mb-4">
-           <input type="password" name="contrasena" [(ngModel)]="usuario.contrasena" class="form-control" placeholder="Ingrese la contraseña" [ngClass]="{'is-invalid':f.submitted&&f.controls['contrasena'].errors}" required minlength="4"/>
+           <input type="password" name="contrasena" [(ngModel)]="usuario.contrasena" class="form-control" placeholder="Ingrese la contraseña" [ngClass]="{'is-invalid':f.submitted&&f.controls['contrasena'].errors}" required minlength="2"/>
            <span *ngIf="f.submitted&&f.controls['contrasena'].errors" class="help-inline" style="color: red;">Ingrese 4 letras como minimo</span>
          </div>
          <!-- 2 column grid layout for inline styling -->
