@@ -158,7 +158,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
     else{
       valor=this.motivo
     }
-    if(!this.permisos.some(x=>x.tipo==this.TipoServicio && x.valor==valor)){
+    if(!this.permisos.some(x=>x.tipo==this.TipoServicio && x.valor==valor && x.numeroDocumentoEmisor==numeroDocumento)){
       this.permisos.push({
         estado:true,
         idUsuario:0,

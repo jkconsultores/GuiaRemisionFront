@@ -31,6 +31,7 @@
               <th class="text-center">Nombre de usuario</th>
               <th class="text-center">Correo</th>
               <th class="text-center">Acceso a la plataforma</th>
+              <th class="text-center">Rol</th>
               <th class="text-center">Opciones</th>
             </tr>
           </thead>
@@ -45,6 +46,7 @@
               <td><h6>{{item.correoelectronico}}</h6></td>
               <td *ngIf="item.estado">Permitido</td>
               <td *ngIf="!item.estado">Denegado</td>
+              <td >{{item.rol==true?"Administrador":"Usuario"}}</td>
               <td><button class="btn btn-light me-2" (click)="editaRoles(EditarRoles,item.usuarioid)" ><img src="../../../assets/usuario.png" width="36px"></button>
                 <button class="btn btn-danger ms-2" (click)="eliminarUsuario(item.usuarioid)"><img
                     src="../../../assets/borrar-usuario.png" width="36px"></button>
@@ -165,6 +167,7 @@
                 <tr>
                   <th>Tipo</th>
                   <th>Permiso</th>
+                  <th>Empresa</th>
                   <th>Opciones</th>
                 </tr>
               </thead>
@@ -172,6 +175,7 @@
                 <tr *ngFor="let item of permisos">
                   <td>{{item.tipo}}</td>
                   <td>{{reemplazarMotivo(item.tipo,item.valor)}}</td>
+                  <td>{{item.numeroDocumentoEmisor}}</td>
                   <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermiso(item.tipo,item.valor)"></i></td>
                 </tr>
               </tbody>
@@ -239,6 +243,7 @@
           <tr>
             <th>Tipo</th>
             <th>Permiso</th>
+            <th>Empresa</th>
             <th>Opciones</th>
           </tr>
         </thead>
@@ -246,6 +251,7 @@
           <tr *ngFor="let item of RolesDEUSuarioNuevos">
             <td>{{item.tipo}}</td>
             <td>{{reemplazarMotivo(item.tipo,item.valor)}}</td>
+            <td>{{item.numeroDocumentoEmisor}}</td>
             <td><i class="bi bi-trash3 text-white btn btn-danger " (click)="retirarPermisoUpdate(item.tipo,item.valor)"></i></td>
           </tr>
         </tbody>
