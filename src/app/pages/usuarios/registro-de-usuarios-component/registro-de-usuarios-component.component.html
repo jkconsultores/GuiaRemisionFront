@@ -130,7 +130,7 @@
               <label class="mb-1" for="serie">Seleccione una serie</label>
               <select [(ngModel)]="serieNumero" name="serie" class="form-select">
                 <option value="">Seleccione una serie</option>
-                <option value="{{item.serie}}" *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}} - serie: {{item.serie| slice : 0 : 4}} </option>
+                <option value="{{item.numerodocumentoemisor}}-{{item.serie}}" *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}} - serie: {{item.serie| slice : 0 : 4}} </option>
               </select>
             </div>
           </div>
@@ -202,7 +202,7 @@
         <label class="mb-1" for="serie">Seleccione una serie</label>
         <select [(ngModel)]="serieNumero" name="serie" class="form-select">
           <option value="">Seleccione una serie</option>
-          <option value="{{item.serie}}" *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}} - Serie:{{item.serie| slice : 0 : 4}}</option>
+          <option value="{{item.numerodocumentoemisor}}-{{item.serie}}" *ngFor="let item of arraySerie">Ruc:{{item.numerodocumentoemisor}} - Serie:{{item.serie| slice : 0 : 4}}</option>
         </select>
       </div>
     </div>

@@ -64,7 +64,8 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
         estado:x.estado,
         idUsuario :x.idUsuario,
         tipo:x.tipo,
-        valor:x.valor
+        valor:x.valor,
+        numeroDocumentoEmisor:x.numeroDocumentoEmisor
       }))
     })
   }
@@ -73,18 +74,22 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
   }
   AgregarPermisosEdicion(){
     let valor ="";
+    let numeroDocumento ="";
     if(this.TipoServicio=="Serie"){
-      valor=this.serieNumero
+      valor=this.serieNumero.split("-")[1]
+      numeroDocumento = this.serieNumero.split("-")[0]
     }
     else{
       valor=this.motivo
+      numeroDocumento = ""
     }
     if(!this.RolesDEUSuario.some(x=>x.tipo==this.TipoServicio && x.valor==valor)){
       this.RolesDEUSuarioNuevos.push({
         estado:true,
         idUsuario:0,
         tipo:this.TipoServicio,
-        valor:valor
+        valor:valor,
+        numeroDocumentoEmisor:numeroDocumento
       })
     }
   }
@@ -143,8 +148,10 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
   }
   AgregarPermisos(){
     let valor ="";
+    let numeroDocumento ="";
     if(this.TipoServicio=="Serie"){
-      valor=this.serieNumero
+      valor=this.serieNumero.split("-")[1]
+      numeroDocumento = this.serieNumero.split("-")[0]
     }
     else{
       valor=this.motivo
@@ -154,7 +161,8 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
         estado:true,
         idUsuario:0,
         tipo:this.TipoServicio,
-        valor:valor
+        valor:valor,
+        numeroDocumentoEmisor:numeroDocumento
       })
     }
   }
