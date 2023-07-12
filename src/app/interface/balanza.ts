@@ -12,5 +12,9 @@ export interface ImportarBalanza{
   razonSocialTransportista: string,
   tipoDocumentoTransportista: string,
   descripcion: string,
-  cantidad: number
+  cantidad: number,
+  zona:string,
+  sector:string,
+  plantacion:string,
+  parcela:string
 }

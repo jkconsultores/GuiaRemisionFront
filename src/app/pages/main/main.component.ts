@@ -1048,14 +1048,14 @@ export class MainComponent  {
         this.chofer.nombre=nombre??"";
         this.chofer.brevete=res[0].numeroLicencia;
         this.chofer.numerodocumentochofer=res[0].numeroLicencia.substring(1);
-        this.chofer.tipodocumentochofer=(res[0].numeroLicencia??"")!=""?this.validarAncho(res[0].numeroLicencia):"1";
+        this.chofer.tipodocumentochofer=(res[0].numeroLicencia.substring(1)??"")!=""?this.validarAncho(res[0].numeroLicencia.substring(1)):"1";
         this.chofer.apellido=apellido??"";
       }
       if((res[0].numeroDocumentoDestinatario??"")!=""||(res[0].razonSocialDestinatario??"")!=""||(res[0].tipoDocumentoDestinatario??"")!=""){
         this.destino={} as AAA_DESTINO;
         this.destinatario.numerodocumentoadquiriente=res[0].numeroDocumentoDestinatario;
         this.destinatario.razonsocialadquiriente=res[0].razonSocialDestinatario;
-        this.destinatario.tipodocumentoadquiriente=(res[0].tipoDocumentoDestinatario??"")==""?this.validarAncho(res[0].numeroDocumentoDestinatario):"";
+        this.destinatario.tipodocumentoadquiriente=(res[0].tipoDocumentoDestinatario??"")!=""?res[0].tipoDocumentoDestinatario:this.validarAncho(res[0].numeroDocumentoDestinatario);
         this.asignarDestinoDefault();
       }
       if(this.vmodalidad=='01'&&((res[0].numeroDocumentoTransportista??"")!=""||(res[0].razonSocialTransportista??"")!=""||(res[0].tipoDocumentoTransportista??"")!="")){
@@ -1067,8 +1067,10 @@ export class MainComponent  {
       var producto=[{codigo:'-',descripcion:res[0].descripcion,unidadmedida:'KGM',cantidad:res[0].cantidad.toString()}]
       this.pesoBruto=res[0].cantidad.toString();
       this.listadoProductoDetalles=producto;
+      this.llenarCamposAdicionales(res);
   }
   validarAncho(cadena: string): string {
+    console.log(cadena)
     if (cadena.length === 8) {
       return "1";
     } else if (cadena.length === 11) {
@@ -1111,5 +1113,21 @@ export class MainComponent  {
       cont++
     });
     this.modalRef.close();
+  }
+  llenarCamposAdicionales(res:ImportarBalanza[]){
+    this.camposAdicionalesModal.forEach(element => {
+        if(element.codigoAuxiliar=='7546'){
+            element.valor=res[0].plantacion;
+        }
+        if(element.codigoAuxiliar=='7547'){
+          element.valor=res[0].sector;
+        }
+        if(element.codigoAuxiliar=='9413'){
+          element.valor=res[0].zona;
+        }
+        if(element.codigoAuxiliar=='7548'){
+          element.valor=res[0].parcela;
+        }
+    });
   }
 }
