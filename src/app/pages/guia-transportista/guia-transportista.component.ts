@@ -893,13 +893,74 @@ clonarGuia(f:NgForm){
   Swal.showLoading();
   this.apiT.getGuiaDuplicada(f.value.serie,f.value.ruc).subscribe((a:any)=>{
     Swal.close()
-   var clonacion:clonacion=a;
-   console.log(clonacion.cabecera)
+    this.llenarGuiaClonada(a);
   }, error => {
     if (error.error) { Swal.fire({ icon: 'warning', text: error.error.message }); }
     else{
       Swal.fire({ icon: 'error', title: 'Hubo un error en la conexión' })
     }
   })
+}
+llenarGuiaClonada(a:clonacion){
+  this.remitente={razonsocialemisor:'',numerodocumentoemisor:'',tipodocumentoemisor:''};
+  this.remitente.razonsocialemisor=a.cabecera.razonSocialRemitente;
+  this.remitente.tipodocumentoemisor=a.cabecera.tipoDocumentoRemitente;
+  this.remitente.numerodocumentoemisor=a.cabecera.numeroDocumentoRemitente;
+
+  this.origen={numerodocumentoemisor:'',direccionorigen:'',ubigeoorigen:'',codigolocalanexo:'0000'};
+  this.origen.numerodocumentoemisor=a.cabecera.numeroDocumentoRemitente;
+  this.origen.direccionorigen=a.cabecera.direccionPtoPartida;
+  this.origen.ubigeoorigen=a.cabecera.ubigeoPtoPartida;
+
+  this.destinatario.numerodocumentoadquiriente=a.cabecera.numeroDocumentoDestinatario;
+  this.destinatario.razonsocialadquiriente=a.cabecera.razonSocialDestinatario;
+  this.destinatario.tipodocumentoadquiriente=a.cabecera.tipoDocumentoDestinatario;
+
+  this.destino={numerodocumentoadquiriente:'',ubigeodestino:'',codigolocalanexo:'0000',direcciondestino:''};
+  this.destino.direcciondestino=a.cabecera.direccionPtoLLegada;
+  this.destino.ubigeodestino=a.cabecera.ubigeoPtoLLegada;
+  this.destino.numerodocumentoadquiriente=a.cabecera.numeroDocumentoDestinatario;
+
+  this.chofer={nombre:'',apellido:'',numerodocumentochofer:'',tipodocumentochofer:'',placavehiculo:'',brevete:''};
+  this.chofer.nombre=(a.cabecera.nombreConductor??"");
+  this.chofer.apellido=(a.cabecera.apellidoConductor??"");
+  this.chofer.brevete=(a.cabecera.numeroLicencia??"");
+  this.chofer.numerodocumentochofer=(a.cabecera.numeroDocumentoConductor??"");
+  this.chofer.tipodocumentochofer=(a.cabecera.tipoDocumentoConductor??"");
+  this.placaChofer=(a.cabecera.numeroPlacaVehiculoPrin??"");
+
+  this.choferSec={nombre:'',apellido:'',numerodocumentochofer:'',tipodocumentochofer:'',placavehiculo:'',brevete:''};
+  this.choferSec.numerodocumentochofer=(a.cabecera.numeroDocumentoConductorSec1??"");
+  this.choferSec.tipodocumentochofer=(a.cabecera.tipoDocumentoConductorSec1??"");
+  this.choferSec.nombre=(a.cabecera.nombreConductorSec1??"");
+  this.choferSec.apellido=(a.cabecera.apellidoConductorSec1??"");
+  this.choferSec.brevete=(a.cabecera.numeroLicenciaSec1??"");
+  this.placaCarreta="";
+
+  this.Nrobultos=a.cabecera.numeroBultos??"";
+  this.pesoBruto=a.cabecera.pesoBrutoTotalBienes??"";
+  this.observaciones=a.cabecera.observaciones??"";
+  this.unidadMedidaPesoBruto=a.cabecera.unidadMedidaPesoBruto??"KGM";
+
+  a.cuerpo.forEach(element => {
+    this.listadoProductoDetalles.push({cantidad:element.cantidad,codigo:element.codigo,descripcion:element.descripcion,unidadmedida:element.unidadMedida})
+  });
+  this.documentosReferenciados=[];
+  a.relacionados.forEach(element=>{
+    this.documentosReferenciados.push({
+      codigoDocumentoDocRel:element.tipoDocumentoGuia,
+      numeroDocumentoDocRel:element.serieNumeroGuia,
+      numeroDocumentoEmisorDocRel:element.numeroDocumentoRemitente,
+      tipoDocumentoDocRel:element.tipoDocumentoGuia,
+      tipoDocumentoEmisorDocRel:element.tipoDocumentoRemitente
+    })
+  })
+  this.arrayGuiasImportadasCabecera=[];
+  a.relacionados.forEach(element => {
+    this.arrayGuiasImportadasCabecera.push({
+      serieNumeroGuia: element.serieNumeroGuia,
+      numeroDocumentoRemitente: element.numeroDocumentoRemitente,
+      fechaEmision:a.cabecera.fechaEmisionGuia })
+  });
 }
 }

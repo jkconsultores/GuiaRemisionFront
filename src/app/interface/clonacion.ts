@@ -1,7 +1,7 @@
 export interface clonacion{
   cabecera:cabecera,
   cuerpo:cuerpo[],
-  relacionado:relacionado[]
+  relacionados:relacionado[]
 }
 
 export interface cabecera{
@@ -21,6 +21,7 @@ export interface cabecera{
     pesoBrutoTotalBienes: string,
     unidadMedidaPesoBruto: string,
     fechaInicioTraslado: string,
+    fechaEmisionGuia:string,
     numeroRucTransportista: string,
     tipoDocumentoTransportista: string,
     razonSocialTransportista: string,
@@ -35,6 +36,11 @@ export interface cabecera{
     nombreConductor: string,
     apellidoConductor: string,
     numeroLicencia: string,
+    numeroDocumentoConductorSec1:string,
+    tipoDocumentoConductorSec1:string,
+    nombreConductorSec1:string,
+    apellidoConductorSec1:string,
+    numeroLicenciaSec1:string,
 }
 export interface cuerpo{
         tipoDocumentoRemision: string,
