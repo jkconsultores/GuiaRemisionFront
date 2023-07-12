@@ -211,7 +211,7 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       if (result.isConfirmed) {
         Swal.fire({
           title: 'Usuario modificado',
-          text:'La ontraseña del usuario: '+usuario.nombreusuario+" fue actualizada correctamente"
+          text:'La contraseña del usuario: '+usuario.nombreusuario+" fue actualizada correctamente"
         })
       }
     })

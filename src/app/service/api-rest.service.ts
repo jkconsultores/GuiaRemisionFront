@@ -146,6 +146,9 @@ export class ApiRestService implements OnInit{
   public agregarUsuario(usuario:UsuariosDTO){
     return this.http.post<USUARIO>(this.url+"Session/Register",usuario,this.auth.obtenerDatos())
   }
+  public ObtenerUsuarioLogeado(){
+    return this.http.get(this.url+"Session/usuario/logeado",this.auth.obtenerDatos())
+  }
   public ObtenerPDFDeFactura(ruta:urlANdTipo){
     return this.http.post<any>(this.url+"GestionDeDocumentos/Descargar",ruta,{headers:{'Content-Type':'application/json','Authorization': 'Bearer '+this.auth.ObtenerSoloBearer()},responseType:'blob' as 'json'});
   }
