@@ -1,7 +1,8 @@
 export interface clonacion{
   cabecera:cabecera,
   cuerpo:cuerpo[],
-  relacionados:relacionado[]
+  relacionados:relacionado[],
+  camposExtra:camposExtra[]
 }
 
 export interface cabecera{
@@ -41,6 +42,9 @@ export interface cabecera{
     nombreConductorSec1:string,
     apellidoConductorSec1:string,
     numeroLicenciaSec1:string,
+    razonSocialSubcontratista:string,
+    numeroDocSubcontratista:string,
+    tipoDocumentoSubcontratista:string
 }
 export interface cuerpo{
         tipoDocumentoRemision: string,
@@ -66,4 +70,11 @@ export interface cuerpo{
           numeroDocumentoDocRel:string,
           numeroDocumentoEmisorDocRel: string,
           tipoDocumentoEmisorDocRel:string
+  }
+  export interface camposExtra{
+      tipo: string,
+      almacen: string,
+      referencia: string,
+      servicio: string,
+      ticket: string
   }

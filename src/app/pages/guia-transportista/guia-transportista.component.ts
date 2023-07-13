@@ -147,16 +147,28 @@ export class GuiaTransportistaComponent  implements OnInit{
       this.obtenerVehiculos();
   }
   ngOnInit(): void {
-    let div1 = document.getElementById("botonesdeacceso");
-   let div2 = document.getElementById("secondarslot");
-   let div3 = document.getElementById("principalslot");
-    if(window.innerWidth < 900){
-      div2.appendChild(div1);
-      div3.removeChild(div1);
-    }else{
-      div3.appendChild(div1);
-      div2.removeChild(div1);
-    }
+    window.onload = () => {
+      let div1 = document.getElementById("botonesdeacceso");
+      let div2 = document.getElementById("secondarslot");
+      let div3 = document.getElementById("principalslot");
+
+      if (window.innerWidth < 900) {
+        if (!div2.contains(div1)) {
+          div2.appendChild(div1);
+        }
+        if (div3.contains(div1)) {
+          div3.removeChild(div1);
+        }
+      } else {
+        if (!div3.contains(div1)) {
+          div3.appendChild(div1);
+        }
+        if (div2.contains(div1)) {
+          div2.removeChild(div1);
+        }
+      }
+    };
+
   }
   fechaActual() {
     const now = new Date();
@@ -612,6 +624,7 @@ export class GuiaTransportistaComponent  implements OnInit{
       tipoDocumentoRemitente: this.remitente.tipodocumentoemisor,
       numeroDocumentoRemitente: this.remitente.numerodocumentoemisor,
       serieNumeroGuia: this.serieNumero+'-1',
+      tipoDocumentoGuia:'31',
       fechaEmisionGuia: this.fecha_emision.substring(0, 10), //solo date yyyy-mm-dd
       observaciones: this.observaciones,
       razonSocialRemitente: this.remitente.razonsocialemisor, //razonsocialemisor empresa
@@ -654,9 +667,9 @@ export class GuiaTransportistaComponent  implements OnInit{
       apellidoConductorSec1 :(this.choferSec.apellido??"")==""?"":this.choferSec.apellido,
       numeroLicenciaSec1:(this.choferSec.brevete??"")==""?"":this.choferSec.brevete,
       camposOpcionales1: (this.camposOpcionales??null),
-      textoAuxiliar250_1:this.placaCarreta,//placa carreta
-      textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
-      textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
+      // textoAuxiliar250_1:this.placaCarreta,//placa carreta
+      // textoAuxiliar250_3:this.modeloCarreta,//modelo carreta,
+      // textoAuxiliar250_2:this.marcaVehiculo, // modelo del vehiculo
       datosDeTrasporteTercerizado:((this.transporteTerceario.razonSocialSubcontratista??"")=="")||((this.transporteTerceario.numeroDocSubcontratista??"")=="")?null:this.transporteTerceario,
       tarjetaUnicaCirculacionPrin:this.tarjetaUnicaCirculacionPrin??"",
       tarjetaUnicaCirculacionSec1:this.tarjetaUnicaCirculacionSec1??""
@@ -679,7 +692,54 @@ cerrarModalGuiasImportadas(){
   this.arrayGuiasImportadas=[];
   this.selectedGuias=[];
 }
-asignarGuiasImportadas(){
+asignarGuiasImportadas(): void {
+  const objetos = this.selectedGuias;
+  let tieneDiferencias = false;
+  let mensaje = '';
+
+  for (let i = 0; i < objetos.length - 1; i++) {
+    const objetoActual = objetos[i];
+    const objetoSiguiente = objetos[i + 1];
+
+    if (
+      objetoActual.direccionPtoPartida !== objetoSiguiente.direccionPtoPartida ||
+      objetoActual.direccionPtoLlegada !== objetoSiguiente.direccionPtoLlegada
+    ) {
+      tieneDiferencias = true;
+      if (objetoActual.direccionPtoPartida !== objetoSiguiente.direccionPtoPartida &&
+          objetoActual.direccionPtoLlegada !== objetoSiguiente.direccionPtoLlegada) {
+        mensaje = 'Ambas direcciones son diferentes.';
+      } else if (objetoActual.direccionPtoPartida !== objetoSiguiente.direccionPtoPartida) {
+        mensaje = 'La dirección del origen es diferente.';
+      } else {
+        mensaje = 'La dirección del destino es diferente.';
+      }
+      break;
+    }
+  }
+
+  if (tieneDiferencias) {
+    Swal.fire({
+      title: 'Advertencia',
+      text: mensaje + ' ¿Desea continuar?',
+      icon: 'warning',
+      showCancelButton: true,
+      showConfirmButton: true,
+      reverseButtons: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Salir',
+      cancelButtonColor: 'red',
+      confirmButtonColor: 'green'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.insertarGuiasImportadas();
+      }
+    });
+  } else {
+    this.insertarGuiasImportadas();
+  }
+}
+insertarGuiasImportadas(){
  this.arrayGuiasImportadasCabecera= this.selectedGuias.map(item => {
     return { serieNumeroGuia: item.serieNumeroGuia, numeroDocumentoRemitente: item.numeroDocumentoRemitente,fechaEmision:item.fechaEmision };
   });
@@ -942,6 +1002,7 @@ llenarGuiaClonada(a:clonacion){
   this.observaciones=a.cabecera.observaciones??"";
   this.unidadMedidaPesoBruto=a.cabecera.unidadMedidaPesoBruto??"KGM";
 
+  this.listadoProductoDetalles=[];
   a.cuerpo.forEach(element => {
     this.listadoProductoDetalles.push({cantidad:element.cantidad,codigo:element.codigo,descripcion:element.descripcion,unidadmedida:element.unidadMedida})
   });
@@ -962,5 +1023,13 @@ llenarGuiaClonada(a:clonacion){
       numeroDocumentoRemitente: element.numeroDocumentoRemitente,
       fechaEmision:a.cabecera.fechaEmisionGuia })
   });
+
+  if(a.camposExtra.length==1){
+    this.camposOpcionales=a.camposExtra[0];
+  }
+  this.transporteTerceario.numeroDocSubcontratista=a.cabecera.numeroDocSubcontratista;
+  this.transporteTerceario.razonSocialSubcontratista=a.cabecera.razonSocialSubcontratista;
+  this.transporteTerceario.tipoDocumentoSubcontratista=a.cabecera.tipoDocumentoSubcontratista;
+  this.transporteTerceario.indTransporteSubcontratado=true;
 }
 }

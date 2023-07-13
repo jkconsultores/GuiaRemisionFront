@@ -201,7 +201,6 @@ export class RegistroDeUsuariosComponentComponent implements OnInit {
       preConfirm: (login) => {
         this.passchange={id:usuario.usuarioid.toString(),text:login}
         return this.api.actualziarContraseña(this.passchange).subscribe((resp:any)=>{
-
         },(error:any)=>{Swal.showValidationMessage(
           `Error: ${error}`
         )});

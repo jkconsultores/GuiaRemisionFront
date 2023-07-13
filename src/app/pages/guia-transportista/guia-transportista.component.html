@@ -168,7 +168,7 @@
             <label class="w-100">CHOFER 1</label></div>
           <div class="col-md-6 col-lg-7">
             <div class="input-group mb-1">
-              <i class="form-control">{{chofer.nombre+" "+chofer.apellido}}</i>
+              <i class="form-control texto-limitado">{{chofer.nombre+" "+chofer.apellido}}</i>
               <div class="input-group-append">
                 <button class="input-group-text" (click)="abrirModal(Chofer);">...</button>
               </div>
@@ -197,7 +197,7 @@
             <label class="w-100">CHOFER 2</label></div>
           <div class="col-md-6 col-lg-7">
             <div class="input-group mb-1">
-              <i class="form-control" >
+              <i class="form-control texto-limitado" >
                 {{choferSec.nombre+" "+choferSec.apellido}}
               </i>
               <div class="input-group-append">
@@ -210,13 +210,13 @@
       <div class="col-lg-8 col-12">
         <div class="row">
           <div class="col-md-6 col-lg-3"><label class="w-100 center">PLACA 2
-              <b style="color: red;">(*)</b></label></div>
+            &nbsp;&nbsp;&nbsp;</label></div>
           <div class="col-md-6 col-lg-9">
             <div class="input-group mb-1">
               <input type="text" [(ngModel)]="placaCarreta"
                 placeholder="Opcional" readonly class="form-control">
               <div class="input-group-append">
-                <button class="input-group-text" (click)="abrirModal(Carrera)">...</button>
+                <button class="input-group-text" (click)="abrirModal(Carrera)" disabled>...</button>
               </div>
             </div>
           </div>
@@ -439,8 +439,7 @@
       <div class="card-footer" style="text-align: right;">
         <button class="btn btn-danger" style="margin-right: 5px;width: 110px;"
           (click)="cerrarModalGuiasImportadas()">Salir</button>
-        <button class="btn btn-primary" (click)="asignarGuiasImportadas()">Asignar
-          Guias</button>
+        <button class="btn btn-primary" (click)="asignarGuiasImportadas()">Asignar Guias</button>
       </div>
     </div>
   </ng-template>
@@ -1976,7 +1975,7 @@
     <div class="card">
       <div class="card-header">
         <div class="container">
-          <h5>Clonar Guia &nbsp; &nbsp;</h5>
+          <h5>Copiar Guia &nbsp; &nbsp;</h5>
         </div>
       </div>
       <div class="card-body">
